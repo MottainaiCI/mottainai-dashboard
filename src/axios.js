@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const instance = axios.create({
-  baseURL: `${location.origin}/api/v1/client/`,
+  baseURL: `${location.origin}/api/`,
 })
 
 instance.interceptors.request.use((config) => {

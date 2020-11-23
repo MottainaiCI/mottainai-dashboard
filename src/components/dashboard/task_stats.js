@@ -15,7 +15,7 @@ const TaskStatCard = () => {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    axios.get("/dashboard/stats").then(
+    axios.get("/v1/client/dashboard/stats").then(
       ({ data }) => {
         setStats(data)
         setLoading(false)
