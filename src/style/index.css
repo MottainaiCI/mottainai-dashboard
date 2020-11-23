@@ -1,0 +1,23 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import "./spinner.css";
+
+html,
+body {
+  @apply select-none;
+  @apply overflow-hidden;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.table-mott-light tr:nth-child(even) {
+  @apply bg-beige-100;
+}
+
+.table-mott-dark tr:nth-child(even) {
+  @apply bg-beige-600;
+}
