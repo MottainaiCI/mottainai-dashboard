@@ -11,7 +11,7 @@ const Dropdown = ({ label, options, actionArgs = [] }) => {
         className={`py-2 px-4 block whitespace-no-wrap
           ${themes[theme].dropdown.element}`}
         href="#"
-        onClick={() => onClick.apply(null, actionArgs)}
+        onClick={() => onClick(...actionArgs)}
       >
         {label}
       </a>

@@ -1,7 +1,6 @@
 import Modal from "./"
 
 const ConfirmModal = ({
-  text,
   onCancel = () => {},
   onConfirm = () => {},
   isOpen,

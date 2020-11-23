@@ -1,8 +1,7 @@
-import React, { useEffect, useLayoutEffect, useRef } from "preact/hooks"
-import { createPortal } from "preact/compat"
+import { useEffect, useLayoutEffect, useRef } from "preact/hooks"
 import PropTypes from "prop-types"
 
-const Modal = ({ children, onRequestClose, isOpen }) => {
+const Modal = ({ children, onRequestClose }) => {
   const ref = useRef()
 
   useFocusLock(ref)
@@ -10,15 +9,11 @@ const Modal = ({ children, onRequestClose, isOpen }) => {
   useLockBodyScroll()
   useOnClickOutside(ref, onRequestClose)
 
-  if (!isOpen) {
-    return null
-  }
-
-  return createPortal(
+  return (
     <div class="fixed z-50 inset-0 overflow-y-auto">
       <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-          <div class="absolute inset-0 bg-gray-300 opacity-75"></div>
+          <div class="absolute inset-0 bg-gray-300 opacity-75" />
         </div>
 
         <div
@@ -31,8 +26,7 @@ const Modal = ({ children, onRequestClose, isOpen }) => {
           {children}
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   )
 }
 
@@ -120,17 +114,17 @@ function useLockBodyScroll() {
 
 // key up hook
 function useKeyUp(targetKey, handler) {
-  const onKeyUp = ({ key }) => {
-    if (key === targetKey) handler()
-  }
-
   useEffect(() => {
+    const onKeyUp = ({ key }) => {
+      if (key === targetKey) handler()
+    }
+
     window.addEventListener("keyup", onKeyUp)
 
     return () => {
       window.removeEventListener("keyup", onKeyUp)
     }
-  }, [])
+  }, [targetKey, handler])
 }
 
 // click outside hook
@@ -148,5 +142,5 @@ function useOnClickOutside(ref, handler) {
       document.removeEventListener("mousedown", listener)
       document.removeEventListener("touchstart", listener)
     }
-  }, [])
+  }, [ref, handler])
 }

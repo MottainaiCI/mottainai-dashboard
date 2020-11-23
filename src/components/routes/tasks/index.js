@@ -1,77 +1,24 @@
-import axios from "@/axios"
-import { useState, useEffect, useMemo, useRef } from "preact/hooks"
+import { useState, useEffect, useMemo } from "preact/hooks"
+
 import Table from "@/components/common/table"
 import Dropdown from "@/components/common/dropdown"
 import Spinner from "@/components/spinner"
-import { ConfirmModal } from "@/components/common/modal"
+import TaskService from "@/service/task"
+import { showConfirmModal } from "@/components/common/modal"
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [modalText, setModalText] = useState(false)
-  useEffect(() => {
-    axios
-      .get("/tasks")
-      .then(
-        ({ data }) => {
-          setTasks(data)
-        },
-        (error) => {
-          // setError(error)
-        }
-      )
-      .finally(() => setLoading(false))
-  }, [])
+  const [error, setError] = useState(false)
 
-  if (loading) {
-    return <Spinner />
+  const refreshTasks = () => {
+    setLoading(true)
+    TaskService.fetchAll()
+      .then(setTasks, setError)
+      .finally(() => setLoading(false))
   }
 
-  let modalConfirmFn = useRef(() => {})
-  const onModalConfirm = () => modalConfirmFn.current.call(this)
-
-  const actionOptions = useMemo(
-    () => [
-      {
-        label: "Start",
-        onClick(row) {},
-      },
-      {
-        label: "Stop",
-        onClick() {},
-      },
-      {
-        label: "Clone",
-        onClick() {},
-      },
-      {
-        label: "Delete",
-        onClick(row) {
-          setModalText(
-            `Are you sure you want to delete Task ${row.original.ID}?`
-          )
-          setModalOpen(true)
-          modalConfirmFn.current = () => {
-            setModalOpen(false)
-            // axios
-            //   .get("/tasks")
-            //   .then(
-            //     ({ data }) => {
-            //       setTasks(data)
-            //       setTasks(data.filter((item) => item.ID !== row.original.ID))
-            //     },
-            //     (error) => {
-            //       // setError(error)
-            //     }
-            //   )
-            //   .finally(() => setLoading(false))
-          }
-        },
-      },
-    ],
-    []
-  )
+  useEffect(refreshTasks, [])
 
   const columns = useMemo(
     () => [
@@ -94,6 +41,38 @@ const Tasks = () => {
       {
         id: "Actions",
         Cell: ({ row }) => {
+          const actionOptions = [
+            {
+              label: "Start",
+              onClick() {},
+            },
+            {
+              label: "Stop",
+              onClick() {},
+            },
+            {
+              label: "Clone",
+              onClick() {},
+            },
+            {
+              label: "Delete",
+              onClick(row) {
+                const onConfirm = () => {
+                  TaskService.delete(row.original.ID).then(() => {
+                    setTasks(
+                      tasks.filter((item) => item.ID !== row.original.ID)
+                    )
+                  })
+                }
+
+                showConfirmModal({
+                  body: `Are you sure you want to delete Task ${row.original.ID}?`,
+                  onConfirm,
+                })
+              },
+            },
+          ]
+
           return (
             <Dropdown
               label="Actions"
@@ -104,19 +83,19 @@ const Tasks = () => {
         },
       },
     ],
-    []
+    [tasks]
   )
+
+  if (loading) {
+    return <Spinner />
+  }
 
   return (
     <>
       <p className="text-2xl font-bold mb-2">Tasks</p>
-      <ConfirmModal
-        isOpen={modalOpen}
-        body={modalText}
-        onCancel={() => setModalOpen(false)}
-        onConfirm={onModalConfirm}
-      />
-      {tasks.length ? (
+      {error ? (
+        <div>There was a problem retrieving tasks</div>
+      ) : tasks.length ? (
         <Table data={tasks} columns={columns} />
       ) : (
         <div>No tasks were found.</div>

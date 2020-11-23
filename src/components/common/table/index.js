@@ -1,14 +1,15 @@
-import { useTable, usePagination, useGlobalFilter } from "react-table"
+import {
+  useTable,
+  usePagination,
+  useGlobalFilter,
+  useSortBy,
+} from "react-table"
 import { useContext, useState } from "preact/hooks"
 import ThemeContext from "@/contexts/theme"
 import themes from "@/themes"
 import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 
-function GlobalFilter({
-  preGlobalFilteredRows,
-  globalFilter,
-  setGlobalFilter,
-}) {
+function GlobalFilter({ globalFilter, setGlobalFilter }) {
   const [value, setValue] = useState(globalFilter)
   const onChange = (value) => {
     setGlobalFilter(value || undefined)
@@ -30,16 +31,17 @@ function GlobalFilter({
 const Table = ({ columns, data }) => {
   let { theme } = useContext(ThemeContext)
   const tableInstance = useTable(
-    { columns, data },
+    { columns, data, initialState: { sortBy: [{ id: "ID", desc: false }] } },
     useGlobalFilter,
+    useSortBy,
     usePagination
   )
 
   const {
     getTableProps,
     getTableBodyProps,
-    headerGroups,
     prepareRow,
+    headerGroups,
     page: rows,
     pageCount,
     nextPage,
@@ -47,6 +49,7 @@ const Table = ({ columns, data }) => {
     setPageSize,
     state: { pageIndex, pageSize, globalFilter },
     preGlobalFilteredRows,
+    globalFilteredRows,
     setGlobalFilter,
   } = tableInstance
 
@@ -101,8 +104,19 @@ const Table = ({ columns, data }) => {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()} className="px-1 text-left">
+                <th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  className="px-1 text-left"
+                >
                   {column.render("Header")}
+                  {column.isSorted ? (
+                    <FontAwesomeIcon
+                      className="ml-2"
+                      icon={column.isSortedDesc ? "caret-down" : "caret-up"}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </th>
               ))}
             </tr>
@@ -128,8 +142,8 @@ const Table = ({ columns, data }) => {
       <div>
         {`Showing ${pageIndex * pageSize + 1} to ${Math.min(
           (pageIndex + 1) * pageSize,
-          data.length
-        )} of ${data.length}`}
+          globalFilteredRows.length
+        )} of ${globalFilteredRows.length}`}
       </div>
     </>
   )
