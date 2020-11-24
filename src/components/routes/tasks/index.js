@@ -111,21 +111,29 @@ const Tasks = () => {
           const actionOptions = [
             {
               label: "Start",
-              onClick() {},
+              onClick(row) {
+                TaskService.start(row.original.ID).then(() => {
+                  TaskService.fetch(row.original.ID).then((task) => {
+                    setTasks(
+                      tasks.map((item) => {
+                        return item.ID === row.original.ID ? task : item
+                      })
+                    )
+                  })
+                })
+              },
             },
             {
               label: "Stop",
               onClick(row) {
-                TaskService.delete(row.original.ID).then(() => {
-                  setTasks(
-                    tasks.map((item) => {
-                      if (item.ID !== row.original.ID) {
-                        return item
-                      } else {
-                        item.original.status = "stop"
-                      }
-                    })
-                  )
+                TaskService.stop(row.original.ID).then(() => {
+                  TaskService.fetch(row.original.ID).then((task) => {
+                    setTasks(
+                      tasks.map((item) => {
+                        return item.ID === row.original.ID ? task : item
+                      })
+                    )
+                  })
                 })
               },
             },
