@@ -81,14 +81,18 @@ const Tasks = () => {
       {
         Header: "Start Time",
         accessor: (d) => {
-          return dayjs(d.start_time).format("YYYY/MM/DD hh:mm:ss a")
+          if (d.start_time) {
+            return dayjs(d.start_time).format("YYYY/MM/DD hh:mm:ss a")
+          }
         },
       },
       {
         Header: "Duration",
         accessor: (d) => {
-          let endTime = d.end_time ? dayjs(d.end_time) : dayjs()
-          return dayjs.duration(endTime.diff(d.start_time), "ms").humanize()
+          if (d.start_time) {
+            let endTime = d.end_time ? dayjs(d.end_time) : dayjs()
+            return dayjs.duration(endTime.diff(d.start_time), "ms").humanize()
+          }
         },
       },
       {
@@ -101,11 +105,25 @@ const Tasks = () => {
             },
             {
               label: "Stop",
-              onClick() {},
+              onClick(row) {
+                TaskService.delete(row.original.ID).then(() => {
+                  setTasks(
+                    tasks.map((item) => {
+                      if (item.ID !== row.original.ID) {
+                        return item
+                      } else {
+                        item.original.status = "stop"
+                      }
+                    })
+                  )
+                })
+              },
             },
             {
               label: "Clone",
-              onClick() {},
+              onClick(row) {
+                TaskService.clone(row.original.ID).then(refreshTasks)
+              },
             },
             {
               label: "Delete",
