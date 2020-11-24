@@ -49,14 +49,24 @@ const Tasks = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
-  const refreshTasks = () => {
-    setLoading(true)
+  const refreshTasks = (setLoadingFlag = true) => {
+    if (setLoadingFlag) {
+      setLoading(true)
+    }
     TaskService.fetchAll()
       .then(setTasks, setError)
       .finally(() => setLoading(false))
   }
 
-  useEffect(refreshTasks, [])
+  useEffect(() => {
+    refreshTasks()
+
+    const intId = setInterval(() => {
+      refreshTasks(false)
+    }, 30 * 1000)
+
+    return () => clearInterval(intId)
+  }, [])
 
   const columns = useMemo(
     () => [
