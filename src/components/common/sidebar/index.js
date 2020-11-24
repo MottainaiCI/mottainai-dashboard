@@ -55,6 +55,7 @@ const Sidebar = () => {
                 icon="code-branch"
                 text="Pipelines"
               />
+              <SidebarLink href="/nodes" icon="network-wired" text="Nodes" />
               <SidebarLink href="/artefacts" icon="cloud" text="Artefacts" />
             </>
           )}

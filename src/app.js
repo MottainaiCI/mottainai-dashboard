@@ -6,8 +6,10 @@ import Dashboard from "@/components/routes/dashboard"
 import Plans from "@/components/routes/plans"
 import Pipelines from "@/components/routes/pipelines"
 import Tasks from "@/components/routes/tasks"
+import Nodes from "@/components/routes/nodes"
 import Artefacts from "@/components/routes/artefacts"
 import Login from "@/components/routes/login"
+
 import Sidebar from "@/components/common/sidebar"
 import Spinner from "@/components/spinner"
 
@@ -17,7 +19,7 @@ import themes from "@/themes"
 import axios from "@/axios"
 import UserService from "./service/user"
 
-const AUTHED = ["/plans", "/pipelines", "/tasks", "/artefacts"]
+const AUTHED = ["/plans", "/pipelines", "/tasks", "/artefacts", "/nodes"]
 const UNAUTHED = ["/login"]
 
 const App = () => {
@@ -93,9 +95,10 @@ const App = () => {
           <div className="px-8 py-10 flex-1 overflow-auto">
             <Router onChange={(e) => handleRoute(e.url)}>
               <Dashboard path="/" />
+              <Tasks path="/tasks" />
               <Plans path="/plans" />
               <Pipelines path="/pipelines" />
-              <Tasks path="/tasks" />
+              <Nodes path="/nodes" />
               <Artefacts path="/artefacts" />
               <Login path="/login" />
             </Router>

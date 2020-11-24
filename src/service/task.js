@@ -4,20 +4,20 @@ const TaskService = {
   fetchAll() {
     return axios.get("/tasks").then(({ data }) => data)
   },
-  fetch(taskId) {
-    return axios.get(`/tasks/${taskId}`).then(({ data }) => data)
+  fetch(id) {
+    return axios.get(`/tasks/${id}`).then(({ data }) => data)
   },
-  delete(taskId) {
-    return axios.get(`/tasks/delete/${taskId}`)
+  delete(id) {
+    return axios.get(`/tasks/delete/${id}`)
   },
-  start(taskId) {
-    return axios.get(`/tasks/start/${taskId}`)
+  start(id) {
+    return axios.get(`/tasks/start/${id}`)
   },
-  stop(taskId) {
-    return axios.get(`/tasks/stop/${taskId}`)
+  stop(id) {
+    return axios.get(`/tasks/stop/${id}`)
   },
-  clone(taskId) {
-    return axios.get(`/tasks/clone/${taskId}`)
+  clone(id) {
+    return axios.get(`/tasks/clone/${id}`)
   },
 }
 

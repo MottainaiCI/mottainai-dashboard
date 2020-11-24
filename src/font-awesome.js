@@ -18,5 +18,6 @@ library.add(
   fas.faQuestion,
   fas.faSpinner,
   fas.faStop,
-  fas.faExclamation
+  fas.faExclamation,
+  fas.faNetworkWired
 )
