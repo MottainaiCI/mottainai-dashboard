@@ -89,9 +89,7 @@ const App = () => {
         <div
           className={`flex h-screen ${themes[theme].bg} ${themes[theme].textColor}`}
         >
-          <div className="w-60 flex-none flex flex-col">
-            <Sidebar />
-          </div>
+          <Sidebar />
           <div className="px-8 py-10 flex-1 overflow-auto">
             <Router onChange={(e) => handleRoute(e.url)}>
               <Dashboard path="/" />

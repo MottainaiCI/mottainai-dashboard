@@ -1,11 +1,14 @@
-import logo from "@/assets/images/logo.png"
 import { route } from "preact-router"
 import { useContext } from "preact/hooks"
+import { useLocalStorage } from "@rehooks/local-storage"
+import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 
 import ThemeContext, { THEME_OPTIONS } from "@/contexts/theme"
 import UserContext from "@/contexts/user"
+import SidebarContext from "@/contexts/sidebar"
 import themes from "@/themes"
 import UserService from "@/service/user"
+import logo from "@/assets/images/logo.png"
 
 import { SidebarItem, SidebarLink } from "./common"
 import { SidebarPopoutSelector } from "./popout_selector"
@@ -23,60 +26,87 @@ const SignOut = () => {
     <SidebarItem
       icon="sign-out-alt"
       className="cursor-pointer"
+      text="Log out"
       onClick={signOut}
-    >
-      Log out
-    </SidebarItem>
+    />
   )
 }
 
 const Sidebar = () => {
   let { theme, setTheme } = useContext(ThemeContext)
   let { user } = useContext(UserContext)
+  const [collapsed, setCollapsed] = useLocalStorage(
+    "mottainai-sidebar-collapsed",
+    false
+  )
+  const sidebarContextValue = { collapsed, setCollapsed }
 
   return (
-    <div
-      className={`flex-1 flex flex-col ${themes[theme].sidebar.bg} ${themes[theme].sidebar.bg}`}
-    >
-      <div className="flex flex-row justify-center items-center py-4">
-        <img src={logo} className="w-10 mr-2" />
-        <div className="text-2xl font-medium">MottainaiCI</div>
-      </div>
-      <div className="border h-px w-4/5 mx-auto mb-4" />
-      <div className="flex-1 flex flex-col justify-between">
-        <div className="flex flex-col">
-          <SidebarLink href="/" icon="tachometer-alt" text="Dashboard" />
-          {user && (
-            <>
-              <SidebarLink href="/tasks" icon="tasks" text="Tasks" />
-              <SidebarLink href="/plans" icon="clock" text="Plans" />
-              <SidebarLink
-                href="/pipelines"
-                icon="code-branch"
-                text="Pipelines"
-              />
-              <SidebarLink href="/nodes" icon="network-wired" text="Nodes" />
-              <SidebarLink href="/artefacts" icon="cloud" text="Artefacts" />
-            </>
-          )}
-        </div>
+    <SidebarContext.Provider value={sidebarContextValue}>
+      <div className={`${collapsed ? "w-16" : "w-60"} flex-none flex flex-col`}>
+        <div
+          className={`flex-1 flex flex-col transition-all
+        ${themes[theme].sidebar.bg} ${themes[theme].sidebar.bg}`}
+        >
+          <div
+            className="text-right mr-2 cursor-pointer"
+            onClick={() => setCollapsed(!collapsed)}
+          >
+            <FontAwesomeIcon
+              icon={`${collapsed ? "caret-right" : "caret-left"}`}
+            />
+          </div>
+          <div className="flex flex-row justify-center items-center py-4">
+            <img src={logo} className={`w-10 ${!collapsed && "mr-2"}`} />
+            {!collapsed && (
+              <div className="text-2xl font-medium">MottainaiCI</div>
+            )}
+          </div>
+          <div className="border h-px w-4/5 mx-auto mb-4" />
+          <div className="flex-1 flex flex-col justify-between">
+            <div className="flex flex-col">
+              <SidebarLink href="/" icon="tachometer-alt" text="Dashboard" />
+              {user && (
+                <>
+                  <SidebarLink href="/tasks" icon="tasks" text="Tasks" />
+                  <SidebarLink href="/plans" icon="clock" text="Plans" />
+                  <SidebarLink
+                    href="/pipelines"
+                    icon="code-branch"
+                    text="Pipelines"
+                  />
+                  <SidebarLink
+                    href="/nodes"
+                    icon="network-wired"
+                    text="Nodes"
+                  />
+                  <SidebarLink
+                    href="/artefacts"
+                    icon="cloud"
+                    text="Artefacts"
+                  />
+                </>
+              )}
+            </div>
 
-        <div className="flex flex-col">
-          {user ? (
-            <SignOut />
-          ) : (
-            <SidebarLink href="/login" icon="user" text="Log In" />
-          )}
-          <SidebarPopoutSelector
-            anchor="bottom"
-            label="Theme"
-            options={THEME_OPTIONS}
-            onSelect={setTheme}
-            selected={theme}
-          />
+            <div className="flex flex-col">
+              {user ? (
+                <SignOut />
+              ) : (
+                <SidebarLink href="/login" icon="user" text="Log In" />
+              )}
+              <SidebarPopoutSelector
+                anchor="bottom"
+                label="Theme"
+                options={THEME_OPTIONS}
+                onSelect={setTheme}
+                selected={theme}
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </SidebarContext.Provider>
   )
 }
 
