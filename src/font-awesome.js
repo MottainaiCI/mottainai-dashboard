@@ -1,30 +1,22 @@
 import { library } from "@fortawesome/fontawesome-svg-core"
-import {
-  faTachometerAlt,
-  faTasks,
-  faClock,
-  faCodeBranch,
-  faCloud,
-  faPalette,
-  faUser,
-  faSignOutAlt,
-  faCaretDown,
-  faCaretUp,
-  faCaretRight,
-  faCaretLeft,
-} from "@fortawesome/free-solid-svg-icons"
+import * as fas from "@fortawesome/free-solid-svg-icons"
 
 library.add(
-  faTachometerAlt,
-  faTasks,
-  faClock,
-  faCodeBranch,
-  faCloud,
-  faPalette,
-  faUser,
-  faSignOutAlt,
-  faCaretDown,
-  faCaretUp,
-  faCaretRight,
-  faCaretLeft
+  fas.faTachometerAlt,
+  fas.faTasks,
+  fas.faClock,
+  fas.faCodeBranch,
+  fas.faCloud,
+  fas.faPalette,
+  fas.faUser,
+  fas.faSignOutAlt,
+  fas.faCaretDown,
+  fas.faCaretUp,
+  fas.faCaretRight,
+  fas.faCaretLeft,
+  fas.faCheck,
+  fas.faQuestion,
+  fas.faSpinner,
+  fas.faStop,
+  fas.faExclamation
 )

@@ -1,10 +1,48 @@
 import { useState, useEffect, useMemo } from "preact/hooks"
+import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
+import dayjs from "dayjs"
+import duration from "dayjs/plugin/duration"
+import relativeTime from "dayjs/plugin/relativeTime"
+dayjs.extend(duration)
+dayjs.extend(relativeTime)
 
 import Table from "@/components/common/table"
 import Dropdown from "@/components/common/dropdown"
 import Spinner from "@/components/spinner"
 import TaskService from "@/service/task"
 import { showConfirmModal } from "@/components/common/modal"
+
+const getIcon = (row) => {
+  switch (row.original.status) {
+    case "done":
+      switch (row.original.result) {
+        case "error":
+        case "failed":
+          return <FontAwesomeIcon icon="exclamation" className="text-red-500" />
+        case "success":
+          return <FontAwesomeIcon icon="check" className="text-green-500" />
+        default:
+          return <FontAwesomeIcon icon="question" />
+      }
+    case "stop":
+      return (
+        <FontAwesomeIcon
+          icon="stop"
+          className="text-red-300 faa-flash animated"
+        />
+      )
+    case "stopped":
+      return <FontAwesomeIcon icon="stop" className="text-red-300" />
+    case "waiting":
+      return <FontAwesomeIcon icon="clock" className="text-yellow-400" />
+    case "running":
+      return (
+        <FontAwesomeIcon icon="spinner" className="text-blue-400 fa-pulse" />
+      )
+    default:
+      return <FontAwesomeIcon icon="question" />
+  }
+}
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([])
@@ -23,6 +61,12 @@ const Tasks = () => {
   const columns = useMemo(
     () => [
       {
+        id: "StatusIcon",
+        Cell: ({ row }) => {
+          return <div className="text-center">{getIcon(row)}</div>
+        },
+      },
+      {
         Header: "ID",
         accessor: "ID",
       },
@@ -36,7 +80,16 @@ const Tasks = () => {
       },
       {
         Header: "Start Time",
-        accessor: "start_time",
+        accessor: (d) => {
+          return dayjs(d.start_time).format("YYYY/MM/DD hh:mm:ss a")
+        },
+      },
+      {
+        Header: "Duration",
+        accessor: (d) => {
+          let endTime = d.end_time ? dayjs(d.end_time) : dayjs()
+          return dayjs.duration(endTime.diff(d.start_time), "ms").humanize()
+        },
       },
       {
         id: "Actions",

@@ -28,10 +28,14 @@ function GlobalFilter({ globalFilter, setGlobalFilter }) {
   )
 }
 
-const Table = ({ columns, data }) => {
+const Table = ({
+  columns,
+  data,
+  defaultSortBy = [{ id: "ID", desc: true }],
+}) => {
   let { theme } = useContext(ThemeContext)
   const tableInstance = useTable(
-    { columns, data, initialState: { sortBy: [{ id: "ID", desc: false }] } },
+    { columns, data, initialState: { sortBy: defaultSortBy } },
     useGlobalFilter,
     useSortBy,
     usePagination
