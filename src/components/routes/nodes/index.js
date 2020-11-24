@@ -1,7 +1,5 @@
 import { useState, useEffect, useMemo } from "preact/hooks"
-import dayjs from "dayjs"
-import relativeTime from "dayjs/plugin/relativeTime"
-dayjs.extend(relativeTime)
+import dayjs from "@/day"
 
 import Table from "@/components/common/table"
 import Dropdown from "@/components/common/dropdown"
@@ -95,7 +93,7 @@ const Nodes = () => {
     <>
       <p className="text-2xl font-bold mb-2">Nodes</p>
       {error ? (
-        <div>There was a problem retrieving nodes</div>
+        <div>There was a problem retrieving nodes.</div>
       ) : nodes.length ? (
         <Table data={nodes} columns={columns} />
       ) : (

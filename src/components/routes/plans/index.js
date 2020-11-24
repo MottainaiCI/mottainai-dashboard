@@ -84,7 +84,7 @@ const Plans = () => {
     <>
       <p className="text-2xl font-bold mb-2">Plans</p>
       {error ? (
-        <div>There was a problem retrieving plans</div>
+        <div>There was a problem retrieving plans.</div>
       ) : plans.length ? (
         <Table data={plans} columns={columns} />
       ) : (

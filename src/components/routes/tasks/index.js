@@ -1,10 +1,6 @@
 import { useState, useEffect, useMemo } from "preact/hooks"
 import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
-import dayjs from "dayjs"
-import duration from "dayjs/plugin/duration"
-import relativeTime from "dayjs/plugin/relativeTime"
-dayjs.extend(duration)
-dayjs.extend(relativeTime)
+import dayjs from "@/day"
 
 import Table from "@/components/common/table"
 import Dropdown from "@/components/common/dropdown"
@@ -183,7 +179,7 @@ const Tasks = () => {
     <>
       <p className="text-2xl font-bold mb-2">Tasks</p>
       {error ? (
-        <div>There was a problem retrieving tasks</div>
+        <div>There was a problem retrieving tasks.</div>
       ) : tasks.length ? (
         <Table data={tasks} columns={columns} />
       ) : (

@@ -22,7 +22,7 @@ const ConfirmModal = ({
               </h3>
             )}
             <div class="mt-2">
-              <p class="text-sm text-gray-500">{body}</p>
+              <p class="text-sm text-gray-500 select-text">{body}</p>
             </div>
           </div>
         </div>
