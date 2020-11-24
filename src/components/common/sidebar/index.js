@@ -43,10 +43,13 @@ const Sidebar = () => {
 
   return (
     <SidebarContext.Provider value={sidebarContextValue}>
-      <div className={`${collapsed ? "w-16" : "w-60"} flex-none flex flex-col`}>
+      <div
+        className={`${
+          collapsed ? "w-16" : "w-60"
+        } flex-none flex flex-col transition-width duration-200 ease-linear`}
+      >
         <div
-          className={`flex-1 flex flex-col transition-all
-        ${themes[theme].sidebar.bg} ${themes[theme].sidebar.bg}`}
+          className={`flex-1 flex flex-col ${themes[theme].sidebar.bg} ${themes[theme].sidebar.bg}`}
         >
           <div
             className="text-right mr-2 cursor-pointer"

@@ -17,7 +17,7 @@ const SidebarPopoutSelector = ({
   const optionEl = options.map(({ label, value }) => (
     <li>
       <a
-        className={`py-2 px-4 block whitespace-no-wrap
+        className={`py-2 px-4 block whitespace-no-wrap h-10
           ${
             value === selected
               ? themes[theme].popout.selected

@@ -8,7 +8,7 @@ import SidebarContext from "@/contexts/sidebar"
 const SidebarItem = ({ icon, text, children, className = "", ...props }) => {
   let { collapsed } = useContext(SidebarContext)
   return (
-    <div className={`py-2 pl-4 flex items-center ${className}`} {...props}>
+    <div className={`py-2 pl-4 h-10 flex items-center ${className}`} {...props}>
       <div className="flex-none w-8 inline-block text-center">
         {icon && <FontAwesomeIcon icon={icon} />}
       </div>
@@ -26,7 +26,7 @@ const SidebarLink = ({ icon, text, ...props }) => {
   let { collapsed } = useContext(SidebarContext)
   return (
     <Link
-      class="py-2 pl-4 flex items-center"
+      class="py-2 pl-4 h-10 flex items-center"
       activeClassName={themes[theme].sidebar.activeBg}
       {...props}
     >
