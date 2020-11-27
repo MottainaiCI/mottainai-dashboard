@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form"
-import { useContext, useState } from "preact/hooks"
+import { useContext, useState, useEffect } from "preact/hooks"
 import { route } from "preact-router"
 
 import UserContext from "@/contexts/user"
