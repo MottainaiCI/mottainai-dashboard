@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "preact/hooks"
 
 import Table from "@/components/common/table"
-import Spinner from "@/components/spinner"
+import Loader from "@/components/common/loader"
 import ArtefactService from "@/service/artefact"
 
 const Artefacts = () => {
@@ -9,7 +9,7 @@ const Artefacts = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
-  const refreshData = (setLoadingFlag = true) => {
+  const refreshData = () => {
     ArtefactService.fetchNamespaces()
       .then((namespaces) => {
         setNamespaces(namespaces.map((name) => ({ ID: name })))
@@ -30,7 +30,7 @@ const Artefacts = () => {
   )
 
   if (loading) {
-    return <Spinner />
+    return <Loader />
   }
 
   return (

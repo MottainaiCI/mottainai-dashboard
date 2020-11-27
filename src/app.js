@@ -9,9 +9,11 @@ import Tasks from "@/components/routes/tasks"
 import Nodes from "@/components/routes/nodes"
 import Artefacts from "@/components/routes/artefacts"
 import Login from "@/components/routes/login"
+import Tokens from "@/components/routes/tokens"
+import Users from "@/components/routes/users"
 
-import Sidebar from "@/components/common/sidebar"
-import Spinner from "@/components/spinner"
+import Sidebar from "@/components/sidebar"
+import Loader from "@/components/common/loader"
 
 import ThemeContext, { THEME_OPTIONS } from "@/contexts/theme"
 import UserContext from "@/contexts/user"
@@ -78,7 +80,7 @@ const App = () => {
       <div
         className={`flex justify-center items-center min-h-screen w-full ${themes[theme].bg}`}
       >
-        <Spinner />
+        <Loader />
       </div>
     )
   }
@@ -99,6 +101,8 @@ const App = () => {
               <Nodes path="/nodes" />
               <Artefacts path="/artefacts" />
               <Login path="/login" />
+              <Tokens path="/tokens" />
+              <Users path="/users" />
             </Router>
           </div>
         </div>

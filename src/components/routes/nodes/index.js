@@ -3,7 +3,7 @@ import dayjs from "@/day"
 
 import Table from "@/components/common/table"
 import Dropdown from "@/components/common/dropdown"
-import Spinner from "@/components/spinner"
+import Loader from "@/components/common/loader"
 import NodeService from "@/service/node"
 import { showConfirmModal } from "@/components/common/modal"
 
@@ -86,7 +86,7 @@ const Nodes = () => {
   )
 
   if (loading) {
-    return <Spinner />
+    return <Loader />
   }
 
   return (

@@ -1,4 +1,4 @@
-const Spinner = () => {
+const Loader = () => {
   return (
     <div class="sk-cube-grid">
       <div class="sk-cube sk-cube1" />
@@ -14,4 +14,4 @@ const Spinner = () => {
   )
 }
 
-export default Spinner
+export default Loader

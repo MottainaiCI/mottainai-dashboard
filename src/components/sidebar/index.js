@@ -10,11 +10,16 @@ import themes from "@/themes"
 import UserService from "@/service/user"
 import logo from "@/assets/images/logo.png"
 
-import { SidebarItem, SidebarLink } from "./common"
-import { SidebarPopoutSelector } from "./popout_selector"
+import { SidebarLink } from "./common"
+import {
+  SidebarPopoutSelector,
+  SidebarPopoutMenu,
+  SidebarPopoutItem,
+  SidebarPopoutLink,
+} from "./popout"
 
-const SignOut = () => {
-  let { setUser } = useContext(UserContext)
+const ProfileItem = () => {
+  let { user, setUser } = useContext(UserContext)
   const signOut = () => {
     UserService.logout().then(() => {
       setUser(null)
@@ -23,12 +28,11 @@ const SignOut = () => {
   }
 
   return (
-    <SidebarItem
-      icon="sign-out-alt"
-      className="cursor-pointer"
-      text="Log out"
-      onClick={signOut}
-    />
+    <SidebarPopoutMenu icon="user" anchor="bottom" label={user.name}>
+      <SidebarPopoutLink href="/users" icon="users" text="Users" />
+      <SidebarPopoutLink href="/tokens" icon="key" text="API Tokens" />
+      <SidebarPopoutItem onClick={signOut} icon="sign-out-alt" text="Log out" />
+    </SidebarPopoutMenu>
   )
 }
 
@@ -94,11 +98,12 @@ const Sidebar = () => {
 
             <div className="flex flex-col">
               {user ? (
-                <SignOut />
+                <ProfileItem />
               ) : (
                 <SidebarLink href="/login" icon="user" text="Log In" />
               )}
               <SidebarPopoutSelector
+                icon="palette"
                 anchor="bottom"
                 label="Theme"
                 options={THEME_OPTIONS}

@@ -28,6 +28,11 @@ const UserService = {
   isLoggedIn() {
     return !!localStorage.getItem("mottainai:auth")
   },
+
+  // user management
+  getAllusers() {
+    return axios.get("/user/list").then(({ data }) => data)
+  },
 }
 
 export default UserService

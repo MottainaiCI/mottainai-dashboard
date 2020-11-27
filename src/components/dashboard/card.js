@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "preact/hooks"
 import ThemeContext from "@/contexts/theme"
 import themes from "@/themes"
-import Spinner from "@/components/spinner"
+import Loader from "@/components/common/loader"
 
 const DashboardCard = ({ title, children, loading, error }) => {
   let { theme } = useContext(ThemeContext)
@@ -26,7 +26,7 @@ const DashboardCard = ({ title, children, loading, error }) => {
         {error ? (
           <div className="text-center">There was an error loading data</div>
         ) : isLoading ? (
-          <Spinner />
+          <Loader />
         ) : (
           children
         )}

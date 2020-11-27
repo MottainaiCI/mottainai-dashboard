@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "preact/hooks"
 
 import Table from "@/components/common/table"
 import Dropdown from "@/components/common/dropdown"
-import Spinner from "@/components/spinner"
+import Loader from "@/components/common/loader"
 import PlanService from "@/service/plan"
 import { showConfirmModal } from "@/components/common/modal"
 
@@ -77,7 +77,7 @@ const Plans = () => {
   )
 
   if (loading) {
-    return <Spinner />
+    return <Loader />
   }
 
   return (

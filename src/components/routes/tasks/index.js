@@ -4,7 +4,7 @@ import dayjs from "@/day"
 
 import Table from "@/components/common/table"
 import Dropdown from "@/components/common/dropdown"
-import Spinner from "@/components/spinner"
+import Loader from "@/components/common/loader"
 import TaskService from "@/service/task"
 import { showConfirmModal } from "@/components/common/modal"
 
@@ -172,7 +172,7 @@ const Tasks = () => {
   )
 
   if (loading) {
-    return <Spinner />
+    return <Loader />
   }
 
   return (
