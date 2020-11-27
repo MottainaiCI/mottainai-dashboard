@@ -4,6 +4,7 @@ import { route } from "preact-router"
 
 import UserContext from "@/contexts/user"
 import ThemeContext from "@/contexts/theme"
+import TitleContext from "@/contexts/title"
 import UserService from "@/service/user"
 import themes from "@/themes"
 
@@ -11,6 +12,10 @@ const Login = () => {
   let [error, setError] = useState(null)
   let { setUser } = useContext(UserContext)
   let { theme } = useContext(ThemeContext)
+  let { setTitle } = useContext(TitleContext)
+  useEffect(() => {
+    setTitle("Login")
+  }, [])
 
   const { register, handleSubmit } = useForm()
 

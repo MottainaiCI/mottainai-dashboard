@@ -1,5 +1,6 @@
-import { useState, useEffect, useMemo } from "preact/hooks"
+import { useState, useEffect, useMemo, useContext } from "preact/hooks"
 
+import TitleContext from "@/contexts/title"
 import Table from "@/components/common/table"
 import Loader from "@/components/common/loader"
 import TokenService from "@/service/token"
@@ -8,6 +9,10 @@ const Tokens = () => {
   const [tokens, setTokens] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  let { setTitle } = useContext(TitleContext)
+  useEffect(() => {
+    setTitle("API Tokens")
+  }, [])
 
   const refreshData = (setLoadingFlag = true) => {
     TokenService.fetchTokens()

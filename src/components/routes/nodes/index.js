@@ -1,6 +1,7 @@
-import { useState, useEffect, useMemo } from "preact/hooks"
+import { useState, useEffect, useMemo, useContext } from "preact/hooks"
 import dayjs from "@/day"
 
+import TitleContext from "@/contexts/title"
 import Table from "@/components/common/table"
 import Dropdown from "@/components/common/dropdown"
 import Loader from "@/components/common/loader"
@@ -11,6 +12,10 @@ const Nodes = () => {
   const [nodes, setNodes] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  let { setTitle } = useContext(TitleContext)
+  useEffect(() => {
+    setTitle("Nodes")
+  }, [])
 
   const refreshData = (setLoadingFlag = true) => {
     if (setLoadingFlag) {

@@ -1,5 +1,6 @@
-import { useState, useEffect, useMemo } from "preact/hooks"
+import { useState, useEffect, useMemo, useContext } from "preact/hooks"
 
+import TitleContext from "@/contexts/title"
 import Table from "@/components/common/table"
 import Loader from "@/components/common/loader"
 import ArtefactService from "@/service/artefact"
@@ -8,6 +9,10 @@ const Artefacts = () => {
   const [namespaces, setNamespaces] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  let { setTitle } = useContext(TitleContext)
+  useEffect(() => {
+    setTitle("Artefacts")
+  }, [])
 
   const refreshData = () => {
     ArtefactService.fetchNamespaces()

@@ -1,6 +1,7 @@
 import { Router, route, getCurrentUrl } from "preact-router"
 import { useLocalStorage } from "@rehooks/local-storage"
 import { useState } from "preact/hooks"
+import { Helmet } from "react-helmet"
 
 import Dashboard from "@/components/routes/dashboard"
 import Plans from "@/components/routes/plans"
@@ -17,6 +18,8 @@ import Loader from "@/components/common/loader"
 
 import ThemeContext, { THEME_OPTIONS } from "@/contexts/theme"
 import UserContext from "@/contexts/user"
+import TitleContext from "@/contexts/title"
+
 import themes from "@/themes"
 import axios from "@/axios"
 import UserService from "./service/user"
@@ -33,6 +36,8 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [loadingUser, setLoadingUser] = useState(true)
   const userVal = { user, setUser }
+  const [title, setTitle] = useState("")
+  const titleVal = { title, setTitle }
 
   if (!THEME_OPTIONS.some((t) => t.value === theme)) {
     setTheme(THEME_OPTIONS[0].value)
@@ -88,24 +93,29 @@ const App = () => {
   return (
     <UserContext.Provider value={userVal}>
       <ThemeContext.Provider value={themeValue}>
-        <div
-          className={`flex h-screen ${themes[theme].bg} ${themes[theme].textColor}`}
-        >
-          <Sidebar />
-          <div className="px-8 py-10 flex-1 overflow-auto">
-            <Router onChange={(e) => handleRoute(e.url)}>
-              <Dashboard path="/" />
-              <Tasks path="/tasks" />
-              <Plans path="/plans" />
-              <Pipelines path="/pipelines" />
-              <Nodes path="/nodes" />
-              <Artefacts path="/artefacts" />
-              <Login path="/login" />
-              <Tokens path="/tokens" />
-              <Users path="/users" />
-            </Router>
+        <TitleContext.Provider value={titleVal}>
+          <Helmet>
+            <title>{`${title && `${title} - `}MottainaiCI`}</title>
+          </Helmet>
+          <div
+            className={`flex h-screen ${themes[theme].bg} ${themes[theme].textColor}`}
+          >
+            <Sidebar />
+            <div className="px-8 py-10 flex-1 overflow-auto">
+              <Router onChange={(e) => handleRoute(e.url)}>
+                <Dashboard path="/" />
+                <Tasks path="/tasks" />
+                <Plans path="/plans" />
+                <Pipelines path="/pipelines" />
+                <Nodes path="/nodes" />
+                <Artefacts path="/artefacts" />
+                <Login path="/login" />
+                <Tokens path="/tokens" />
+                <Users path="/users" />
+              </Router>
+            </div>
           </div>
-        </div>
+        </TitleContext.Provider>
       </ThemeContext.Provider>
     </UserContext.Provider>
   )
