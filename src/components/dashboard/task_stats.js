@@ -30,9 +30,12 @@ const TaskStatCard = () => {
     <DashboardCard title="Task Stats" loading={loading} error={error}>
       <div className="flex justify-center">
         <Stat label="Total" num={stats.total} />
+        <Stat label="Succeeded" num={stats.success} />
+        <Stat label="Errored" num={stats.error} />
         <Stat label="Running" num={stats.running} />
         <Stat label="Waiting" num={stats.waiting} />
-        <Stat label="Succeeded" num={stats.error} />
+        <Stat label="Stopped" num={stats.stopped} />
+        <Stat label="Stopping" num={stats.stopping} />
         <Stat label="Failed" num={stats.failed} />
       </div>
     </DashboardCard>
