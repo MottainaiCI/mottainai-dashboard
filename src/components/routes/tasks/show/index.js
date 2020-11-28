@@ -35,7 +35,7 @@ const ShowTask = ({ taskId }) => {
     setLoading(true)
     setError(false)
     setIsRefreshing(true)
-  }, [taskId])
+  }, [setTitle, taskId])
 
   useEffect(() => {
     if (!isRefreshing) {
@@ -92,7 +92,7 @@ const ShowTask = ({ taskId }) => {
         accessor: "ID",
       },
     ],
-    [artefacts]
+    []
   )
 
   if (loading) {
@@ -118,9 +118,7 @@ const ShowTask = ({ taskId }) => {
                 })
               },
               delete(promise) {
-                promise.then((data) => {
-                  route("/tasks")
-                })
+                promise.then(() => route("/tasks"))
               },
             }}
           />

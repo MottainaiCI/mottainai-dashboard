@@ -12,9 +12,9 @@ const Users = () => {
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("Users")
-  }, [])
+  }, [setTitle])
 
-  const refreshData = (setLoadingFlag = true) => {
+  const refreshData = () => {
     UserService.getAllusers()
       .then(setUsers, setError)
       .finally(() => setLoading(false))
@@ -43,13 +43,12 @@ const Users = () => {
             return "Admin"
           } else if (d.is_manager) {
             return "Manager"
-          } else {
-            return "User"
           }
+          return "User"
         },
       },
     ],
-    [users]
+    []
   )
 
   if (loading) {

@@ -15,7 +15,7 @@ const Login = () => {
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("Login")
-  }, [])
+  }, [setTitle])
 
   const { register, handleSubmit } = useForm()
 

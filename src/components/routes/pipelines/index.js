@@ -15,7 +15,7 @@ const Pipelines = () => {
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("Pipelines")
-  }, [])
+  }, [setTitle])
 
   const refreshData = (setLoadingFlag = true) => {
     if (setLoadingFlag) {

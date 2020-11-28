@@ -15,7 +15,7 @@ const Nodes = () => {
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("Nodes")
-  }, [])
+  }, [setTitle])
 
   const refreshData = (setLoadingFlag = true) => {
     if (setLoadingFlag) {
@@ -66,7 +66,7 @@ const Nodes = () => {
                 }).then(() => {
                   NodeService.delete(row.original.ID).then(() => {
                     setNodes(
-                      tasks.filter((item) => item.ID !== row.original.ID)
+                      nodes.filter((item) => item.ID !== row.original.ID)
                     )
                   })
                 })

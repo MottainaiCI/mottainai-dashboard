@@ -7,7 +7,7 @@ export const nl2br = (text) => {
   }
 
   let lines = text.split(newline)
-  return lines.map(function (line, i) {
+  return lines.map((line, i) => {
     return (
       <span key={i}>
         {line}

@@ -12,7 +12,7 @@ const Artefacts = () => {
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("Artefacts")
-  }, [])
+  }, [setTitle])
 
   const refreshData = () => {
     ArtefactService.fetchNamespaces()
@@ -31,7 +31,7 @@ const Artefacts = () => {
         accessor: "ID",
       },
     ],
-    [namespaces]
+    []
   )
 
   if (loading) {

@@ -7,7 +7,7 @@ const Dashboard = () => {
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("Dashboard")
-  }, [])
+  }, [setTitle])
   return (
     <div className="flex flex-col py-2">
       <TaskStats />

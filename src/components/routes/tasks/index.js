@@ -16,7 +16,7 @@ const Tasks = () => {
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("Tasks")
-  }, [])
+  }, [setTitle])
 
   const refreshTasks = (setLoadingFlag = true) => {
     if (setLoadingFlag) {
@@ -119,6 +119,7 @@ const Tasks = () => {
                 },
                 start(promise) {
                   promise.then(() => {
+                    let id = row.original.ID
                     TaskService.fetch(id).then((task) => {
                       setTasks(
                         tasks.map((item) => {

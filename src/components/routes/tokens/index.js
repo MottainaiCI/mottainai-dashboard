@@ -12,9 +12,9 @@ const Tokens = () => {
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("API Tokens")
-  }, [])
+  }, [setTitle])
 
-  const refreshData = (setLoadingFlag = true) => {
+  const refreshData = () => {
     TokenService.fetchTokens()
       .then(setTokens, setError)
       .finally(() => setLoading(false))
@@ -33,7 +33,7 @@ const Tokens = () => {
         accessor: "key",
       },
     ],
-    [tokens]
+    []
   )
 
   if (loading) {

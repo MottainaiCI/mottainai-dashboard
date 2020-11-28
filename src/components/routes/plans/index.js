@@ -14,7 +14,7 @@ const Plans = () => {
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("Plans")
-  }, [])
+  }, [setTitle])
 
   const refreshData = (setLoadingFlag = true) => {
     if (setLoadingFlag) {
