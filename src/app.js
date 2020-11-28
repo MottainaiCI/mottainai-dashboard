@@ -7,6 +7,7 @@ import Dashboard from "@/components/routes/dashboard"
 import Plans from "@/components/routes/plans"
 import Pipelines from "@/components/routes/pipelines"
 import Tasks from "@/components/routes/tasks"
+import ShowTask from "@/components/routes/tasks/show"
 import Nodes from "@/components/routes/nodes"
 import Artefacts from "@/components/routes/artefacts"
 import Login from "@/components/routes/login"
@@ -105,6 +106,7 @@ const App = () => {
               <Router onChange={(e) => handleRoute(e.url)}>
                 <Dashboard path="/" />
                 <Tasks path="/tasks" />
+                <ShowTask path={`/tasks/:taskId`} />
                 <Plans path="/plans" />
                 <Pipelines path="/pipelines" />
                 <Nodes path="/nodes" />

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useContext } from "preact/hooks"
-import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
+import { Link } from "preact-router/match"
 import dayjs from "@/day"
 
 import TitleContext from "@/contexts/title"
@@ -7,39 +7,7 @@ import Table from "@/components/common/table"
 import Dropdown from "@/components/common/dropdown"
 import Loader from "@/components/common/loader"
 import TaskService from "@/service/task"
-import { showConfirmModal } from "@/components/common/modal"
-
-const getIcon = (row) => {
-  switch (row.original.status) {
-    case "done":
-      switch (row.original.result) {
-        case "error":
-        case "failed":
-          return <FontAwesomeIcon icon="exclamation" className="text-red-500" />
-        case "success":
-          return <FontAwesomeIcon icon="check" className="text-green-500" />
-        default:
-          return <FontAwesomeIcon icon="question" />
-      }
-    case "stop":
-      return (
-        <FontAwesomeIcon
-          icon="stop"
-          className="text-red-300 faa-flash animated"
-        />
-      )
-    case "stopped":
-      return <FontAwesomeIcon icon="stop" className="text-red-300" />
-    case "waiting":
-      return <FontAwesomeIcon icon="clock" className="text-yellow-400" />
-    case "running":
-      return (
-        <FontAwesomeIcon icon="spinner" className="text-blue-400 fa-pulse" />
-      )
-    default:
-      return <FontAwesomeIcon icon="question" />
-  }
-}
+import { getTaskIcon, taskOptions } from "@/components/common/tasks"
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([])
@@ -74,12 +42,23 @@ const Tasks = () => {
       {
         id: "StatusIcon",
         Cell: ({ row }) => {
-          return <div className="text-center">{getIcon(row)}</div>
+          return (
+            <div className="text-center">
+              {getTaskIcon(row.original.status, row.original.result)}
+            </div>
+          )
         },
       },
       {
         Header: "ID",
         accessor: "ID",
+        Cell: ({ row }) => {
+          return (
+            <Link href={`/tasks/${row.original.ID}`} className="text-blue-400">
+              {row.original.ID}
+            </Link>
+          )
+        },
       },
       {
         Header: "Name",
@@ -109,65 +88,11 @@ const Tasks = () => {
       {
         id: "Actions",
         Cell: ({ row }) => {
-          const actionOptions = [
-            {
-              label: "Start",
-              onClick(row) {
-                TaskService.start(row.original.ID).then(() => {
-                  TaskService.fetch(row.original.ID).then((task) => {
-                    setTasks(
-                      tasks.map((item) => {
-                        return item.ID === row.original.ID ? task : item
-                      })
-                    )
-                  })
-                })
-              },
-            },
-            {
-              label: "Stop",
-              onClick(row) {
-                TaskService.stop(row.original.ID).then(() => {
-                  TaskService.fetch(row.original.ID).then((task) => {
-                    setTasks(
-                      tasks.map((item) => {
-                        return item.ID === row.original.ID ? task : item
-                      })
-                    )
-                  })
-                })
-              },
-            },
-            {
-              label: "Clone",
-              onClick(row) {
-                TaskService.clone(row.original.ID).then(refreshTasks)
-              },
-            },
-            {
-              label: "Delete",
-              onClick(row) {
-                const onConfirm = () => {
-                  TaskService.delete(row.original.ID).then(() => {
-                    setTasks(
-                      tasks.filter((item) => item.ID !== row.original.ID)
-                    )
-                  })
-                }
-
-                showConfirmModal({
-                  body: `Are you sure you want to delete Task ${row.original.ID}?`,
-                  onConfirm,
-                })
-              },
-            },
-          ]
-
           return (
             <Dropdown
               label="Actions"
-              options={actionOptions}
-              actionArgs={[row]}
+              options={taskOptions}
+              actionArgs={[row.original.ID]}
             />
           )
         },

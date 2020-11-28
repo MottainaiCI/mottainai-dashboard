@@ -21,5 +21,6 @@ library.add(
   fas.faTasks,
   fas.faUser,
   fas.faUsers,
-  fas.faKey
+  fas.faKey,
+  fas.faCog
 )
