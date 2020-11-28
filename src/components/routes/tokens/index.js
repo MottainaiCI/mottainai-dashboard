@@ -1,14 +1,20 @@
 import { useState, useEffect, useMemo, useContext } from "preact/hooks"
 
 import TitleContext from "@/contexts/title"
+import ThemeContext from "@/contexts/theme"
 import Table from "@/components/common/table"
 import Loader from "@/components/common/loader"
 import TokenService from "@/service/token"
+import Dropdown from "@/components/common/dropdown"
+import { showConfirmModal } from "@/components/common/modal"
+import themes from "@/themes"
+import Tasks from "../tasks"
 
 const Tokens = () => {
   const [tokens, setTokens] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  let { theme } = useContext(ThemeContext)
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("API Tokens")
@@ -32,8 +38,37 @@ const Tokens = () => {
         Header: "Key",
         accessor: "key",
       },
+      {
+        id: "Actions",
+        Cell: ({ row }) => {
+          const actionOptions = [
+            {
+              label: "Delete",
+              onClick(row) {
+                showConfirmModal({
+                  body: `Are you sure you want to delete Token ${row.original.id}?`,
+                }).then(() => {
+                  TokenService.delete(row.original.id).then(() => {
+                    setTokens(
+                      tokens.filter((item) => item.id !== row.original.id)
+                    )
+                  })
+                })
+              },
+            },
+          ]
+
+          return (
+            <Dropdown
+              label="Actions"
+              options={actionOptions}
+              actionArgs={[row]}
+            />
+          )
+        },
+      },
     ],
-    []
+    [tokens]
   )
 
   if (loading) {
@@ -43,10 +78,24 @@ const Tokens = () => {
   return (
     <>
       <p className="text-2xl font-bold mb-2">API Tokens</p>
+      <div className="mb-2">
+        <div
+          className={`px-2 py-1 mr-3 mt-1 w-max ${themes[theme].button}`}
+          onClick={() => {
+            TokenService.create().then(refreshData)
+          }}
+        >
+          Create
+        </div>
+      </div>
       {error ? (
         <div>There was a problem retrieving tokens.</div>
       ) : tokens.length ? (
-        <Table data={tokens} columns={columns} />
+        <Table
+          data={tokens}
+          columns={columns}
+          defaultSortBy={[{ id: "id", desc: true }]}
+        />
       ) : (
         <div>No tokens were found.</div>
       )}

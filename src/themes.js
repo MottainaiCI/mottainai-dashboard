@@ -30,7 +30,8 @@ export default {
       scrollOnBg: "bg-beige-200",
       scrollOffBg: "bg-beige-100",
     },
-    select: "bg-beige-100 text-cultured-black",
+    button: "bg-beige-100 text-cultured-black",
+    select: "bg-beige-100 text-cultured-black focus:outline-none",
   },
   "mott-dark": {
     bg: "bg-beige-700",
@@ -63,6 +64,7 @@ export default {
       scrollOnBg: "bg-beige-700",
       scrollOffBg: "bg-beige-500",
     },
-    select: "bg-beige-300 text-cultured-black",
+    button: "bg-beige-300 text-cultured-black",
+    select: "bg-beige-300 text-cultured-black focus:outline-none",
   },
 }
