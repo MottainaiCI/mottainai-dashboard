@@ -13,6 +13,7 @@ import Dropdown from "@/components/common/dropdown"
 import TaskService from "@/service/task"
 import themes from "@/themes"
 import { nl2br } from "@/util"
+import Button from "@/components/common/button"
 
 const ShowTask = ({ taskId }) => {
   const logView = useRef()
@@ -101,10 +102,11 @@ const ShowTask = ({ taskId }) => {
 
   return (
     <>
-      <div className="flex justify-between items-center">
-        <div className="text-2xl font-bold">
-          Task {taskId} {task && getTaskIcon(task.status, task.result)}
-        </div>
+      <div className="flex justify-between items-center mb-2">
+        <Link href="/tasks" className="text-sm">
+          <FontAwesomeIcon icon="caret-left" className="mr-1" />
+          back to all tasks
+        </Link>
         <div>
           <Dropdown
             label={<FontAwesomeIcon icon="cog" />}
@@ -124,11 +126,11 @@ const ShowTask = ({ taskId }) => {
           />
         </div>
       </div>
-      <div className="mb-2">
-        <Link href="/tasks" className="text-sm">
-          <FontAwesomeIcon icon="caret-left" className="mr-1" />
-          back to all tasks
-        </Link>
+      <div className="font-bold mb-2">
+        <div className="text-2xl font-bold">
+          Task {taskId} {task && getTaskIcon(task.status, task.result)}
+        </div>
+        <div className="text-base">{task.name}</div>
       </div>
 
       {error && (
@@ -141,16 +143,17 @@ const ShowTask = ({ taskId }) => {
       <div className="text-lg font-bold my-2">Log Tail</div>
       <div className={`h-96 bg-white relative ${themes[theme].logs.container}`}>
         {isRefreshing && (
-          <div
-            className={`absolute cursor-pointer top-0 right-0 rounded
-            px-2 py-1 mr-3 mt-1 z-10
-            ${themes[theme].logs[enableScroll ? "scrollOnBg" : "scrollOffBg"]}`}
+          <Button
+            className={`absolute cursor-pointer top-0 right-0 rounded mr-3 mt-1 z-10
+              ${
+                themes[theme].logs[enableScroll ? "scrollOnBg" : "scrollOffBg"]
+              }`}
             onClick={() => {
               setEnableScroll(!enableScroll)
             }}
           >
             Scroll {enableScroll ? "On" : "Off"}
-          </div>
+          </Button>
         )}
         <Scrollbars
           renderTrackVertical={({ style }) => (

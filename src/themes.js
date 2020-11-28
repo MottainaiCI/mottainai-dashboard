@@ -30,8 +30,8 @@ export default {
       scrollOnBg: "bg-beige-200",
       scrollOffBg: "bg-beige-100",
     },
-    button: "bg-beige-100 text-cultured-black",
-    select: "bg-beige-100 text-cultured-black focus:outline-none",
+    button: "bg-beige-200 hover:bg-beige-300 disabled:bg-beige-200",
+    select: "bg-beige-100 focus:outline-none",
   },
   "mott-dark": {
     bg: "bg-beige-700",
@@ -61,10 +61,10 @@ export default {
       bg: "bg-black",
       scrollTrack: "bg-black",
       scrollThumb: "bg-white cursor-pointer",
-      scrollOnBg: "bg-beige-700",
+      scrollOnBg: "bg-beige-700 text-cultured-white",
       scrollOffBg: "bg-beige-500",
     },
-    button: "bg-beige-300 text-cultured-black",
+    button: "bg-beige-600 hover:bg-beige-500 disabled:bg-beige-300",
     select: "bg-beige-300 text-cultured-black focus:outline-none",
   },
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useContext } from "preact/hooks"
 import { Link } from "preact-router/match"
+import { route } from "preact-router"
 import dayjs from "@/day"
 
 import TitleContext from "@/contexts/title"
@@ -8,6 +9,7 @@ import Dropdown from "@/components/common/dropdown"
 import Loader from "@/components/common/loader"
 import TaskService from "@/service/task"
 import { getTaskIcon, taskOptions } from "@/components/common/tasks"
+import Button from "@/components/common/button"
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([])
@@ -145,6 +147,9 @@ const Tasks = () => {
   return (
     <>
       <p className="text-2xl font-bold mb-2">Tasks</p>
+      <div className="mb-2">
+        <Button onClick={() => route("/tasks/new")}>New Task</Button>
+      </div>
       {error ? (
         <div>There was a problem retrieving tasks.</div>
       ) : tasks.length ? (

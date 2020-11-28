@@ -2,12 +2,15 @@ import { Router, route, getCurrentUrl } from "preact-router"
 import { useLocalStorage } from "@rehooks/local-storage"
 import { useState } from "preact/hooks"
 import { Helmet } from "react-helmet"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 import Dashboard from "@/components/routes/dashboard"
 import Plans from "@/components/routes/plans"
 import Pipelines from "@/components/routes/pipelines"
 import Tasks from "@/components/routes/tasks"
 import ShowTask from "@/components/routes/tasks/show"
+import NewTask from "@/components/routes/tasks/new"
 import Nodes from "@/components/routes/nodes"
 import Artefacts from "@/components/routes/artefacts"
 import Login from "@/components/routes/login"
@@ -95,6 +98,7 @@ const App = () => {
     <UserContext.Provider value={userVal}>
       <ThemeContext.Provider value={themeValue}>
         <TitleContext.Provider value={titleVal}>
+          <ToastContainer />
           <Helmet>
             <title>{`${title && `${title} - `}MottainaiCI`}</title>
           </Helmet>
@@ -106,6 +110,7 @@ const App = () => {
               <Router onChange={(e) => handleRoute(e.url)}>
                 <Dashboard path="/" />
                 <Tasks path="/tasks" />
+                <NewTask path={`/tasks/new`} />
                 <ShowTask path={`/tasks/:taskId`} />
                 <Plans path="/plans" />
                 <Pipelines path="/pipelines" />

@@ -30,5 +30,10 @@ module.exports = {
   },
   variants: {
     display: ["group-hover", "group-focus"],
+    extend: {
+      opacity: ["disabled"],
+      backgroundColor: ["disabled"],
+      cursor: ["disabled"],
+    },
   },
 }

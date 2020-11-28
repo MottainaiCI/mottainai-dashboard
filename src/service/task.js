@@ -19,6 +19,9 @@ const TaskService = {
   clone(id) {
     return axios.get(`/tasks/clone/${id}`).then(({ data }) => data)
   },
+  create(options) {
+    return axios.post("/tasks", options).then(({ data }) => data)
+  },
   tailOutput(id) {
     return axios.get(`/tasks/tail_output/${id}/3000`).then(({ data }) => data)
   },
