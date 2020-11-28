@@ -14,11 +14,7 @@ const DashboardCard = ({ title, children, loading, error }) => {
   }, [loading])
 
   return (
-    <div
-      className={`w-full mb-4
-        ${themes[theme].cardBg}
-        ${themes[theme].cardBorder}`}
-    >
+    <div className={`w-full mb-4 ${themes[theme].cardContainer}`}>
       <div className={`p-2 text-lg ${themes[theme].dashboard.cardTitleBorder}`}>
         {title}
       </div>

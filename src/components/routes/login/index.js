@@ -35,7 +35,7 @@ const Login = () => {
 
   return (
     <div
-      className={`rounded shadow rounded mx-auto w-min p-8 ${themes[theme].cardBg}  ${themes[theme].cardBorder}`}
+      className={`rounded shadow rounded mx-auto w-min p-8 ${themes[theme].cardContainer}`}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">

@@ -61,17 +61,14 @@ const Nodes = () => {
             {
               label: "Delete",
               onClick(row) {
-                const onConfirm = () => {
+                showConfirmModal({
+                  body: `Are you sure you want to delete Node ${row.original.ID}?`,
+                }).then(() => {
                   NodeService.delete(row.original.ID).then(() => {
                     setNodes(
                       tasks.filter((item) => item.ID !== row.original.ID)
                     )
                   })
-                }
-
-                showConfirmModal({
-                  body: `Are you sure you want to delete Node ${row.original.ID}?`,
-                  onConfirm,
                 })
               },
             },

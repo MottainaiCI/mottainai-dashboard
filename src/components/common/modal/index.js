@@ -24,21 +24,19 @@ function createElementReconfirm({ comp: ModalComp, ...props }) {
   render(<ModalComp {...props} />, divTarget)
 }
 
-export const showConfirmModal = ({
-  onCancel = () => {},
-  onConfirm = () => {},
-  ...props
-}) => {
-  createElementReconfirm({
-    comp: ConfirmModal,
-    onCancel() {
-      removeElementReconfirm()
-      onCancel()
-    },
-    onConfirm() {
-      removeElementReconfirm()
-      onConfirm()
-    },
-    ...props,
+export const showConfirmModal = ({ ...props }) => {
+  return new Promise((res, rej) => {
+    createElementReconfirm({
+      comp: ConfirmModal,
+      onCancel() {
+        removeElementReconfirm()
+        rej()
+      },
+      onConfirm() {
+        removeElementReconfirm()
+        res()
+      },
+      ...props,
+    })
   })
 }

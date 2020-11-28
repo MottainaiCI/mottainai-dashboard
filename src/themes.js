@@ -3,8 +3,7 @@ export default {
     bg: "bg-cultured-white",
     textColor: "text-cultured-black",
     spinnerFrontColor: "#000",
-    cardBg: "bg-white",
-    cardBorder: "border border-gray-200",
+    cardContainer: "bg-white border border-gray-200",
     dashboard: {
       cardTitleBorder: "border-b border-gray-200",
     },
@@ -23,14 +22,21 @@ export default {
       root: "table-mott-light",
       thead: "bg-beige-300",
     },
+    logs: {
+      container: "border",
+      bg: "bg-white",
+      scrollTrack: "bg-white",
+      scrollThumb: "bg-beige-200",
+      scrollOnBg: "bg-beige-200",
+      scrollOffBg: "bg-beige-100",
+    },
     select: "bg-beige-100 text-cultured-black",
   },
   "mott-dark": {
     bg: "bg-beige-700",
     textColor: "text-cultured-white",
     spinnerFrontColor: "#fff",
-    cardBg: "bg-beige-750",
-    cardBorder: "",
+    cardContainer: "bg-beige-750",
     dashboard: {
       cardTitleBorder: "border-b border-beige-751",
     },
@@ -48,6 +54,14 @@ export default {
     table: {
       root: "table-mott-dark",
       thead: "bg-beige-750",
+    },
+    logs: {
+      container: "",
+      bg: "bg-black",
+      scrollTrack: "bg-black",
+      scrollThumb: "bg-white cursor-pointer",
+      scrollOnBg: "bg-beige-700",
+      scrollOffBg: "bg-beige-500",
     },
     select: "bg-beige-300 text-cultured-black",
   },

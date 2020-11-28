@@ -37,51 +37,38 @@ export const getTaskIcon = (status, result) => {
 
 export const taskOptions = [
   {
+    id: "start",
     label: "Start",
     onClick(id) {
-      TaskService.start(id).then(() => {
-        TaskService.fetch(id).then((task) => {
-          setTasks(
-            tasks.map((item) => {
-              return item.ID === id ? task : item
-            })
-          )
-        })
-      })
+      return TaskService.start(id)
     },
   },
   {
+    id: "stop",
     label: "Stop",
     onClick(id) {
-      TaskService.stop(id).then(() => {
-        TaskService.fetch(id).then((task) => {
-          setTasks(
-            tasks.map((item) => {
-              return item.ID === id ? task : item
-            })
-          )
-        })
+      return showConfirmModal({
+        body: `Are you sure you want to stop Task ${id}?`,
+      }).then(() => {
+        return TaskService.stop(id)
       })
     },
   },
   {
+    id: "clone",
     label: "Clone",
     onClick(id) {
-      TaskService.clone(id).then(refreshTasks)
+      return TaskService.clone(id)
     },
   },
   {
+    id: "delete",
     label: "Delete",
     onClick(id) {
-      const onConfirm = () => {
-        TaskService.delete(id).then(() => {
-          setTasks(tasks.filter((item) => item.ID !== id))
-        })
-      }
-
-      showConfirmModal({
+      return showConfirmModal({
         body: `Are you sure you want to delete Task ${id}?`,
-        onConfirm,
+      }).then(() => {
+        return TaskService.delete(id)
       })
     },
   },

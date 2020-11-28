@@ -28,7 +28,7 @@ export const SidebarPopoutMenu = ({
         </div>
       )}
       <div
-        className={`absolute ${anchor}-0 left-full w-max hidden group-hover:block
+        className={`absolute ${anchor}-0 z-10 left-full w-max hidden group-hover:block
           ${themes[theme].sidebar.bg}`}
       >
         {children}

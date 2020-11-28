@@ -53,14 +53,6 @@ const Pipelines = () => {
             {
               label: "Delete",
               onClick(row) {
-                const onConfirm = () => {
-                  PipelineService.delete(row.original.ID).then(() => {
-                    setPipelines(
-                      pipelines.filter((item) => item.ID !== row.original.ID)
-                    )
-                  })
-                }
-
                 showConfirmModal({
                   body: (
                     <p>
@@ -72,7 +64,12 @@ const Pipelines = () => {
                       ({row.original.ID})?
                     </p>
                   ),
-                  onConfirm,
+                }).then(() => {
+                  PipelineService.delete(row.original.ID).then(() => {
+                    setPipelines(
+                      pipelines.filter((item) => item.ID !== row.original.ID)
+                    )
+                  })
                 })
               },
             },

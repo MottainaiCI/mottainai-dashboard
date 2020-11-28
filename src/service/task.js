@@ -17,7 +17,13 @@ const TaskService = {
     return axios.get(`/tasks/stop/${id}`)
   },
   clone(id) {
-    return axios.get(`/tasks/clone/${id}`)
+    return axios.get(`/tasks/clone/${id}`).then(({ data }) => data)
+  },
+  tailOutput(id) {
+    return axios.get(`/tasks/tail_output/${id}/3000`).then(({ data }) => data)
+  },
+  artefacts(id) {
+    return axios.get(`/tasks/${id}/artefacts`).then(({ data }) => data)
   },
 }
 

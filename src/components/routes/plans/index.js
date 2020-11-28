@@ -52,17 +52,14 @@ const Plans = () => {
             {
               label: "Delete",
               onClick(row) {
-                const onConfirm = () => {
+                showConfirmModal({
+                  body: `Are you sure you want to delete Plan ${row.original.ID}?`,
+                }).then(() => {
                   PlanService.delete(row.original.ID).then(() => {
                     setPlans(
                       plans.filter((item) => item.ID !== row.original.ID)
                     )
                   })
-                }
-
-                showConfirmModal({
-                  body: `Are you sure you want to delete Plan ${row.original.ID}?`,
-                  onConfirm,
                 })
               },
             },

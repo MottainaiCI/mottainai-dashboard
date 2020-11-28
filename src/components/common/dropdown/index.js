@@ -3,13 +3,24 @@ import ThemeContext from "@/contexts/theme"
 import themes from "@/themes"
 import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 
-const Dropdown = ({ label, anchor = "left", options, actionArgs = [] }) => {
+const Dropdown = ({
+  label,
+  anchor = "left",
+  options,
+  actionArgs = [],
+  dropdownOnClick = {},
+}) => {
   let { theme } = useContext(ThemeContext)
-  const optionEl = options.map(({ label, onClick }) => (
+  const optionEl = options.map(({ id, label, onClick }) => (
     <div
       className={`py-2 px-4 block whitespace-no-wrap
           ${themes[theme].dropdown.element}`}
-      onClick={() => onClick(...actionArgs)}
+      onClick={() => {
+        const clickResult = onClick(...actionArgs)
+        if (typeof dropdownOnClick[id] === "function") {
+          dropdownOnClick[id](clickResult)
+        }
+      }}
     >
       {label}
     </div>
@@ -23,7 +34,7 @@ const Dropdown = ({ label, anchor = "left", options, actionArgs = [] }) => {
         )}
       </div>
       <div
-        className={`absolute w-max hidden group-hover:block z-10 ${anchor}-0`}
+        className={`absolute w-max hidden group-hover:block z-20 ${anchor}-0`}
       >
         {optionEl}
       </div>

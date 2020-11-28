@@ -93,6 +93,42 @@ const Tasks = () => {
               label="Actions"
               options={taskOptions}
               actionArgs={[row.original.ID]}
+              dropdownOnClick={{
+                clone(promise) {
+                  promise.then(refreshTasks)
+                },
+                delete(promise) {
+                  promise.then(() => {
+                    let id = row.original.ID
+                    promise.then(() => {
+                      setTasks(tasks.filter((item) => item.ID !== id))
+                    })
+                  })
+                },
+                stop(promise) {
+                  promise.then(() => {
+                    let id = row.original.ID
+                    TaskService.fetch(id).then((task) => {
+                      setTasks(
+                        tasks.map((item) => {
+                          return item.ID === id ? task : item
+                        })
+                      )
+                    })
+                  })
+                },
+                start(promise) {
+                  promise.then(() => {
+                    TaskService.fetch(id).then((task) => {
+                      setTasks(
+                        tasks.map((item) => {
+                          return item.ID === id ? task : item
+                        })
+                      )
+                    })
+                  })
+                },
+              }}
             />
           )
         },
