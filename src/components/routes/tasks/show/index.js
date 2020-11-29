@@ -6,6 +6,8 @@ import { Scrollbars } from "react-custom-scrollbars"
 
 import TitleContext from "@/contexts/title"
 import ThemeContext from "@/contexts/theme"
+import Button from "@/components/common/button"
+import Pill, { PillLink } from "@/components/common/pill"
 import Table from "@/components/common/table"
 import Loader from "@/components/common/loader"
 import { getTaskIcon, taskOptions } from "@/components/common/tasks"
@@ -13,7 +15,7 @@ import Dropdown from "@/components/common/dropdown"
 import TaskService from "@/service/task"
 import themes from "@/themes"
 import { nl2br } from "@/util"
-import Button from "@/components/common/button"
+import dayjs from "@/day"
 
 const ShowTask = ({ taskId }) => {
   const logView = useRef()
@@ -142,6 +144,63 @@ const ShowTask = ({ taskId }) => {
       </div>
       <div className="font-bold mb-2">
         <div className="text-base">{task.name}</div>
+      </div>
+      <div className="flex mb-2">
+        <Pill>{task.type}</Pill>
+        <Pill>{task.image}</Pill>
+        <PillLink href={`/nodes/${task.node_id}`}>Node {task.node_id}</PillLink>
+        <PillLink href={`/users/${task.owner_id}`}>
+          User {task.node_id}
+        </PillLink>
+        <PillLink LinkTag="a" href={`/api/tasks/${task.ID}`} target="_blank">
+          JSON
+        </PillLink>
+        <PillLink
+          LinkTag="a"
+          href={`/api/tasks/${task.ID}.yaml`}
+          target="_blank"
+        >
+          YAML
+        </PillLink>
+      </div>
+      <div className="flex mb-2">
+        <Pill>
+          Created {dayjs(task.created_time).format("YYYY/MM/DD hh:mm:ss a")}
+        </Pill>
+        {task.start_time && (
+          <>
+            <Pill>
+              Started {dayjs(task.start_time).format("YYYY/MM/DD hh:mm:ss a")}
+            </Pill>
+            {task.end_time && (
+              <Pill>
+                Ended {dayjs(task.end_time).format("YYYY/MM/DD hh:mm:ss a")}
+              </Pill>
+            )}
+            <Pill>
+              Duration
+              {(function () {
+                let endTime = task.end_time ? dayjs(task.end_time) : dayjs()
+                let duration = dayjs.duration(endTime.diff(task.start_time))
+                let durationStr = ""
+                if (
+                  duration.seconds() ||
+                  duration.hours() ||
+                  duration.minutes()
+                ) {
+                  durationStr = ` ${duration.seconds()}s`
+                }
+                if (duration.minutes() || duration.hours()) {
+                  durationStr = ` ${duration.minutes()}m ${durationStr}`
+                }
+                if (duration.hours()) {
+                  durationStr = ` ${duration.hours()}h ${durationStr}`
+                }
+                return durationStr
+              })()}
+            </Pill>
+          </>
+        )}
       </div>
       {error && (
         <div className="w-full bg-red-200 px-2 py-1">

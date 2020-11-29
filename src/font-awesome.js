@@ -22,5 +22,6 @@ library.add(
   fas.faUser,
   fas.faUsers,
   fas.faKey,
-  fas.faCog
+  fas.faCog,
+  fas.faExternalLinkAlt
 )
