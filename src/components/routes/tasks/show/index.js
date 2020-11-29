@@ -91,9 +91,20 @@ const ShowTask = ({ taskId }) => {
       {
         Header: "ID",
         accessor: "ID",
+        Cell: ({ row }) => {
+          return (
+            <a
+              href={`/public/artefact/${task.ID}/${row.original.ID}`}
+              className="text-blue-400"
+              target="_blank"
+            >
+              {row.original.ID}
+            </a>
+          )
+        },
       },
     ],
-    []
+    [task]
   )
 
   if (loading) {

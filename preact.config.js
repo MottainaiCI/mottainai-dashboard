@@ -1,9 +1,7 @@
-import path from 'path'
+import path from "path"
 
 export default {
-  plugins: [
-    'preact-cli-tailwind',
-  ],
+  plugins: ["preact-cli-tailwind"],
   /**
    * Function that mutates the original webpack config.
    * Supports asynchronous changes when a promise is returned (or it's an async function).
@@ -15,18 +13,19 @@ export default {
    **/
   webpack(config, env, helpers, options) {
     config.devtool = false
-    config.resolve = config.resolve || {alias: {}}
-    config.resolve.alias['@'] =  path.join(__dirname, './src')
+    config.resolve = config.resolve || { alias: {} }
+    config.resolve.alias["@"] = path.join(__dirname, "./src")
 
-    if(config.devServer) {
-      config.devServer['proxy'] = [
+    if (config.devServer) {
+      config.devServer["proxy"] = [
         {
-          path:'/api/**',
-          target: 'http://localhost:9090',
-        }
+          path: ["/api", "/public/"],
+          target: "http://localhost:9090",
+          pathRewrite: { "^/public": "" },
+        },
       ]
     }
 
     return config
   },
-};
+}

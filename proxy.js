@@ -12,11 +12,25 @@ process.on("SIGINT", () => {
 })
 
 const app = express()
+
 app.use(express.static(path.join(__dirname, "build")))
 
 app.use(
   "/api",
-  proxy.createProxyMiddleware({ target: apiUrl, changeOrigin: true })
+  proxy.createProxyMiddleware({
+    target: apiUrl,
+    changeOrigin: true,
+  })
+)
+app.use(
+  "/public",
+  proxy.createProxyMiddleware({
+    target: apiUrl,
+    changeOrigin: true,
+    pathRewrite: {
+      "^/public": "",
+    },
+  })
 )
 
 app.get("/*", function (req, res) {

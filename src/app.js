@@ -27,6 +27,7 @@ import TitleContext from "@/contexts/title"
 import themes from "@/themes"
 import axios from "@/axios"
 import UserService from "./service/user"
+import ShowArtefacts from "./components/routes/artefacts/show"
 
 const AUTHED = ["/plans", "/pipelines", "/tasks", "/artefacts", "/nodes"]
 const UNAUTHED = ["/login"]
@@ -116,6 +117,7 @@ const App = () => {
                 <Pipelines path="/pipelines" />
                 <Nodes path="/nodes" />
                 <Artefacts path="/artefacts" />
+                <ShowArtefacts path="/artefacts/:namespace" />
                 <Login path="/login" />
                 <Tokens path="/tokens" />
                 <Users path="/users" />

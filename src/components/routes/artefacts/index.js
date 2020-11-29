@@ -4,6 +4,7 @@ import TitleContext from "@/contexts/title"
 import Table from "@/components/common/table"
 import Loader from "@/components/common/loader"
 import ArtefactService from "@/service/artefact"
+import { Link } from "preact-router"
 
 const Artefacts = () => {
   const [namespaces, setNamespaces] = useState([])
@@ -29,6 +30,16 @@ const Artefacts = () => {
       {
         Header: "ID",
         accessor: "ID",
+        Cell: ({ row }) => {
+          return (
+            <Link
+              href={`/artefacts/${row.original.ID}`}
+              className="text-blue-400"
+            >
+              {row.original.ID}
+            </Link>
+          )
+        },
       },
     ],
     []
