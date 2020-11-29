@@ -146,9 +146,11 @@ const Tasks = () => {
 
   return (
     <>
-      <p className="text-2xl font-bold mb-2">Tasks</p>
-      <div className="mb-2">
-        <Button onClick={() => route("/tasks/new")}>New Task</Button>
+      <div className="flex justify-between items-center">
+        <p className="text-2xl font-bold mb-2">Tasks</p>
+        <div className="mb-2">
+          <Button onClick={() => route("/tasks/new")}>New Task</Button>
+        </div>
       </div>
       {error ? (
         <div>There was a problem retrieving tasks.</div>

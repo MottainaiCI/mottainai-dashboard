@@ -102,12 +102,15 @@ const ShowTask = ({ taskId }) => {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-2">
-        <Link href="/tasks" className="text-sm">
-          <FontAwesomeIcon icon="caret-left" className="mr-1" />
-          back to all tasks
-        </Link>
-        <div>
+      <div className="flex justify-between items-center">
+        <div className="text-2xl font-bold">
+          Task {taskId} {task && getTaskIcon(task.status, task.result)}
+        </div>
+        <div className="flex justify-between items-center">
+          <Link href="/tasks" className="text-sm mr-1">
+            <FontAwesomeIcon icon="caret-left" className="mr-1" />
+            back to all tasks
+          </Link>
           <Dropdown
             label={<FontAwesomeIcon icon="cog" />}
             anchor="right"
@@ -127,12 +130,8 @@ const ShowTask = ({ taskId }) => {
         </div>
       </div>
       <div className="font-bold mb-2">
-        <div className="text-2xl font-bold">
-          Task {taskId} {task && getTaskIcon(task.status, task.result)}
-        </div>
         <div className="text-base">{task.name}</div>
       </div>
-
       {error && (
         <div className="w-full bg-red-200 px-2 py-1">
           {typeof error === "string"

@@ -49,14 +49,12 @@ const NewTask = () => {
 
   return (
     <>
-      <div className="mb-2">
+      <div className="flex justify-between items-center mb-2">
+        <div className="text-2xl font-bold">New Task</div>
         <Link href="/tasks" className="text-sm">
           <FontAwesomeIcon icon="caret-left" className="mr-1" />
           back to all tasks
         </Link>
-      </div>
-      <div className="mb-2">
-        <div className="text-2xl font-bold">New Task</div>
       </div>
       <Editor
         height="30rem"
