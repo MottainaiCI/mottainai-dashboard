@@ -150,7 +150,7 @@ const ShowTask = ({ taskId }) => {
         <Pill>{task.image}</Pill>
         <PillLink href={`/nodes/${task.node_id}`}>Node {task.node_id}</PillLink>
         <PillLink href={`/users/${task.owner_id}`}>
-          User {task.node_id}
+          User {task.owner_id}
         </PillLink>
         <PillLink LinkTag="a" href={`/api/tasks/${task.ID}`} target="_blank">
           JSON
