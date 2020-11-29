@@ -61,7 +61,11 @@ const Users = () => {
       {error ? (
         <div>There was a problem retrieving users.</div>
       ) : users.length ? (
-        <Table data={users} columns={columns} />
+        <Table
+          data={users}
+          columns={columns}
+          defaultSortBy={[{ id: "id", desc: true }]}
+        />
       ) : (
         <div>No users were found.</div>
       )}

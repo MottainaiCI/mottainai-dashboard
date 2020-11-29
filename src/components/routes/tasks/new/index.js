@@ -64,6 +64,7 @@ const NewTask = () => {
         value={planYmlSnippet}
         loading={<Loader />}
         editorDidMount={handleEditorDidMount}
+        options={{ theme: "dark", minimap: { enabled: false }, scrollbar: {} }}
       />
       <Button className="mt-2" onClick={create} disabled={!isEditorReady}>
         Create
