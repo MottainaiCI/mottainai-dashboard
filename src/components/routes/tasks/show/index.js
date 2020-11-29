@@ -14,7 +14,7 @@ import { getTaskIcon, taskOptions } from "@/components/common/tasks"
 import Dropdown from "@/components/common/dropdown"
 import TaskService from "@/service/task"
 import themes from "@/themes"
-import { nl2br } from "@/util"
+import { datetimeFormatStr, durationFormat, nl2br } from "@/util"
 import dayjs from "@/day"
 
 const ShowTask = ({ taskId }) => {
@@ -99,6 +99,7 @@ const ShowTask = ({ taskId }) => {
               href={`/public/artefact/${task.ID}/${row.original.ID}`}
               className="text-blue-400"
               target="_blank"
+              rel="noreferrer"
             >
               {row.original.ID}
             </a>
@@ -165,39 +166,20 @@ const ShowTask = ({ taskId }) => {
       </div>
       <div className="flex mb-2">
         <Pill>
-          Created {dayjs(task.created_time).format("YYYY/MM/DD hh:mm:ss a")}
+          Created {dayjs(task.created_time).format(datetimeFormatStr)}
         </Pill>
         {task.start_time && (
           <>
             <Pill>
-              Started {dayjs(task.start_time).format("YYYY/MM/DD hh:mm:ss a")}
+              Started {dayjs(task.start_time).format(datetimeFormatStr)}
             </Pill>
             {task.end_time && (
               <Pill>
-                Ended {dayjs(task.end_time).format("YYYY/MM/DD hh:mm:ss a")}
+                Ended {dayjs(task.end_time).format(datetimeFormatStr)}
               </Pill>
             )}
             <Pill>
-              Duration
-              {(function () {
-                let endTime = task.end_time ? dayjs(task.end_time) : dayjs()
-                let duration = dayjs.duration(endTime.diff(task.start_time))
-                let durationStr = ""
-                if (
-                  duration.seconds() ||
-                  duration.hours() ||
-                  duration.minutes()
-                ) {
-                  durationStr = ` ${duration.seconds()}s`
-                }
-                if (duration.minutes() || duration.hours()) {
-                  durationStr = ` ${duration.minutes()}m ${durationStr}`
-                }
-                if (duration.hours()) {
-                  durationStr = ` ${duration.hours()}h ${durationStr}`
-                }
-                return durationStr
-              })()}
+              Duration {durationFormat(task.start_time, task.end_time)}
             </Pill>
           </>
         )}

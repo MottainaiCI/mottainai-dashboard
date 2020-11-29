@@ -4,6 +4,7 @@ import TitleContext from "@/contexts/title"
 import Table from "@/components/common/table"
 import Loader from "@/components/common/loader"
 import UserService from "@/service/user"
+import { Link } from "preact-router"
 
 const Users = () => {
   const [users, setUsers] = useState([])
@@ -27,6 +28,13 @@ const Users = () => {
       {
         Header: "ID",
         accessor: "id",
+        Cell: ({ row }) => {
+          return (
+            <Link href={`/users/${row.original.id}`} className="text-blue-400">
+              {row.original.id}
+            </Link>
+          )
+        },
       },
       {
         Header: "Email",

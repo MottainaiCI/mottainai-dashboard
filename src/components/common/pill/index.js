@@ -27,7 +27,7 @@ export const PillLink = ({
   ...props
 }) => {
   return (
-    <LinkTag href={href} target={target}>
+    <LinkTag href={href} target={target} rel={target && "noreferrer"}>
       <Pill {...props}>
         {children}
         <FontAwesomeIcon icon="external-link-alt" className="ml-1" />

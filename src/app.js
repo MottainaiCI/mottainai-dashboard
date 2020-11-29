@@ -12,10 +12,13 @@ import Tasks from "@/components/routes/tasks"
 import ShowTask from "@/components/routes/tasks/show"
 import NewTask from "@/components/routes/tasks/new"
 import Nodes from "@/components/routes/nodes"
+import ShowNode from "./components/routes/nodes/show"
 import Artefacts from "@/components/routes/artefacts"
+import ShowArtefacts from "./components/routes/artefacts/show"
 import Login from "@/components/routes/login"
 import Tokens from "@/components/routes/tokens"
 import Users from "@/components/routes/users"
+import ShowUser from "./components/routes/users/show"
 
 import Sidebar from "@/components/sidebar"
 import Loader from "@/components/common/loader"
@@ -27,7 +30,6 @@ import TitleContext from "@/contexts/title"
 import themes from "@/themes"
 import axios from "@/axios"
 import UserService from "./service/user"
-import ShowArtefacts from "./components/routes/artefacts/show"
 
 const AUTHED = ["/plans", "/pipelines", "/tasks", "/artefacts", "/nodes"]
 const UNAUTHED = ["/login"]
@@ -116,11 +118,13 @@ const App = () => {
                 <Plans path="/plans" />
                 <Pipelines path="/pipelines" />
                 <Nodes path="/nodes" />
+                <ShowNode path="/nodes/:nodeId" />
                 <Artefacts path="/artefacts" />
                 <ShowArtefacts path="/artefacts/:namespace" />
                 <Login path="/login" />
                 <Tokens path="/tokens" />
                 <Users path="/users" />
+                <ShowUser path="/users/:userId" />
               </Router>
             </div>
           </div>

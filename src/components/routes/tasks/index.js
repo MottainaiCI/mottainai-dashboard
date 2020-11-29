@@ -1,14 +1,11 @@
-import { useState, useEffect, useMemo, useContext } from "preact/hooks"
-import { Link } from "preact-router/match"
+import { useState, useEffect, useContext } from "preact/hooks"
 import { route } from "preact-router"
-import dayjs from "@/day"
 
 import TitleContext from "@/contexts/title"
 import Table from "@/components/common/table"
-import Dropdown from "@/components/common/dropdown"
 import Loader from "@/components/common/loader"
 import TaskService from "@/service/task"
-import { getTaskIcon, taskOptions } from "@/components/common/tasks"
+import { taskTableColumns } from "@/components/common/tasks"
 import Button from "@/components/common/button"
 
 const Tasks = () => {
@@ -39,107 +36,6 @@ const Tasks = () => {
     return () => clearInterval(intId)
   }, [])
 
-  const columns = useMemo(
-    () => [
-      {
-        id: "StatusIcon",
-        Cell: ({ row }) => {
-          return (
-            <div className="text-center">
-              {getTaskIcon(row.original.status, row.original.result)}
-            </div>
-          )
-        },
-      },
-      {
-        Header: "ID",
-        accessor: "ID",
-        Cell: ({ row }) => {
-          return (
-            <Link href={`/tasks/${row.original.ID}`} className="text-blue-400">
-              {row.original.ID}
-            </Link>
-          )
-        },
-      },
-      {
-        Header: "Name",
-        accessor: "name",
-      },
-      {
-        Header: "Image",
-        accessor: "image",
-      },
-      {
-        Header: "Start Time",
-        accessor: (d) => {
-          if (d.start_time) {
-            return dayjs(d.start_time).format("YYYY/MM/DD hh:mm:ss a")
-          }
-        },
-      },
-      {
-        Header: "Duration",
-        accessor: (d) => {
-          if (d.start_time) {
-            let endTime = d.end_time ? dayjs(d.end_time) : dayjs()
-            return dayjs.duration(endTime.diff(d.start_time), "ms").humanize()
-          }
-        },
-      },
-      {
-        id: "Actions",
-        Cell: ({ row }) => {
-          return (
-            <Dropdown
-              label="Actions"
-              options={taskOptions}
-              actionArgs={[row.original.ID]}
-              dropdownOnClick={{
-                clone(promise) {
-                  promise.then(refreshTasks)
-                },
-                delete(promise) {
-                  promise.then(() => {
-                    let id = row.original.ID
-                    promise.then(() => {
-                      setTasks(tasks.filter((item) => item.ID !== id))
-                    })
-                  })
-                },
-                stop(promise) {
-                  promise.then(() => {
-                    let id = row.original.ID
-                    TaskService.fetch(id).then((task) => {
-                      setTasks(
-                        tasks.map((item) => {
-                          return item.ID === id ? task : item
-                        })
-                      )
-                    })
-                  })
-                },
-                start(promise) {
-                  promise.then(() => {
-                    let id = row.original.ID
-                    TaskService.fetch(id).then((task) => {
-                      setTasks(
-                        tasks.map((item) => {
-                          return item.ID === id ? task : item
-                        })
-                      )
-                    })
-                  })
-                },
-              }}
-            />
-          )
-        },
-      },
-    ],
-    [tasks]
-  )
-
   if (loading) {
     return <Loader />
   }
@@ -155,7 +51,14 @@ const Tasks = () => {
       {error ? (
         <div>There was a problem retrieving tasks.</div>
       ) : tasks.length ? (
-        <Table data={tasks} columns={columns} />
+        <Table
+          data={tasks}
+          columns={taskTableColumns({
+            refreshTasks,
+            setTasks,
+            tasks,
+          })}
+        />
       ) : (
         <div>No tasks were found.</div>
       )}

@@ -18,7 +18,7 @@ const Artefacts = () => {
   const refreshData = () => {
     ArtefactService.fetchNamespaces()
       .then((namespaces) => {
-        setNamespaces(namespaces.map((name) => ({ ID: name })))
+        setNamespaces(namespaces.map((namespace) => ({ namespace })))
       }, setError)
       .finally(() => setLoading(false))
   }
@@ -28,15 +28,15 @@ const Artefacts = () => {
   const columns = useMemo(
     () => [
       {
-        Header: "ID",
-        accessor: "ID",
+        Header: "Namespace",
+        accessor: "namespace",
         Cell: ({ row }) => {
           return (
             <Link
-              href={`/artefacts/${row.original.ID}`}
+              href={`/artefacts/${row.original.namespace}`}
               className="text-blue-400"
             >
-              {row.original.ID}
+              {row.original.namespace}
             </Link>
           )
         },
@@ -55,7 +55,11 @@ const Artefacts = () => {
       {error ? (
         <div>There was a problem retrieving namespaces.</div>
       ) : namespaces.length ? (
-        <Table data={namespaces} columns={columns} />
+        <Table
+          data={namespaces}
+          columns={columns}
+          defaultSortBy={[{ id: "namespace", desc: false }]}
+        />
       ) : (
         <div>No namespaces were found.</div>
       )}

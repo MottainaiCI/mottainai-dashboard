@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useContext } from "preact/hooks"
-import dayjs from "@/day"
+import { toast } from "react-toastify"
 
 import TitleContext from "@/contexts/title"
 import Table from "@/components/common/table"
@@ -7,6 +7,9 @@ import Dropdown from "@/components/common/dropdown"
 import Loader from "@/components/common/loader"
 import NodeService from "@/service/node"
 import { showConfirmModal } from "@/components/common/modal"
+import { Link } from "preact-router"
+import Button from "@/components/common/button"
+import dayjs from "@/day"
 
 const Nodes = () => {
   const [nodes, setNodes] = useState([])
@@ -41,6 +44,13 @@ const Nodes = () => {
       {
         Header: "ID",
         accessor: "ID",
+        Cell: ({ row }) => {
+          return (
+            <Link href={`/nodes/${row.original.ID}`} className="text-blue-400">
+              {row.original.ID}
+            </Link>
+          )
+        },
       },
       {
         Header: "Hostname",
@@ -93,7 +103,21 @@ const Nodes = () => {
 
   return (
     <>
-      <p className="text-2xl font-bold mb-2">Nodes</p>
+      <div className="flex justify-between items-center">
+        <div className="text-2xl font-bold mb-2">Nodes</div>
+        <div className="mb-2">
+          <Button
+            onClick={() => {
+              NodeService.createNode().then(refreshData, () => {
+                toast.error("There was an error creating a node")
+              })
+            }}
+          >
+            New Node
+          </Button>
+        </div>
+      </div>
+
       {error ? (
         <div>There was a problem retrieving nodes.</div>
       ) : nodes.length ? (

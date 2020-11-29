@@ -36,6 +36,7 @@ const ShowArtefacts = ({ namespace }) => {
               href={`/public/namespace/${namespace}/${row.original.ID}`}
               className="text-blue-400"
               target="_blank"
+              rel="noreferrer"
             >
               {row.original.ID}
             </a>
@@ -43,7 +44,7 @@ const ShowArtefacts = ({ namespace }) => {
         },
       },
     ],
-    []
+    [namespace]
   )
 
   if (loading) {

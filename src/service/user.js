@@ -33,6 +33,9 @@ const UserService = {
   getAllusers() {
     return axios.get("/user/list").then(({ data }) => data)
   },
+  fetchUser(id) {
+    return axios.get(`/user/show/${id}`).then(({ data }) => data)
+  },
 }
 
 export default UserService

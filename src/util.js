@@ -1,3 +1,5 @@
+import dayjs from "@/day"
+
 const newline = "\n"
 export const nl2br = (text) => {
   if (typeof text === "number") {
@@ -15,4 +17,21 @@ export const nl2br = (text) => {
       </span>
     )
   })
+}
+
+export const datetimeFormatStr = "YYYY/MM/DD hh:mm:ss a"
+export const durationFormat = (startTime, endTime) => {
+  let djsEndTime = endTime ? dayjs(endTime) : dayjs()
+  let djsDuration = dayjs.duration(djsEndTime.diff(startTime))
+  let durationStr = ""
+  if (djsDuration.seconds() || djsDuration.hours() || djsDuration.minutes()) {
+    durationStr = ` ${djsDuration.seconds()}s`
+  }
+  if (djsDuration.minutes() || djsDuration.hours()) {
+    durationStr = ` ${djsDuration.minutes()}m ${durationStr}`
+  }
+  if (djsDuration.hours()) {
+    durationStr = ` ${djsDuration.hours()}h ${durationStr}`
+  }
+  return durationStr
 }
