@@ -17,24 +17,13 @@ const Tasks = () => {
     setTitle("Tasks")
   }, [setTitle])
 
-  const refreshTasks = (setLoadingFlag = true) => {
-    if (setLoadingFlag) {
-      setLoading(true)
-    }
+  const refreshTasks = () => {
     TaskService.fetchAll()
       .then(setTasks, setError)
       .finally(() => setLoading(false))
   }
 
-  useEffect(() => {
-    refreshTasks()
-
-    const intId = setInterval(() => {
-      refreshTasks(false)
-    }, 30 * 1000)
-
-    return () => clearInterval(intId)
-  }, [])
+  useEffect(refreshTasks, [])
 
   if (loading) {
     return <Loader />
