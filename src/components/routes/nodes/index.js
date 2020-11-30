@@ -73,12 +73,14 @@ const Nodes = () => {
               onClick(row) {
                 showConfirmModal({
                   body: `Are you sure you want to delete Node ${row.original.ID}?`,
-                }).then(() => {
-                  NodeService.delete(row.original.ID).then(() => {
-                    setNodes(
-                      nodes.filter((item) => item.ID !== row.original.ID)
-                    )
-                  })
+                }).then((confirmed) => {
+                  if (confirmed) {
+                    NodeService.delete(row.original.ID).then(() => {
+                      setNodes(
+                        nodes.filter((item) => item.ID !== row.original.ID)
+                      )
+                    })
+                  }
                 })
               },
             },

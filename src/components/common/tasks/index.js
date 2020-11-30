@@ -39,40 +39,45 @@ export const getTaskIcon = (status, result) => {
   }
 }
 
-export const taskOptions = [
+export const taskOptions = ({
+  onClone = () => {},
+  onDelete = () => {},
+  onStart = () => {},
+  onStop = () => {},
+}) => [
   {
-    id: "start",
     label: "Start",
     onClick(id) {
-      return TaskService.start(id)
+      return TaskService.start(id).then(() => onStart(id))
     },
   },
   {
-    id: "stop",
     label: "Stop",
     onClick(id) {
       return showConfirmModal({
         body: `Are you sure you want to stop Task ${id}?`,
-      }).then(() => {
-        return TaskService.stop(id)
+      }).then((confirmed) => {
+        if (confirmed) {
+          return TaskService.stop(id).then(() => onStop(id))
+        }
       })
     },
   },
   {
-    id: "clone",
     label: "Clone",
     onClick(id) {
-      return TaskService.clone(id)
+      TaskService.clone(id).then(({ id: newId }) => onClone(newId))
     },
   },
   {
-    id: "delete",
     label: "Delete",
     onClick(id) {
       return showConfirmModal({
         body: `Are you sure you want to delete Task ${id}?`,
-      }).then(() => {
-        return TaskService.delete(id)
+      }).then((confirmed) => {
+        if (confirmed) {
+          return TaskService.delete(id).then(() => onDelete(id))
+        }
       })
     },
   },
@@ -146,45 +151,33 @@ export const taskTableColumns = ({
       return (
         <Dropdown
           label="Actions"
-          options={taskOptions}
           actionArgs={[row.original.ID]}
-          dropdownOnClick={{
-            clone(promise) {
-              promise.then(refreshTasks)
+          options={taskOptions({
+            onClone() {
+              refreshTasks()
             },
-            delete(promise) {
-              promise.then(() => {
-                let id = row.original.ID
-                promise.then(() => {
-                  setTasks(tasks.filter((item) => item.ID !== id))
-                })
+            onDelete(id) {
+              setTasks(tasks.filter((item) => item.ID !== id))
+            },
+            onStop(id) {
+              TaskService.fetch(id).then((task) => {
+                setTasks(
+                  tasks.map((item) => {
+                    return item.ID === id ? task : item
+                  })
+                )
               })
             },
-            stop(promise) {
-              promise.then(() => {
-                let id = row.original.ID
-                TaskService.fetch(id).then((task) => {
-                  setTasks(
-                    tasks.map((item) => {
-                      return item.ID === id ? task : item
-                    })
-                  )
-                })
+            onStart(id) {
+              TaskService.fetch(id).then((task) => {
+                setTasks(
+                  tasks.map((item) => {
+                    return item.ID === id ? task : item
+                  })
+                )
               })
             },
-            start(promise) {
-              promise.then(() => {
-                let id = row.original.ID
-                TaskService.fetch(id).then((task) => {
-                  setTasks(
-                    tasks.map((item) => {
-                      return item.ID === id ? task : item
-                    })
-                  )
-                })
-              })
-            },
-          }}
+          })}
         />
       )
     },

@@ -30,6 +30,7 @@ import TitleContext from "@/contexts/title"
 import themes from "@/themes"
 import axios from "@/axios"
 import UserService from "./service/user"
+import ShowPlan from "./components/routes/plans/show"
 
 const AUTHED = ["/plans", "/pipelines", "/tasks", "/artefacts", "/nodes"]
 const UNAUTHED = ["/login"]
@@ -116,6 +117,7 @@ const App = () => {
                 <NewTask path={`/tasks/new`} />
                 <ShowTask path={`/tasks/:taskId`} />
                 <Plans path="/plans" />
+                <ShowPlan path="/plans/:planId" />
                 <Pipelines path="/pipelines" />
                 <Nodes path="/nodes" />
                 <ShowNode path="/nodes/:nodeId" />

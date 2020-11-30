@@ -28,13 +28,13 @@ export const showConfirmModal = ({ ...props }) => {
   return new Promise((res, rej) => {
     createElementReconfirm({
       comp: ConfirmModal,
-      onCancel() {
-        removeElementReconfirm()
-        rej()
-      },
       onConfirm() {
         removeElementReconfirm()
-        res()
+        res(true)
+      },
+      onCancel() {
+        removeElementReconfirm()
+        res(false)
       },
       ...props,
     })

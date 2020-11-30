@@ -6,6 +6,7 @@ import Dropdown from "@/components/common/dropdown"
 import Loader from "@/components/common/loader"
 import PlanService from "@/service/plan"
 import { showConfirmModal } from "@/components/common/modal"
+import { Link } from "preact-router"
 
 const Plans = () => {
   const [plans, setPlans] = useState([])
@@ -32,6 +33,13 @@ const Plans = () => {
       {
         Header: "ID",
         accessor: "ID",
+        Cell: ({ row }) => {
+          return (
+            <Link href={`/plans/${row.original.ID}`} className="text-blue-400">
+              {row.original.ID}
+            </Link>
+          )
+        },
       },
       {
         Header: "Name",
@@ -54,12 +62,14 @@ const Plans = () => {
               onClick(row) {
                 showConfirmModal({
                   body: `Are you sure you want to delete Plan ${row.original.ID}?`,
-                }).then(() => {
-                  PlanService.delete(row.original.ID).then(() => {
-                    setPlans(
-                      plans.filter((item) => item.ID !== row.original.ID)
-                    )
-                  })
+                }).then((confirmed) => {
+                  if (confirmed) {
+                    PlanService.delete(row.original.ID).then(() => {
+                      setPlans(
+                        plans.filter((item) => item.ID !== row.original.ID)
+                      )
+                    })
+                  }
                 })
               },
             },

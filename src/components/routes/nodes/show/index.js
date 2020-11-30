@@ -44,13 +44,14 @@ const ShowNode = ({ nodeId }) => {
 
   const actionOptions = [
     {
-      id: "delete",
       label: "Delete",
       onClick(id) {
         return showConfirmModal({
           body: `Are you sure you want to delete Node ${id}?`,
-        }).then(() => {
-          return NodeService.delete(id)
+        }).then((confirmed) => {
+          if (confirmed) {
+            NodeService.delete(id).then(() => route("/nodes"))
+          }
         })
       },
     },
@@ -119,11 +120,6 @@ const ShowNode = ({ nodeId }) => {
             anchor="right"
             options={actionOptions}
             actionArgs={[node && node.ID]}
-            dropdownOnClick={{
-              delete(promise) {
-                promise.then(() => route("/nodes"))
-              },
-            }}
           />
         </div>
       </div>

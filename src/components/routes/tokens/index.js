@@ -44,12 +44,14 @@ const Tokens = () => {
               onClick(row) {
                 showConfirmModal({
                   body: `Are you sure you want to delete Token ${row.original.id}?`,
-                }).then(() => {
-                  TokenService.delete(row.original.id).then(() => {
-                    setTokens(
-                      tokens.filter((item) => item.id !== row.original.id)
-                    )
-                  })
+                }).then((confirmed) => {
+                  if (confirmed) {
+                    TokenService.delete(row.original.id).then(() => {
+                      setTokens(
+                        tokens.filter((item) => item.id !== row.original.id)
+                      )
+                    })
+                  }
                 })
               },
             },

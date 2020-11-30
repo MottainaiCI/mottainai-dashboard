@@ -64,12 +64,14 @@ const Pipelines = () => {
                       ({row.original.ID})?
                     </p>
                   ),
-                }).then(() => {
-                  PipelineService.delete(row.original.ID).then(() => {
-                    setPipelines(
-                      pipelines.filter((item) => item.ID !== row.original.ID)
-                    )
-                  })
+                }).then((confirmed) => {
+                  if (confirmed) {
+                    PipelineService.delete(row.original.ID).then(() => {
+                      setPipelines(
+                        pipelines.filter((item) => item.ID !== row.original.ID)
+                      )
+                    })
+                  }
                 })
               },
             },

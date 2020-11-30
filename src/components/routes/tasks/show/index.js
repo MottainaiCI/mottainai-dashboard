@@ -128,18 +128,15 @@ const ShowTask = ({ taskId }) => {
           <Dropdown
             label={<FontAwesomeIcon icon="cog" />}
             anchor="right"
-            options={taskOptions}
             actionArgs={[task && task.ID]}
-            dropdownOnClick={{
-              clone(promise) {
-                promise.then((data) => {
-                  route(`/tasks/${data.id}`)
-                })
+            options={taskOptions({
+              onClone(id) {
+                route(`/tasks/${id}`)
               },
-              delete(promise) {
-                promise.then(() => route("/tasks"))
+              onDelete() {
+                route("/tasks")
               },
-            }}
+            })}
           />
         </div>
       </div>
