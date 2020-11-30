@@ -3,8 +3,9 @@ import {
   usePagination,
   useGlobalFilter,
   useSortBy,
+  useFilters,
 } from "react-table"
-import { useContext, useState } from "preact/hooks"
+import { useContext, useMemo, useState } from "preact/hooks"
 import ThemeContext from "@/contexts/theme"
 import themes from "@/themes"
 import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
@@ -28,14 +29,52 @@ function GlobalFilter({ globalFilter, setGlobalFilter }) {
   )
 }
 
+function SelectColumnFilter({
+  column: { filterValue, setFilter, preFilteredRows, id },
+}) {
+  let { theme } = useContext(ThemeContext)
+  const options = useMemo(() => {
+    const options = new Set()
+    preFilteredRows.forEach((row) => {
+      options.add(row.values[id])
+    })
+    return Array.from(options)
+  }, [id, preFilteredRows])
+
+  return (
+    <select
+      value={filterValue}
+      onChange={(e) => {
+        setFilter(e.target.value || undefined)
+      }}
+      className={themes[theme].select}
+    >
+      <option value="">All</option>
+      {options.map((option, i) => (
+        <option key={i} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  )
+}
+
 const Table = ({
   columns,
   data,
   defaultSortBy = [{ id: "ID", desc: true }],
 }) => {
   let { theme } = useContext(ThemeContext)
+
+  columns.forEach((col) => {
+    if (col.filter) {
+      col.Filter = SelectColumnFilter
+    }
+  })
+
   const tableInstance = useTable(
     { columns, data, initialState: { sortBy: defaultSortBy } },
+    useFilters,
     useGlobalFilter,
     useSortBy,
     usePagination
@@ -108,18 +147,20 @@ const Table = ({
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className="px-1 text-left"
-                >
-                  {column.render("Header")}
-                  {column.isSorted ? (
-                    <FontAwesomeIcon
-                      className="ml-2"
-                      icon={column.isSortedDesc ? "caret-down" : "caret-up"}
-                    />
-                  ) : (
-                    ""
+                <th {...column.getHeaderProps()} className="px-1 text-left">
+                  <div {...column.getSortByToggleProps()}>
+                    {column.render("Header")}
+                    {column.isSorted ? (
+                      <FontAwesomeIcon
+                        className="ml-2"
+                        icon={column.isSortedDesc ? "caret-down" : "caret-up"}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  {column.filter && (
+                    <div className="py-1">{column.render("Filter")}</div>
                   )}
                 </th>
               ))}

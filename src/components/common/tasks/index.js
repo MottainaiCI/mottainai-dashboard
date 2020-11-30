@@ -113,10 +113,16 @@ export const taskTableColumns = ({
     accessor: "image",
   },
   {
+    Header: "Status",
+    accessor: "status",
+    filter: "includes",
+  },
+  {
     Header: "Start Time",
-    accessor: (d) => {
-      if (d.start_time) {
-        return dayjs(d.start_time).format(datetimeFormatStr)
+    accessor: "start_time",
+    Cell: ({ row }) => {
+      if (row.original.start_time) {
+        return dayjs(row.original.start_time).format(datetimeFormatStr)
       }
     },
   },
@@ -124,7 +130,13 @@ export const taskTableColumns = ({
     Header: "Duration",
     accessor: (d) => {
       if (d.start_time) {
-        return durationFormat(d.start_time, d.end_time)
+        let djsEndTime = d.end_time ? dayjs(d.end_time) : dayjs()
+        return dayjs.duration(djsEndTime.diff(d.start_time)).asMilliseconds()
+      }
+    },
+    Cell: ({ row }) => {
+      if (row.original.start_time) {
+        return durationFormat(row.original.start_time, row.original.end_time)
       }
     },
   },
