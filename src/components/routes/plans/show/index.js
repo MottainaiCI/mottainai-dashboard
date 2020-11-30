@@ -66,7 +66,7 @@ const ShowPlan = ({ planId }) => {
           </Link>
           <Dropdown
             label={<FontAwesomeIcon icon="cog" />}
-            anchor="right"
+            anchor="right-0"
             options={actionOptions}
             actionArgs={[plan && plan.ID]}
           />

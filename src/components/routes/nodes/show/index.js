@@ -117,7 +117,7 @@ const ShowNode = ({ nodeId }) => {
           </Link>
           <Dropdown
             label={<FontAwesomeIcon icon="cog" />}
-            anchor="right"
+            anchor="right-0"
             options={actionOptions}
             actionArgs={[node && node.ID]}
           />

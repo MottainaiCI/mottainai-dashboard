@@ -127,7 +127,7 @@ const ShowTask = ({ taskId }) => {
           </Link>
           <Dropdown
             label={<FontAwesomeIcon icon="cog" />}
-            anchor="right"
+            anchor="right-0"
             actionArgs={[task && task.ID]}
             options={taskOptions({
               onClone(id) {

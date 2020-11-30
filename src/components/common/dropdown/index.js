@@ -3,7 +3,7 @@ import ThemeContext from "@/contexts/theme"
 import themes from "@/themes"
 import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 
-const Dropdown = ({ label, anchor = "left", options, actionArgs = [] }) => {
+const Dropdown = ({ label, anchor = "left-0", options, actionArgs = [] }) => {
   let { theme } = useContext(ThemeContext)
   const optionEl = options.map(({ id, label, onClick }) => (
     <div
@@ -22,9 +22,7 @@ const Dropdown = ({ label, anchor = "left", options, actionArgs = [] }) => {
           <FontAwesomeIcon icon="caret-down" className="ml-3" />
         )}
       </div>
-      <div
-        className={`absolute w-max hidden group-hover:block z-20 ${anchor}-0`}
-      >
+      <div className={`absolute w-max hidden group-hover:block z-20 ${anchor}`}>
         {optionEl}
       </div>
     </div>

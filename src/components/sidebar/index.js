@@ -28,7 +28,7 @@ const ProfileItem = () => {
   }
 
   return (
-    <SidebarPopoutMenu icon="user" anchor="bottom" label={user.name}>
+    <SidebarPopoutMenu icon="user" anchor="bottom-0" label={user.name}>
       <SidebarPopoutLink href="/users" icon="users" text="Users" />
       <SidebarPopoutLink href="/tokens" icon="key" text="API Tokens" />
       <SidebarPopoutItem onClick={signOut} icon="sign-out-alt" text="Log out" />
@@ -104,7 +104,7 @@ const Sidebar = () => {
               )}
               <SidebarPopoutSelector
                 icon="palette"
-                anchor="bottom"
+                anchor="bottom-0"
                 label="Theme"
                 options={THEME_OPTIONS}
                 onSelect={setTheme}
