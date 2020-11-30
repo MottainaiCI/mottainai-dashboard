@@ -31,9 +31,9 @@ const Tasks = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-2">
         <p className="text-2xl font-bold mb-2">Tasks</p>
-        <div className="mb-2">
+        <div>
           <Button onClick={() => route("/tasks/new")}>New Task</Button>
         </div>
       </div>

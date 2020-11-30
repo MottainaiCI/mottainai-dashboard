@@ -74,15 +74,17 @@ const Tokens = () => {
 
   return (
     <>
-      <p className="text-2xl font-bold mb-2">API Tokens</p>
-      <div className="mb-2">
-        <Button
-          onClick={() => {
-            TokenService.create().then(refreshData)
-          }}
-        >
-          Create
-        </Button>
+      <div className="flex justify-between items-center mb-2">
+        <p className="text-2xl font-bold mb-2">API Tokens</p>
+        <div className="mb-2">
+          <Button
+            onClick={() => {
+              TokenService.create().then(refreshData)
+            }}
+          >
+            Create New Token
+          </Button>
+        </div>
       </div>
       {error ? (
         <div>There was a problem retrieving tokens.</div>
