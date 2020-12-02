@@ -1,5 +1,7 @@
 # MottainaiCI Web Client
 
+[![Docker Repository on Quay](https://quay.io/repository/mottainai/dashboard/status "Docker Repository on Quay")](https://quay.io/repository/mottainai/dashboard)
+
 A web frontend for [MottainaiCI](https://github.com/MottainaiCI/mottainai-server)
 
 ## Deployment
@@ -24,3 +26,4 @@ npm install
 # You can configure this and more in preact.config.js
 npm run dev
 ```
+
