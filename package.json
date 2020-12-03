@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "preact build ---no-prerender --no-sw",
+    "build": "NODE_ENV=production preact build ---no-prerender --no-sw",
     "dev": "preact watch",
     "lint": "eslint src",
     "test": "jest"
