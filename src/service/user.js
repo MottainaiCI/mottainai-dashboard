@@ -1,14 +1,22 @@
 import axios from "@/axios"
 
 const UserService = {
-  login(username, password) {
+  login(username, password, remember) {
     return new Promise((res, rej) => {
       axios
-        .post("/v1/client/auth/login", { username, password })
+        .post("/v1/client/auth/login", { username, password, remember })
         .then(({ data }) => {
           localStorage.setItem("mottainai:auth", 1)
           res(data)
         }, rej)
+    })
+  },
+  signup(email, username, password, passwordConfirm) {
+    return axios.post("/v1/client/auth/register", {
+      email,
+      username,
+      password,
+      passwordConfirm,
     })
   },
   logout() {
