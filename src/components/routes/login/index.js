@@ -44,6 +44,7 @@ const Login = () => {
           </label>
           <input
             required
+            id="username"
             name="username"
             className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
             ref={register}
@@ -56,6 +57,7 @@ const Login = () => {
           </label>
           <input
             type="password"
+            id="password"
             name="password"
             autoComplete
             required
@@ -67,11 +69,12 @@ const Login = () => {
         <div className="mb-4 flex items-center">
           <input
             type="checkbox"
+            id="remember"
             name="remember"
             ref={register}
             className="focus:outline-none"
           />
-          <label htmlFor="remember" className="ml-2">
+          <label for="remember" className="ml-2">
             Remember Me
           </label>
         </div>

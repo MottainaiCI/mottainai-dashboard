@@ -43,18 +43,20 @@ const Signup = () => {
           </label>
           <input
             required
+            id="username"
             name="username"
             className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
             ref={register}
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="username" className="block">
+          <label htmlFor="email" className="block">
             E-mail
           </label>
           <input
             required
             type="email"
+            id="email"
             name="email"
             className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
             ref={register}
@@ -66,24 +68,26 @@ const Signup = () => {
             Password
           </label>
           <input
-            type="password"
-            name="password"
             autoComplete
             required
+            type="password"
+            id="password"
+            name="password"
             className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
             ref={register}
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="password" className="block">
+          <label htmlFor="passwordConfirm" className="block">
             Confirm Password
           </label>
           <input
-            type="password"
-            name="passwordConfirm"
             autoComplete
             required
+            type="password"
+            id="passwordConfirm"
+            name="passwordConfirm"
             className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
             ref={register}
           />
