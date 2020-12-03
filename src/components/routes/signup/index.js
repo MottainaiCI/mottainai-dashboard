@@ -1,30 +1,29 @@
 import { useForm } from "react-hook-form"
 import { useContext, useState, useEffect } from "preact/hooks"
 import { route } from "preact-router"
+import { toast } from "react-toastify"
 
-import UserContext from "@/contexts/user"
 import ThemeContext from "@/contexts/theme"
 import TitleContext from "@/contexts/title"
 import UserService from "@/service/user"
 import themes from "@/themes"
 
-const Login = () => {
+const Signup = () => {
   let [error, setError] = useState(null)
-  let { setUser } = useContext(UserContext)
   let { theme } = useContext(ThemeContext)
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
-    setTitle("Login")
+    setTitle("Sign Up")
   }, [setTitle])
 
   const { register, handleSubmit } = useForm()
 
-  const onSubmit = ({ remember, username, password }) => {
-    if (username && password) {
-      UserService.login(username, password, remember).then(
-        (data) => {
-          setUser(data)
-          route("/")
+  const onSubmit = ({ email, username, password, passwordConfirm }) => {
+    if (email && username && password && passwordConfirm) {
+      UserService.signup(email, username, password, passwordConfirm).then(
+        () => {
+          toast.success("Registration successful! You can log in now.")
+          route("/login")
         },
         (err) => {
           setError(err.response.data.error)
@@ -49,6 +48,18 @@ const Login = () => {
             ref={register}
           />
         </div>
+        <div className="mb-4">
+          <label htmlFor="username" className="block">
+            E-mail
+          </label>
+          <input
+            required
+            type="email"
+            name="email"
+            className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
+            ref={register}
+          />
+        </div>
 
         <div className="mb-4">
           <label htmlFor="password" className="block">
@@ -64,22 +75,24 @@ const Login = () => {
           />
         </div>
 
-        <div className="mb-4 flex items-center">
-          <input
-            type="checkbox"
-            name="remember"
-            ref={register}
-            className="focus:outline-none"
-          />
-          <label htmlFor="remember" className="ml-2">
-            Remember Me
+        <div className="mb-4">
+          <label htmlFor="password" className="block">
+            Confirm Password
           </label>
+          <input
+            type="password"
+            name="passwordConfirm"
+            autoComplete
+            required
+            className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
+            ref={register}
+          />
         </div>
         <button
           type="submit"
           className="focus:outline-none bg-green-mottainai text-white w-full rounded p-1"
         >
-          Log In
+          Sign Up
         </button>
         {error && <div className="text-center mt-4 text-red-500">{error}</div>}
       </form>
@@ -87,4 +100,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Signup

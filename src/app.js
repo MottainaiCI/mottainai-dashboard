@@ -16,6 +16,7 @@ import ShowNode from "./components/routes/nodes/show"
 import Artefacts from "@/components/routes/artefacts"
 import ShowArtefacts from "./components/routes/artefacts/show"
 import Login from "@/components/routes/login"
+import Signup from "@/components/routes/signup"
 import Tokens from "@/components/routes/tokens"
 import Users from "@/components/routes/users"
 import ShowUser from "./components/routes/users/show"
@@ -32,8 +33,18 @@ import axios from "@/axios"
 import UserService from "./service/user"
 import ShowPlan from "./components/routes/plans/show"
 
-const AUTHED = ["/plans", "/pipelines", "/tasks", "/artefacts", "/nodes"]
-const UNAUTHED = ["/login"]
+const AUTHED = [
+  "/plans",
+  "/pipelines",
+  "/tasks",
+  "/artefacts",
+  "/nodes",
+  "/users",
+  "/tokens",
+]
+const UNAUTHED = ["/login", "/signup"]
+const MANAGER_ROUTES = ["/users"]
+const ADMIN_ROUTES = []
 
 const App = () => {
   const [theme, setTheme] = useLocalStorage(
@@ -72,6 +83,17 @@ const App = () => {
       (UNAUTHED.some((val) => url.startsWith(val)) && user)
     ) {
       route("/")
+    } else if (user) {
+      if (
+        MANAGER_ROUTES.some((val) => url.startsWith(val)) &&
+        !user.is_manager &&
+        !user.is_admin
+      ) {
+        route("/")
+      }
+      if (ADMIN_ROUTES.some((val) => url.startsWith(val)) && !user.is_admin) {
+        route("/")
+      }
     }
   }
 
@@ -124,6 +146,7 @@ const App = () => {
                 <Artefacts path="/artefacts" />
                 <ShowArtefacts path="/artefacts/:namespace" />
                 <Login path="/login" />
+                <Signup path="/signup" />
                 <Tokens path="/tokens" />
                 <Users path="/users" />
                 <ShowUser path="/users/:userId" />

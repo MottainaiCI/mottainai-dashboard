@@ -14,6 +14,7 @@ library.add(
   fas.faNetworkWired,
   fas.faPalette,
   fas.faQuestion,
+  fas.faSignInAlt,
   fas.faSignOutAlt,
   fas.faSpinner,
   fas.faStop,
@@ -21,6 +22,7 @@ library.add(
   fas.faTasks,
   fas.faUser,
   fas.faUsers,
+  fas.faUserPlus,
   fas.faKey,
   fas.faCog,
   fas.faExternalLinkAlt
