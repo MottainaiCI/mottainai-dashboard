@@ -46,7 +46,8 @@ const Login = () => {
             required
             id="username"
             name="username"
-            className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
+            className="text-cultured-black rounded border focus:outline-none
+              focus:border-green-mottainai px-2 py-1 min-w-full"
             ref={register}
           />
         </div>
@@ -61,7 +62,8 @@ const Login = () => {
             name="password"
             autoComplete
             required
-            className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
+            className="text-cultured-black rounded border focus:outline-none
+              focus:border-green-mottainai px-2 py-1 min-w-full"
             ref={register}
           />
         </div>

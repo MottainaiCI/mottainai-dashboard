@@ -88,7 +88,8 @@ const Signup = () => {
             required
             id="username"
             name="username"
-            className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
+            className="text-cultured-black rounded border focus:outline-none
+              focus:border-green-mottainai px-2 py-1 min-w-full"
             ref={register}
           />
         </div>
@@ -101,7 +102,8 @@ const Signup = () => {
             type="email"
             id="email"
             name="email"
-            className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
+            className="text-cultured-black rounded border focus:outline-none
+              focus:border-green-mottainai px-2 py-1 min-w-full"
             ref={register}
           />
         </div>
@@ -116,7 +118,8 @@ const Signup = () => {
             type="password"
             id="password"
             name="password"
-            className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
+            className="text-cultured-black rounded border focus:outline-none
+              focus:border-green-mottainai px-2 py-1 min-w-full"
             ref={register}
           />
         </div>
@@ -131,7 +134,8 @@ const Signup = () => {
             type="password"
             id="passwordConfirm"
             name="passwordConfirm"
-            className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
+            className="text-cultured-black rounded border focus:outline-none
+              focus:border-green-mottainai px-2 py-1 min-w-full"
             ref={register}
           />
         </div>
@@ -157,7 +161,8 @@ const Signup = () => {
             autoComplete="off"
             id="captcha"
             name="captcha"
-            className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
+            className="text-cultured-black rounded border focus:outline-none
+              focus:border-green-mottainai px-2 py-1 flex-1"
             ref={register}
           />
           <div>
