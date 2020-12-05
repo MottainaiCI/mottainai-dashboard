@@ -11,12 +11,14 @@ const UserService = {
         }, rej)
     })
   },
-  signup(email, username, password, passwordConfirm) {
+  signup(email, username, password, passwordConfirm, captcha_id, captcha) {
     return axios.post("/v1/client/auth/register", {
       email,
       username,
       password,
       passwordConfirm,
+      captcha_id,
+      captcha,
     })
   },
   logout() {

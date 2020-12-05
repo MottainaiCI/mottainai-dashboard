@@ -1,36 +1,79 @@
 import { useForm } from "react-hook-form"
-import { useContext, useState, useEffect } from "preact/hooks"
+import { useContext, useState, useEffect, useCallback } from "preact/hooks"
 import { route } from "preact-router"
 import { toast } from "react-toastify"
 
 import ThemeContext from "@/contexts/theme"
 import TitleContext from "@/contexts/title"
 import UserService from "@/service/user"
+import CaptchaService from "@/service/captcha"
 import themes from "@/themes"
+import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
+import Loader from "@/components/common/loader"
 
 const Signup = () => {
   let [error, setError] = useState(null)
+  let [captchaCode, setCaptchaCode] = useState(null)
+  let [fetchingCaptcha, setFetchingCaptcha] = useState(false)
   let { theme } = useContext(ThemeContext)
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("Sign Up")
   }, [setTitle])
 
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, setValue } = useForm()
 
-  const onSubmit = ({ email, username, password, passwordConfirm }) => {
-    if (email && username && password && passwordConfirm) {
-      UserService.signup(email, username, password, passwordConfirm).then(
+  const onSubmit = ({
+    email,
+    username,
+    password,
+    passwordConfirm,
+    captcha_id,
+    captcha,
+  }) => {
+    if (
+      email &&
+      username &&
+      password &&
+      passwordConfirm &&
+      captcha &&
+      captcha_id
+    ) {
+      UserService.signup(
+        email,
+        username,
+        password,
+        passwordConfirm,
+        captcha_id,
+        captcha
+      ).then(
         () => {
           toast.success("Registration successful! You can log in now.")
           route("/login")
         },
         (err) => {
           setError(err.response.data.error)
+          refreshCaptcha()
         }
       )
     }
   }
+
+  const refreshCaptcha = useCallback(() => {
+    if (fetchingCaptcha) {
+      return
+    }
+    setValue("captcha", "")
+    setFetchingCaptcha(true)
+    CaptchaService.fetchCode()
+      .then(setCaptchaCode, (err) => {
+        setError(err.response.data.error)
+        refreshCaptcha()
+      })
+      .then(() => setFetchingCaptcha(false))
+  }, [fetchingCaptcha])
+
+  useEffect(refreshCaptcha, [])
 
   return (
     <div
@@ -92,9 +135,48 @@ const Signup = () => {
             ref={register}
           />
         </div>
+
+        <div className="mb-4">
+          <label className="block">CAPTCHA</label>
+          <input
+            type="hidden"
+            name="captcha_id"
+            value={captchaCode}
+            ref={register}
+          />
+          {!captchaCode || fetchingCaptcha ? (
+            <div className="py-4">
+              <Loader />
+            </div>
+          ) : (
+            <img src={`/api/v1/client/captcha/image/${captchaCode}`} />
+          )}
+        </div>
+        <div className="mb-4 flex items-center">
+          <input
+            autoComplete="off"
+            id="captcha"
+            name="captcha"
+            className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
+            ref={register}
+          />
+          <div>
+            <FontAwesomeIcon
+              icon="sync-alt"
+              className={`ml-2 cursor-pointer ${fetchingCaptcha && "fa-pulse"}`}
+              onClick={refreshCaptcha}
+            />
+          </div>
+        </div>
         <button
+          disabled={fetchingCaptcha}
           type="submit"
-          className="focus:outline-none bg-green-mottainai text-white w-full rounded p-1"
+          className={`focus:outline-none bg-green-mottainai text-white w-full rounded p-1
+            ${
+              fetchingCaptcha
+                ? "disabled:opacity-50 disabled:cursor-not-allowed"
+                : ""
+            }`}
         >
           Sign Up
         </button>
