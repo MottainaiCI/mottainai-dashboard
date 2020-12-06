@@ -2,7 +2,7 @@ import axios from "@/axios"
 
 const PlanService = {
   fetchAll() {
-    return axios.get("/tasks/planned").then(({ data }) => data)
+    return axios.get("/tasks/planned").then(({ data }) => data || [])
   },
   fetch(id) {
     return axios.get(`/tasks/plan/${id}`).then(({ data }) => data)

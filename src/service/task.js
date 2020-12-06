@@ -2,7 +2,7 @@ import axios from "@/axios"
 
 const TaskService = {
   fetchAll() {
-    return axios.get("/tasks").then(({ data }) => data)
+    return axios.get("/tasks").then(({ data }) => data || [])
   },
   fetch(id) {
     return axios.get(`/tasks/${id}`).then(({ data }) => data)

@@ -19,9 +19,9 @@ const Login = () => {
 
   const { register, handleSubmit } = useForm()
 
-  const onSubmit = ({ username, password }) => {
+  const onSubmit = ({ remember, username, password }) => {
     if (username && password) {
-      UserService.login(username, password).then(
+      UserService.login(username, password, remember).then(
         (data) => {
           setUser(data)
           route("/")
@@ -43,8 +43,11 @@ const Login = () => {
             Username
           </label>
           <input
+            required
+            id="username"
             name="username"
-            className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
+            className="text-cultured-black rounded border focus:outline-none
+              focus:border-green-mottainai px-2 py-1 min-w-full"
             ref={register}
           />
         </div>
@@ -55,11 +58,27 @@ const Login = () => {
           </label>
           <input
             type="password"
+            id="password"
             name="password"
             autoComplete
-            className="text-cultured-black rounded border focus:outline-none focus:border-green-mottainai px-2 py-1"
+            required
+            className="text-cultured-black rounded border focus:outline-none
+              focus:border-green-mottainai px-2 py-1 min-w-full"
             ref={register}
           />
+        </div>
+
+        <div className="mb-4 flex items-center">
+          <input
+            type="checkbox"
+            id="remember"
+            name="remember"
+            ref={register}
+            className="focus:outline-none"
+          />
+          <label for="remember" className="ml-2">
+            Remember Me
+          </label>
         </div>
         <button
           type="submit"

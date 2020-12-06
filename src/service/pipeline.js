@@ -2,7 +2,7 @@ import axios from "@/axios"
 
 const PipelineService = {
   fetchAll() {
-    return axios.get("/tasks/pipelines").then(({ data }) => data)
+    return axios.get("/tasks/pipelines").then(({ data }) => data || [])
   },
   fetch(id) {
     return axios.get(`/tasks/pipeline/${id}`).then(({ data }) => data)

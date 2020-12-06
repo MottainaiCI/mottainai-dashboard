@@ -20,6 +20,7 @@ import {
 
 const ProfileItem = () => {
   let { user, setUser } = useContext(UserContext)
+  const isPrivileged = user.is_manager || user.is_admin
   const signOut = () => {
     UserService.logout().then(() => {
       setUser(null)
@@ -29,7 +30,9 @@ const ProfileItem = () => {
 
   return (
     <SidebarPopoutMenu icon="user" anchor="bottom-0" label={user.name}>
-      <SidebarPopoutLink href="/users" icon="users" text="Users" />
+      {isPrivileged && (
+        <SidebarPopoutLink href="/users" icon="users" text="Users" />
+      )}
       <SidebarPopoutLink href="/tokens" icon="key" text="API Tokens" />
       <SidebarPopoutItem onClick={signOut} icon="sign-out-alt" text="Log out" />
     </SidebarPopoutMenu>
@@ -100,7 +103,10 @@ const Sidebar = () => {
               {user ? (
                 <ProfileItem />
               ) : (
-                <SidebarLink href="/login" icon="user" text="Log In" />
+                <>
+                  <SidebarLink href="/login" icon="sign-in-alt" text="Log In" />
+                  <SidebarLink href="/signup" icon="user-plus" text="Sign Up" />
+                </>
               )}
               <SidebarPopoutSelector
                 icon="palette"
