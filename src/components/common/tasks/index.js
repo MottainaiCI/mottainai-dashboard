@@ -42,15 +42,8 @@ export const getTaskIcon = (status, result) => {
 export const taskOptions = ({
   onClone = () => {},
   onDelete = () => {},
-  onStart = () => {},
   onStop = () => {},
 }) => [
-  {
-    label: "Start",
-    onClick(id) {
-      return TaskService.start(id).then(() => onStart(id))
-    },
-  },
   {
     label: "Stop",
     onClick(id) {
@@ -160,15 +153,6 @@ export const taskTableColumns = ({
               setTasks(tasks.filter((item) => item.ID !== id))
             },
             onStop(id) {
-              TaskService.fetch(id).then((task) => {
-                setTasks(
-                  tasks.map((item) => {
-                    return item.ID === id ? task : item
-                  })
-                )
-              })
-            },
-            onStart(id) {
               TaskService.fetch(id).then((task) => {
                 setTasks(
                   tasks.map((item) => {
