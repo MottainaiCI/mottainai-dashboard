@@ -62,7 +62,7 @@ function SelectColumnFilter({
 const Table = ({
   columns,
   data,
-  defaultSortBy = [{ id: "ID", desc: true }],
+  defaultSortBy = [{ id: "start_time", desc: true }],
 }) => {
   let { theme } = useContext(ThemeContext)
 
