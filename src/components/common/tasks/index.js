@@ -77,7 +77,7 @@ export const taskOptions = ({
 ]
 
 export const taskTableColumns = ({
-  refreshTasks = () => {},
+  fetchTasks = () => {},
   setTasks = () => {},
   tasks = [],
 }) => [
@@ -113,7 +113,8 @@ export const taskTableColumns = ({
   {
     Header: "Status",
     accessor: "status",
-    filter: "includes",
+    // todo: filter server-side
+    // filter: "includes",
   },
   {
     Header: "Start Time",
@@ -126,6 +127,7 @@ export const taskTableColumns = ({
   },
   {
     Header: "Duration",
+    disableSortBy: true,
     accessor: (d) => {
       if (d.start_time) {
         let djsEndTime = d.end_time ? dayjs(d.end_time) : dayjs()
@@ -147,10 +149,10 @@ export const taskTableColumns = ({
           actionArgs={[row.original.ID]}
           options={taskOptions({
             onClone() {
-              refreshTasks()
+              fetchTasks()
             },
-            onDelete(id) {
-              setTasks(tasks.filter((item) => item.ID !== id))
+            onDelete() {
+              fetchTasks()
             },
             onStop(id) {
               TaskService.fetch(id).then((task) => {

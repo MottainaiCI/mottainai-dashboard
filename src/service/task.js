@@ -4,6 +4,13 @@ const TaskService = {
   fetchAll() {
     return axios.get("/tasks").then(({ data }) => data || [])
   },
+  fetchPage({ pageIndex, pageSize, sort, sortOrder }) {
+    return axios
+      .get("/tasks_filtered", {
+        params: { pageSize, pageIndex, sort, sortOrder },
+      })
+      .then(({ data }) => data || [])
+  },
   fetch(id) {
     return axios.get(`/tasks/${id}`).then(({ data }) => data)
   },
