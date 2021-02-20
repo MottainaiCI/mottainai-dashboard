@@ -87,6 +87,7 @@ const ShowPipeline = ({ pipelineId }) => {
           object={pipeline}
           keys={[
             "ID",
+            "pipeline_name",
             "pipeline_owner_id",
             "created_time",
             "start_time",
@@ -108,7 +109,7 @@ const ShowPipeline = ({ pipelineId }) => {
             pipeline_owner_id(id) {
               return (
                 <Link href={`/users/${id}`} className="text-blue-400">
-                  {pipeline.pipeline_name}
+                  {id}
                 </Link>
               )
             },
