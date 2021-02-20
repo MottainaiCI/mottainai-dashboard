@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useContext } from "preact/hooks"
+import { Link } from "preact-router"
 import dayjs from "@/day"
 
 import TitleContext from "@/contexts/title"
@@ -33,6 +34,16 @@ const Pipelines = () => {
       {
         Header: "ID",
         accessor: "ID",
+        Cell: ({ row }) => {
+          return (
+            <Link
+              href={`/pipelines/${row.original.ID}`}
+              className="text-blue-400"
+            >
+              {row.original.ID}
+            </Link>
+          )
+        },
       },
       {
         Header: "Name",

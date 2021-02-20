@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css"
 import Dashboard from "@/components/routes/dashboard"
 import Plans from "@/components/routes/plans"
 import Pipelines from "@/components/routes/pipelines"
+import ShowPipeline from "@/components/routes/pipelines/show"
 import Tasks from "@/components/routes/tasks"
 import ShowTask from "@/components/routes/tasks/show"
 import NewTask from "@/components/routes/tasks/new"
@@ -141,6 +142,7 @@ const App = () => {
                 <Plans path="/plans" />
                 <ShowPlan path="/plans/:planId" />
                 <Pipelines path="/pipelines" />
+                <ShowPipeline path="/pipelines/:pipelineId" />
                 <Nodes path="/nodes" />
                 <ShowNode path="/nodes/:nodeId" />
                 <Artefacts path="/artefacts" />
