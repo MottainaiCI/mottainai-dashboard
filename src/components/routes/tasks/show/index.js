@@ -143,9 +143,6 @@ const ShowTask = ({ taskId }) => {
           />
         </div>
       </div>
-      <div className="font-bold mb-2">
-        <div className="text-base">{task.name}</div>
-      </div>
       <div className="flex mb-2">
         <PillLink LinkTag="a" href={`/api/tasks/${task.ID}`} target="_blank">
           JSON
@@ -162,6 +159,7 @@ const ShowTask = ({ taskId }) => {
         object={task}
         keys={[
           "ID",
+          "name",
           "type",
           "image",
           "owner_id",
