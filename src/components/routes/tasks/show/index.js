@@ -7,8 +7,9 @@ import { Scrollbars } from "react-custom-scrollbars"
 import TitleContext from "@/contexts/title"
 import ThemeContext from "@/contexts/theme"
 import Button from "@/components/common/button"
-import Pill, { PillLink } from "@/components/common/pill"
+import { PillLink } from "@/components/common/pill"
 import Table from "@/components/common/table"
+import KVTable from "@/components/common/kv_table"
 import Loader from "@/components/common/loader"
 import { getTaskIcon, taskOptions } from "@/components/common/tasks"
 import Dropdown from "@/components/common/dropdown"
@@ -114,6 +115,8 @@ const ShowTask = ({ taskId }) => {
     return <Loader />
   }
 
+  const dateFn = (val) => (val ? dayjs(val).format(datetimeFormatStr) : "N/A")
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -144,12 +147,6 @@ const ShowTask = ({ taskId }) => {
         <div className="text-base">{task.name}</div>
       </div>
       <div className="flex mb-2">
-        <Pill>{task.type}</Pill>
-        <Pill>{task.image}</Pill>
-        <PillLink href={`/nodes/${task.node_id}`}>Node {task.node_id}</PillLink>
-        <PillLink href={`/users/${task.owner_id}`}>
-          User {task.owner_id}
-        </PillLink>
         <PillLink LinkTag="a" href={`/api/tasks/${task.ID}`} target="_blank">
           JSON
         </PillLink>
@@ -161,26 +158,48 @@ const ShowTask = ({ taskId }) => {
           YAML
         </PillLink>
       </div>
-      <div className="flex mb-2">
-        <Pill>
-          Created {dayjs(task.created_time).format(datetimeFormatStr)}
-        </Pill>
-        {task.start_time && (
-          <>
-            <Pill>
-              Started {dayjs(task.start_time).format(datetimeFormatStr)}
-            </Pill>
-            {task.end_time && (
-              <Pill>
-                Ended {dayjs(task.end_time).format(datetimeFormatStr)}
-              </Pill>
-            )}
-            <Pill>
-              Duration {durationFormat(task.start_time, task.end_time)}
-            </Pill>
-          </>
-        )}
-      </div>
+      <KVTable
+        object={task}
+        keys={[
+          "ID",
+          "type",
+          "image",
+          "owner_id",
+          "node_id",
+          "created_time",
+          "start_time",
+          "end_time",
+          "duration",
+        ]}
+        formatters={{
+          created_time: dateFn,
+          start_time: dateFn,
+          end_time: dateFn,
+          duration: () =>
+            task.start_time
+              ? durationFormat(task.start_time, task.end_time)
+              : "",
+          owner_id(id) {
+            return (
+              <Link href={`/users/${id}`} className="text-blue-400">
+                {id}
+              </Link>
+            )
+          },
+          node_id(id) {
+            return (
+              <Link href={`/nodes/${id}`} className="text-blue-400">
+                {id}
+              </Link>
+            )
+          },
+        }}
+        fieldFormatters={{
+          owner_id: () => "Owner",
+          node_id: () => "Node",
+        }}
+      />
+
       {error && (
         <div className="w-full bg-red-200 px-2 py-1">
           {typeof error === "string"
@@ -188,7 +207,7 @@ const ShowTask = ({ taskId }) => {
             : "There was a problem retrieving the task."}
         </div>
       )}
-      <div className="text-lg font-bold my-2">Log Tail</div>
+      <div className="text-xl font-bold my-2">Log Tail</div>
       <div className={`h-96 bg-white relative ${themes[theme].logs.container}`}>
         {isRefreshing && (
           <Button
@@ -235,7 +254,7 @@ const ShowTask = ({ taskId }) => {
           </div>
         </Scrollbars>
       </div>
-      <div className="text-lg font-bold my-2">Commands</div>
+      <div className="text-xl font-bold my-2">Commands</div>
       <div className={`font-mono p-2 ${themes[theme].cardContainer}`}>
         {task &&
           task.script &&
@@ -246,7 +265,7 @@ const ShowTask = ({ taskId }) => {
             </div>
           ))}
       </div>
-      <div className="text-lg font-bold my-2">Artefacts</div>
+      <div className="text-xl font-bold my-2">Artefacts</div>
       {artefacts ? (
         <Table data={artefacts} columns={artefactColumns} />
       ) : (

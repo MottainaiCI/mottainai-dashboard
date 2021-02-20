@@ -4,13 +4,14 @@ import { Link, route } from "preact-router"
 import TitleContext from "@/contexts/title"
 import Loader from "@/components/common/loader"
 import NodeService from "@/service/node"
-import Pill from "@/components/common/pill"
 import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 import Dropdown from "@/components/common/dropdown"
 import Table from "@/components/common/table"
 import { taskTableColumns } from "@/components/common/tasks"
 import { showConfirmModal } from "@/components/common/modal"
+import KVTable from "@/components/common/kv_table"
 import dayjs from "@/day"
+import { datetimeFormatStr } from "@/util"
 
 const ShowNode = ({ nodeId }) => {
   const [node, setNode] = useState(null)
@@ -66,26 +67,28 @@ const ShowNode = ({ nodeId }) => {
       return <div>Node was not found</div>
     }
 
+    const dateFn = (val) => (val ? dayjs(val).format(datetimeFormatStr) : "N/A")
+
     return (
       <>
-        <div className="flex mb-2">
-          <Pill>
-            Last Report:
-            {` ${
-              node.last_report ? dayjs().to(dayjs(node.last_report)) : "N/A"
-            }`}
-          </Pill>
-          {node.hostname && <Pill>Hostname: {node.hostname}</Pill>}
+        <KVTable
+          object={node}
+          keys={["ID", "last_report", "nodeid", "key", "user", "pass"]}
+          formatters={{
+            last_report: dateFn,
+          }}
+          fieldFormatters={{
+            last_report: () => "Last Report",
+            nodeid: () => "Hardware Id",
+            key: () => "Agent Key",
+            user: () => "Broker User",
+            pass: () => "Broker Pass",
+          }}
+        />
+
+        <div className="text-xl font-bold mb-2">
+          Tasks executed by this node
         </div>
-        <div className="flex mb-2">
-          {node.nodeid && <Pill>Hardware Id: {node.nodeid}</Pill>}
-          {node.key && <Pill>Agent Key: {node.key}</Pill>}
-        </div>
-        <div className="flex mb-2">
-          {node.user && <Pill>Broker User: {node.user}</Pill>}
-          {node.pass && <Pill>Broker Pass: {node.pass}</Pill>}
-        </div>
-        <div className="text-md font-bold">Tasks executed by this node</div>
         {loadingTasks ? (
           <Loader />
         ) : nodeTasks && nodeTasks.length ? (
