@@ -58,13 +58,13 @@ const ShowNode = ({ nodeId }) => {
     },
   ]
 
+  if (loading) {
+    return <Loader />
+  }
+
   let body = (() => {
-    if (loading) {
-      return <Loader />
-    } else if (error) {
+    if (error) {
       return <div>{error}</div>
-    } else if (!node) {
-      return <div>Node was not found</div>
     }
 
     const dateFn = (val) => (val ? dayjs(val).format(datetimeFormatStr) : "N/A")

@@ -50,13 +50,13 @@ const ShowPipeline = ({ pipelineId }) => {
     },
   ]
 
+  if (loading) {
+    return <Loader />
+  }
+
   let body = (() => {
-    if (loading) {
-      return <Loader />
-    } else if (error) {
+    if (error) {
       return <div>{error}</div>
-    } else if (!pipeline) {
-      return <div>Pipeline was not found</div>
     }
 
     const tasks = Object.keys(pipeline.tasks).map((k) => ({
