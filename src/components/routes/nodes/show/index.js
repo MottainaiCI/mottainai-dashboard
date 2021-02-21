@@ -10,8 +10,7 @@ import Table from "@/components/common/table"
 import { taskTableColumns } from "@/components/common/tasks"
 import { showConfirmModal } from "@/components/common/modal"
 import KVTable from "@/components/common/kv_table"
-import dayjs from "@/day"
-import { datetimeFormatStr } from "@/util"
+import { relativeTimeFormatFn } from "@/util"
 
 const ShowNode = ({ nodeId }) => {
   const [node, setNode] = useState(null)
@@ -67,15 +66,13 @@ const ShowNode = ({ nodeId }) => {
       return <div>{error}</div>
     }
 
-    const dateFn = (val) => (val ? dayjs(val).format(datetimeFormatStr) : "N/A")
-
     return (
       <>
         <KVTable
           object={node}
           keys={["ID", "last_report", "nodeid", "key", "user", "pass"]}
           formatters={{
-            last_report: dateFn,
+            last_report: relativeTimeFormatFn,
           }}
           fieldFormatters={{
             last_report: () => "Last Report",

@@ -10,8 +10,7 @@ import Table from "@/components/common/table"
 import { showConfirmModal } from "@/components/common/modal"
 import KVTable from "@/components/common/kv_table"
 import { getTaskIcon } from "@/components/common/tasks"
-import dayjs from "@/day"
-import { datetimeFormatStr } from "@/util"
+import { dateFormatFn } from "@/util"
 
 const ShowPipeline = ({ pipelineId }) => {
   const [pipeline, setPipeline] = useState(null)
@@ -63,7 +62,7 @@ const ShowPipeline = ({ pipelineId }) => {
       task_name: k,
       ...pipeline.tasks[k],
     }))
-    const dateFn = (val) => (val ? dayjs(val).format(datetimeFormatStr) : "N/A")
+
     const taskFn = (arr) => {
       if (!arr) {
         return ""
@@ -100,9 +99,9 @@ const ShowPipeline = ({ pipelineId }) => {
             "chord",
           ]}
           formatters={{
-            created_time: dateFn,
-            start_time: dateFn,
-            end_time: dateFn,
+            created_time: dateFormatFn,
+            start_time: dateFormatFn,
+            end_time: dateFormatFn,
             group: taskFn,
             chain: taskFn,
             chord: taskFn,
@@ -161,7 +160,7 @@ const ShowPipeline = ({ pipelineId }) => {
               Header: "Start Time",
               accessor: "start_time",
               Cell: ({ row }) => {
-                return dateFn(row.original.start_time)
+                return dateFormatFn(row.original.start_time)
               },
             },
             {

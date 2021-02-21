@@ -15,8 +15,7 @@ import { getTaskIcon, taskOptions } from "@/components/common/tasks"
 import Dropdown from "@/components/common/dropdown"
 import TaskService from "@/service/task"
 import themes from "@/themes"
-import { datetimeFormatStr, durationFormat, nl2br } from "@/util"
-import dayjs from "@/day"
+import { durationFormatFn, nl2br, dateFormatFn } from "@/util"
 
 const ShowTask = ({ taskId }) => {
   const logView = useRef()
@@ -155,12 +154,12 @@ const ShowTask = ({ taskId }) => {
             "duration",
           ]}
           formatters={{
-            created_time: dateFn,
-            start_time: dateFn,
-            end_time: dateFn,
+            created_time: dateFormatFn,
+            start_time: dateFormatFn,
+            end_time: dateFormatFn,
             duration: () =>
               task.start_time
-                ? durationFormat(task.start_time, task.end_time)
+                ? durationFormatFn(task.start_time, task.end_time)
                 : "",
             owner_id(id) {
               return (
@@ -252,8 +251,6 @@ const ShowTask = ({ taskId }) => {
       </>
     )
   }
-
-  const dateFn = (val) => (val ? dayjs(val).format(datetimeFormatStr) : "N/A")
 
   return (
     <>
