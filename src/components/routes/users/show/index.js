@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "preact/hooks"
 import TitleContext from "@/contexts/title"
 import Loader from "@/components/common/loader"
 import UserService from "@/service/user"
-import Pill from "@/components/common/pill"
+import KVTable from "@/components/common/kv_table"
 
 const ShowUser = ({ userId }) => {
   const [user, setUser] = useState(null)
@@ -32,16 +32,22 @@ const ShowUser = ({ userId }) => {
       ) : user ? (
         <>
           <div className="flex mb-2">
-            <Pill>Name: {user.name}</Pill>
-            <Pill>Email: {user.email}</Pill>
-            <Pill>
-              Role:
-              {user.is_admin
-                ? " Admin"
-                : user.is_manager
-                ? " Manager"
-                : " User"}
-            </Pill>
+            <KVTable
+              object={user}
+              keys={["id", "name", "email", "role"]}
+              formatters={{
+                role() {
+                  return user.is_admin
+                    ? "Admin"
+                    : user.is_manager
+                    ? "Manager"
+                    : "User"
+                },
+              }}
+              fieldFormatters={{
+                id: () => "ID",
+              }}
+            />
           </div>
         </>
       ) : (

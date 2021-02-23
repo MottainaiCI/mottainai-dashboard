@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 
 import { showConfirmModal } from "@/components/common/modal"
 import TaskService from "@/service/task"
-import { datetimeFormatStr, durationFormat } from "@/util"
+import { datetimeFormatStr, durationFormatFn } from "@/util"
 import dayjs from "@/day"
 import Dropdown from "../dropdown"
 
@@ -77,7 +77,7 @@ export const taskOptions = ({
 ]
 
 export const taskTableColumns = ({
-  refreshTasks = () => {},
+  fetchTasks = () => {},
   setTasks = () => {},
   tasks = [],
 }) => [
@@ -113,7 +113,8 @@ export const taskTableColumns = ({
   {
     Header: "Status",
     accessor: "status",
-    filter: "includes",
+    // todo: filter server-side
+    // filter: "includes",
   },
   {
     Header: "Start Time",
@@ -126,6 +127,7 @@ export const taskTableColumns = ({
   },
   {
     Header: "Duration",
+    disableSortBy: true,
     accessor: (d) => {
       if (d.start_time) {
         let djsEndTime = d.end_time ? dayjs(d.end_time) : dayjs()
@@ -134,7 +136,7 @@ export const taskTableColumns = ({
     },
     Cell: ({ row }) => {
       if (row.original.start_time) {
-        return durationFormat(row.original.start_time, row.original.end_time)
+        return durationFormatFn(row.original.start_time, row.original.end_time)
       }
     },
   },
@@ -147,10 +149,10 @@ export const taskTableColumns = ({
           actionArgs={[row.original.ID]}
           options={taskOptions({
             onClone() {
-              refreshTasks()
+              fetchTasks()
             },
-            onDelete(id) {
-              setTasks(tasks.filter((item) => item.ID !== id))
+            onDelete() {
+              fetchTasks()
             },
             onStop(id) {
               TaskService.fetch(id).then((task) => {

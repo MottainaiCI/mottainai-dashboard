@@ -47,6 +47,10 @@ const NewTask = () => {
     )
   }
 
+  function goBack() {
+    route("/tasks")
+  }
+
   return (
     <>
       <div className="flex justify-between items-center mb-2">
@@ -64,9 +68,14 @@ const NewTask = () => {
         editorDidMount={handleEditorDidMount}
         options={{ theme: "dark", minimap: { enabled: false }, scrollbar: {} }}
       />
-      <Button className="mt-2" onClick={create} disabled={!isEditorReady}>
-        Create
-      </Button>
+      <div className="flex flex-row justify-between">
+        <Button className="mt-2" onClick={goBack}>
+          Cancel
+        </Button>
+        <Button className="mt-2" onClick={create} disabled={!isEditorReady}>
+          Create
+        </Button>
+      </div>
     </>
   )
 }
