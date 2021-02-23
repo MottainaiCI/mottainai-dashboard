@@ -7,15 +7,15 @@ import { Scrollbars } from "react-custom-scrollbars"
 import TitleContext from "@/contexts/title"
 import ThemeContext from "@/contexts/theme"
 import Button from "@/components/common/button"
-import Pill, { PillLink } from "@/components/common/pill"
+import { PillLink } from "@/components/common/pill"
 import Table from "@/components/common/table"
+import KVTable from "@/components/common/kv_table"
 import Loader from "@/components/common/loader"
 import { getTaskIcon, taskOptions } from "@/components/common/tasks"
 import Dropdown from "@/components/common/dropdown"
 import TaskService from "@/service/task"
 import themes from "@/themes"
-import { datetimeFormatStr, durationFormat, nl2br } from "@/util"
-import dayjs from "@/day"
+import { durationFormatFn, nl2br, dateFormatFn } from "@/util"
 
 const ShowTask = ({ taskId }) => {
   const logView = useRef()
@@ -61,7 +61,7 @@ const ShowTask = ({ taskId }) => {
             if (err.response.status === 404) {
               setError("Task not found.")
             } else {
-              setError(err)
+              setError("There was a problem retrieving the task")
             }
           }
         )
@@ -114,6 +114,144 @@ const ShowTask = ({ taskId }) => {
     return <Loader />
   }
 
+  let body = () => {
+    if (error) {
+      return <div>{error}</div>
+    }
+
+    return (
+      <>
+        {task && (
+          <div className="flex mb-2">
+            <PillLink
+              LinkTag="a"
+              href={`/api/tasks/${task.ID}`}
+              target="_blank"
+            >
+              JSON
+            </PillLink>
+            <PillLink
+              LinkTag="a"
+              href={`/api/tasks/${task.ID}.yaml`}
+              target="_blank"
+            >
+              YAML
+            </PillLink>
+          </div>
+        )}
+        <KVTable
+          object={task}
+          keys={[
+            "ID",
+            "name",
+            "type",
+            "image",
+            "owner_id",
+            "node_id",
+            "created_time",
+            "start_time",
+            "end_time",
+            "duration",
+          ]}
+          formatters={{
+            created_time: dateFormatFn,
+            start_time: dateFormatFn,
+            end_time: dateFormatFn,
+            duration: () =>
+              task.start_time
+                ? durationFormatFn(task.start_time, task.end_time)
+                : "",
+            owner_id(id) {
+              return (
+                <Link href={`/users/${id}`} className="text-blue-400">
+                  {id}
+                </Link>
+              )
+            },
+            node_id(id) {
+              return (
+                <Link href={`/nodes/${id}`} className="text-blue-400">
+                  {id}
+                </Link>
+              )
+            },
+          }}
+          fieldFormatters={{
+            owner_id: () => "Owner",
+            node_id: () => "Node",
+          }}
+        />
+
+        <div className="text-xl font-bold my-2">Log Tail</div>
+        <div
+          className={`h-96 bg-white relative ${themes[theme].logs.container}`}
+        >
+          {isRefreshing && (
+            <Button
+              className={`absolute cursor-pointer top-0 right-0 rounded mr-3 mt-1 z-10
+              ${
+                themes[theme].logs[enableScroll ? "scrollOnBg" : "scrollOffBg"]
+              }`}
+              onClick={() => {
+                setEnableScroll(!enableScroll)
+              }}
+            >
+              Scroll {enableScroll ? "On" : "Off"}
+            </Button>
+          )}
+          <Scrollbars
+            renderTrackVertical={({ style }) => (
+              <div
+                style={{
+                  ...style,
+                  right: 2,
+                  bottom: 2,
+                  top: 2,
+                  borderRadius: 3,
+                }}
+                className={themes[theme].logs.scrollTrack}
+              />
+            )}
+            renderThumbVertical={({ style }) => (
+              <div
+                style={{
+                  ...style,
+                  borderRadius: "inherit",
+                }}
+                className={themes[theme].logs.scrollThumb}
+              />
+            )}
+            ref={logView}
+          >
+            <div
+              className={`pl-2 py-1 select-text font-mono
+            ${themes[theme].logs.bg}`}
+            >
+              {nl2br(logs.trim())}
+            </div>
+          </Scrollbars>
+        </div>
+        <div className="text-xl font-bold my-2">Commands</div>
+        <div className={`font-mono p-2 ${themes[theme].cardContainer}`}>
+          {task &&
+            task.script &&
+            task.script.map((cmd) => (
+              <div className="flex items-center">
+                <div className="mr-2">{">"}</div>
+                <div className="select-text">{cmd}</div>
+              </div>
+            ))}
+        </div>
+        <div className="text-xl font-bold my-2">Artefacts</div>
+        {artefacts ? (
+          <Table data={artefacts} columns={artefactColumns} />
+        ) : (
+          <div>No artefacts found.</div>
+        )}
+      </>
+    )
+  }
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -125,133 +263,24 @@ const ShowTask = ({ taskId }) => {
             <FontAwesomeIcon icon="caret-left" className="mr-1" />
             back to all tasks
           </Link>
-          <Dropdown
-            label={<FontAwesomeIcon icon="cog" />}
-            anchor="right-0"
-            actionArgs={[task && task.ID]}
-            options={taskOptions({
-              onClone(id) {
-                route(`/tasks/${id}`)
-              },
-              onDelete() {
-                route("/tasks")
-              },
-            })}
-          />
-        </div>
-      </div>
-      <div className="font-bold mb-2">
-        <div className="text-base">{task.name}</div>
-      </div>
-      <div className="flex mb-2">
-        <Pill>{task.type}</Pill>
-        <Pill>{task.image}</Pill>
-        <PillLink href={`/nodes/${task.node_id}`}>Node {task.node_id}</PillLink>
-        <PillLink href={`/users/${task.owner_id}`}>
-          User {task.owner_id}
-        </PillLink>
-        <PillLink LinkTag="a" href={`/api/tasks/${task.ID}`} target="_blank">
-          JSON
-        </PillLink>
-        <PillLink
-          LinkTag="a"
-          href={`/api/tasks/${task.ID}.yaml`}
-          target="_blank"
-        >
-          YAML
-        </PillLink>
-      </div>
-      <div className="flex mb-2">
-        <Pill>
-          Created {dayjs(task.created_time).format(datetimeFormatStr)}
-        </Pill>
-        {task.start_time && (
-          <>
-            <Pill>
-              Started {dayjs(task.start_time).format(datetimeFormatStr)}
-            </Pill>
-            {task.end_time && (
-              <Pill>
-                Ended {dayjs(task.end_time).format(datetimeFormatStr)}
-              </Pill>
-            )}
-            <Pill>
-              Duration {durationFormat(task.start_time, task.end_time)}
-            </Pill>
-          </>
-        )}
-      </div>
-      {error && (
-        <div className="w-full bg-red-200 px-2 py-1">
-          {typeof error === "string"
-            ? error
-            : "There was a problem retrieving the task."}
-        </div>
-      )}
-      <div className="text-lg font-bold my-2">Log Tail</div>
-      <div className={`h-96 bg-white relative ${themes[theme].logs.container}`}>
-        {isRefreshing && (
-          <Button
-            className={`absolute cursor-pointer top-0 right-0 rounded mr-3 mt-1 z-10
-              ${
-                themes[theme].logs[enableScroll ? "scrollOnBg" : "scrollOffBg"]
-              }`}
-            onClick={() => {
-              setEnableScroll(!enableScroll)
-            }}
-          >
-            Scroll {enableScroll ? "On" : "Off"}
-          </Button>
-        )}
-        <Scrollbars
-          renderTrackVertical={({ style }) => (
-            <div
-              style={{
-                ...style,
-                right: 2,
-                bottom: 2,
-                top: 2,
-                borderRadius: 3,
-              }}
-              className={themes[theme].logs.scrollTrack}
+          {task && (
+            <Dropdown
+              label={<FontAwesomeIcon icon="cog" />}
+              anchor="right-0"
+              actionArgs={[task && task.ID]}
+              options={taskOptions({
+                onClone(id) {
+                  route(`/tasks/${id}`)
+                },
+                onDelete() {
+                  route("/tasks")
+                },
+              })}
             />
           )}
-          renderThumbVertical={({ style }) => (
-            <div
-              style={{
-                ...style,
-                borderRadius: "inherit",
-              }}
-              className={themes[theme].logs.scrollThumb}
-            />
-          )}
-          ref={logView}
-        >
-          <div
-            className={`pl-2 py-1 select-text font-mono
-            ${themes[theme].logs.bg}`}
-          >
-            {nl2br(logs.trim())}
-          </div>
-        </Scrollbars>
+        </div>
       </div>
-      <div className="text-lg font-bold my-2">Commands</div>
-      <div className={`font-mono p-2 ${themes[theme].cardContainer}`}>
-        {task &&
-          task.script &&
-          task.script.map((cmd) => (
-            <div className="flex items-center">
-              <div className="mr-2">{">"}</div>
-              <div className="select-text">{cmd}</div>
-            </div>
-          ))}
-      </div>
-      <div className="text-lg font-bold my-2">Artefacts</div>
-      {artefacts ? (
-        <Table data={artefacts} columns={artefactColumns} />
-      ) : (
-        <div>No artefacts found.</div>
-      )}
+      {body()}
     </>
   )
 }

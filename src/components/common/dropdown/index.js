@@ -5,8 +5,9 @@ import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 
 const Dropdown = ({ label, anchor = "left-0", options, actionArgs = [] }) => {
   let { theme } = useContext(ThemeContext)
-  const optionEl = options.map(({ id, label, onClick }) => (
+  const optionEl = options.map(({ label, onClick }, i) => (
     <div
+      key={i}
       className={`py-2 px-4 block whitespace-no-wrap
           ${themes[theme].dropdown.element}`}
       onClick={() => onClick(...actionArgs)}

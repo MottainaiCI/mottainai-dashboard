@@ -20,7 +20,7 @@ export const nl2br = (text) => {
 }
 
 export const datetimeFormatStr = "YYYY/MM/DD hh:mm:ss a"
-export const durationFormat = (startTime, endTime) => {
+export const durationFormatFn = (startTime, endTime) => {
   let djsEndTime = endTime ? dayjs(endTime) : dayjs()
   let djsDuration = dayjs.duration(djsEndTime.diff(startTime))
   let durationStr = ""
@@ -35,3 +35,8 @@ export const durationFormat = (startTime, endTime) => {
   }
   return durationStr
 }
+
+export const relativeTimeFormatFn = (val) =>
+  val ? dayjs().to(dayjs(val)) : "N/A"
+export const dateFormatFn = (val) =>
+  val ? dayjs(val).format(datetimeFormatStr) : "N/A"
