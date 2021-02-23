@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 
 import { showConfirmModal } from "@/components/common/modal"
 import TaskService from "@/service/task"
-import { datetimeFormatStr, durationFormat } from "@/util"
+import { datetimeFormatStr, durationFormatFn } from "@/util"
 import dayjs from "@/day"
 import Dropdown from "../dropdown"
 
@@ -136,7 +136,7 @@ export const taskTableColumns = ({
     },
     Cell: ({ row }) => {
       if (row.original.start_time) {
-        return durationFormat(row.original.start_time, row.original.end_time)
+        return durationFormatFn(row.original.start_time, row.original.end_time)
       }
     },
   },

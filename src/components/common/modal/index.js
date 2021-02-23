@@ -25,7 +25,7 @@ function createElementReconfirm({ comp: ModalComp, ...props }) {
 }
 
 export const showConfirmModal = ({ ...props }) => {
-  return new Promise((res, rej) => {
+  return new Promise((res) => {
     createElementReconfirm({
       comp: ConfirmModal,
       onConfirm() {

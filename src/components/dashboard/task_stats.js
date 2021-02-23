@@ -2,15 +2,15 @@ import DashboardCard from "./card"
 import { useEffect, useState } from "preact/hooks"
 import axios from "@/axios"
 
-const Stat = ({ label, num }) => (
-  <div className="text-center mx-5">
-    <div className="text-3xl font-medium">{num}</div>
+const Stat = ({ label, num, className }) => (
+  <div className={`text-center mx-5 ${className}`}>
+    <div className="text-3xl font-medium">{num || 0}</div>
     <div className="text-md">{label}</div>
   </div>
 )
 
 const TaskStatCard = () => {
-  const [stats, setStats] = useState([])
+  const [stats, setStats] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -28,15 +28,19 @@ const TaskStatCard = () => {
 
   return (
     <DashboardCard title="Task Stats" loading={loading} error={error}>
-      <div className="flex justify-center">
+      <div className="grid grid-cols-5 gap-4">
         <Stat label="Total" num={stats.total} />
-        <Stat label="Succeeded" num={stats.success} />
-        <Stat label="Errored" num={stats.error} />
-        <Stat label="Running" num={stats.running} />
-        <Stat label="Waiting" num={stats.waiting} />
-        <Stat label="Stopped" num={stats.stopped} />
-        <Stat label="Stopping" num={stats.stopping} />
-        <Stat label="Failed" num={stats.failed} />
+        <Stat label="Running" num={stats.status?.running} />
+        <Stat label="Waiting" num={stats.status?.waiting} />
+        <Stat label="Stopped" num={stats.status?.stopped} />
+        <Stat label="Stopping" num={stats.status?.stopping} />
+        <Stat
+          className="col-start-2"
+          label="Succeeded"
+          num={stats.result?.success}
+        />
+        <Stat label="Errored" num={stats.result?.error} />
+        <Stat label="Failed" num={stats.result?.failed} />
       </div>
     </DashboardCard>
   )
