@@ -1,6 +1,7 @@
 const path = require("path")
 const express = require("express")
 const proxy = require("http-proxy-middleware")
+const helmet = require("helmet")
 
 // config
 const apiUrl = process.env.API_URL || "http://localhost:9090"
@@ -13,6 +14,16 @@ process.on("SIGINT", () => {
 })
 
 const app = express()
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        "script-src-attr": ["'unsafe-inline'"],
+      },
+    },
+  })
+)
 
 app.use(express.static(path.join(__dirname, "build")))
 

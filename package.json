@@ -38,6 +38,7 @@
     "axios": "^0.21.0",
     "dayjs": "^1.9.6",
     "express": "^4.17.1",
+    "helmet": "^4.4.1",
     "http-proxy-middleware": "^1.0.6",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.20",
