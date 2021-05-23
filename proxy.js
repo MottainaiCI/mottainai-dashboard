@@ -1,7 +1,10 @@
 const path = require("path")
-const express = require("express")
-const proxy = require("http-proxy-middleware")
-const helmet = require("helmet")
+const Koa = require("koa")
+const proxy = require("koa2-nginx")
+const sendfile = require("koa-sendfile")
+const route = require("koa-route")
+const koastatic = require("koa-static")
+const helmet = require("koa-helmet")
 
 // config
 const apiUrl = process.env.API_URL || "http://localhost:9090"
@@ -13,43 +16,45 @@ process.on("SIGINT", () => {
   process.exit(0)
 })
 
-const app = express()
+const app = new Koa()
+
 app.use(
   helmet({
     contentSecurityPolicy: {
+      useDefaults: true,
       directives: {
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        "script-src-attr": ["'unsafe-inline'"],
+        scriptSrcAttr: ["'unsafe-inline'"],
+        scriptSrcElem: ["'self'", "cdn.jsdelivr.net"],
+	      workerSrc: ["blob:"],
       },
-    },
+    }
   })
 )
 
-app.use(express.static(path.join(__dirname, "build")))
+app.use(koastatic(path.join(__dirname, "build")))
 
 app.use(
-  "/api",
-  proxy.createProxyMiddleware({
-    target: apiUrl,
-    secure: !insecure,
-    changeOrigin: true,
-  })
-)
-app.use(
-  "/public",
-  proxy.createProxyMiddleware({
-    target: apiUrl,
-    secure: !insecure,
-    changeOrigin: true,
-    pathRewrite: {
-      "^/public": "",
+  proxy({
+    "/api": {
+      target: apiUrl,
+      secure: !insecure,
+      changeOrigin: true,
     },
+    "/public": {
+      target: apiUrl,
+      secure: !insecure,
+      changeOrigin: true,
+      pathRewrite: {
+        "^/public": "",
+      },
+    }
   })
 )
 
-app.get("/*", function (req, res) {
-  res.sendFile(path.join(__dirname, "build", "index.html"))
-})
+app.use(route.get("/*", async function (ctx) {
+  await sendfile(ctx, path.join(__dirname, "build", "index.html"))
+  if (!ctx.status) ctx.throw(404)
+}))
 
 app.listen(port, function () {
   console.log("Listening on port " + port)
