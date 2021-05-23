@@ -23,7 +23,7 @@ app.use(
     contentSecurityPolicy: {
       useDefaults: true,
       directives: {
-        scriptSrcAttr: ["'unsafe-inline'"],
+        scriptSrcAttr: ["'self'", "'unsafe-inline'"],
         scriptSrcElem: ["'self'", "cdn.jsdelivr.net"],
 	      workerSrc: ["blob:"],
       },
