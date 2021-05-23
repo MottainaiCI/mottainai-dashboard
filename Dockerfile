@@ -9,7 +9,7 @@ RUN npm run build
 # production environment
 FROM node:14-alpine
 WORKDIR /usr/src/app
-RUN npm i express http-proxy-middleware
+RUN npm i express http-proxy-middleware helmet
 COPY --from=build /app/build ./build
 COPY proxy.js .
 EXPOSE 3000
