@@ -19,16 +19,16 @@ const NewTask = () => {
     setTitle("New Task")
   }, [setTitle])
 
-  const valueGetter = useRef()
-  function handleEditorDidMount(_valueGetter) {
-    valueGetter.current = _valueGetter
+  const editorRef = useRef()
+  function handleEditorDidMount(editor) {
+    editorRef.current = editor
     setIsEditorReady(true)
   }
 
   function create() {
     let taskContent
     try {
-      taskContent = safeLoad(valueGetter.current())
+      taskContent = safeLoad(editorRef.current.getValue())
     } catch (e) {
       toast.error("Please enter valid YAML")
       return
@@ -65,7 +65,7 @@ const NewTask = () => {
         language="yaml"
         value={planYmlSnippet}
         loading={<Loader />}
-        editorDidMount={handleEditorDidMount}
+        onMount={handleEditorDidMount}
         options={{ theme: "dark", minimap: { enabled: false }, scrollbar: {} }}
       />
       <div className="flex flex-row justify-between">
