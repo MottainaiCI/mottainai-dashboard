@@ -6,7 +6,7 @@ const helmet = require("helmet")
 // config
 const apiUrl = process.env.API_URL || "http://localhost:9090"
 const port = process.env.PORT || 3000
-const insecure = process.env.INSECURE || false
+const insecure = !!process.env.INSECURE || false
 
 process.on("SIGINT", () => {
   console.info("Exiting server")
