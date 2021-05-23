@@ -1,0 +1,14 @@
+{
+  "name": "proxy",
+  "version": "1.0.0",
+  "main": "proxy.js",
+  "dependencies": {
+    "koa-helmet": "^6.1.0",
+    "koa-route": "^3.2.0",
+    "koa": "^2.13.1",
+    "koa-static": "^5.0.0",
+    "koa-sendfile": "^3.0.0",
+    "koa2-nginx": "^2.0.2"
+  },
+  "license": "GPL-3.0"
+}
