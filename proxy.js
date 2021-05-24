@@ -10,6 +10,7 @@ const helmet = require("koa-helmet")
 const apiUrl = process.env.API_URL || "http://localhost:9090"
 const port = process.env.PORT || 3000
 const insecure = !!process.env.INSECURE || false
+const staticDir = process.env.STATIC_DIR || path.join(__dirname, "build")
 
 process.on("SIGINT", () => {
   console.info("Exiting server")
@@ -25,13 +26,13 @@ app.use(
       directives: {
         scriptSrcAttr: ["'self'", "'unsafe-inline'"],
         scriptSrcElem: ["'self'", "cdn.jsdelivr.net"],
-	      workerSrc: ["blob:"],
+        workerSrc: ["blob:"],
       },
     }
   })
 )
 
-app.use(koastatic(path.join(__dirname, "build")))
+app.use(koastatic(staticDir))
 
 app.use(
   proxy({
@@ -52,7 +53,7 @@ app.use(
 )
 
 app.use(route.get("/*", async function (ctx) {
-  await sendfile(ctx, path.join(__dirname, "build", "index.html"))
+  await sendfile(ctx, path.join(staticDir, "index.html"))
   if (!ctx.status) ctx.throw(404)
 }))
 
