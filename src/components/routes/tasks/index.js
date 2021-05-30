@@ -18,12 +18,11 @@ import Dropdown from "@/components/common/dropdown"
 
 const REFRESH_INT = {
   0: "Off",
-  1000: "1s",
   10000: "10s",
   30000: "30s",
   60000: "1m",
   [5 * 60000]: "5m",
-  [10 * 60000]: "5m",
+  [10 * 60000]: "10m",
 }
 
 const Tasks = () => {
@@ -38,7 +37,7 @@ const Tasks = () => {
 
   const [refreshInt, setRefreshInt] = useLocalStorage(
     "mottainai:task-refresh-interval",
-    10000
+    0
   )
 
   useEffect(() => {
