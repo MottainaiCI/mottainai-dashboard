@@ -78,8 +78,6 @@ const ShowNode = ({ nodeId }) => {
             last_report: () => "Last Report",
             nodeid: () => "Hardware Id",
             key: () => "Agent Key",
-            user: () => "Broker User",
-            pass: () => "Broker Pass",
           }}
         />
 
