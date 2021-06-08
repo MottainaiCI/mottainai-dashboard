@@ -21,6 +21,8 @@ import Signup from "@/components/routes/signup"
 import Tokens from "@/components/routes/tokens"
 import Users from "@/components/routes/users"
 import ShowUser from "./components/routes/users/show"
+import Integrations from "./components/routes/integrations"
+import IntegrationCallbackHandler from "./components/integrations/callback_handler"
 
 import Sidebar from "@/components/sidebar"
 import Loader from "@/components/common/loader"
@@ -42,6 +44,7 @@ const AUTHED = [
   "/nodes",
   "/users",
   "/tokens",
+  "/integrations",
 ]
 const UNAUTHED = ["/login", "/signup"]
 const MANAGER_ROUTES = ["/users"]
@@ -152,6 +155,8 @@ const App = () => {
                 <Tokens path="/tokens" />
                 <Users path="/users" />
                 <ShowUser path="/users/:userId" />
+                <IntegrationCallbackHandler path="/integrations/:provider/callback" />
+                <Integrations path="/integrations" />
               </Router>
             </div>
           </div>

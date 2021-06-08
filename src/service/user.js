@@ -46,6 +46,22 @@ const UserService = {
   fetchUser(id) {
     return axios.get(`/user/show/${id}`).then(({ data }) => data)
   },
+  ghInit() {
+    return axios.get("/v1/client/auth/int/github")
+  },
+  ghCallback({ code, state }) {
+    // must be passed as query params, not body params
+    return axios.post(
+      "/v1/client/auth/int/github_callback",
+      {},
+      {
+        params: { code, state },
+      }
+    )
+  },
+  ghLogout() {
+    return axios.post("/v1/client/auth/int/github_logout")
+  },
 }
 
 export default UserService
