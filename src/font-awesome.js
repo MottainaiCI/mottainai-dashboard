@@ -1,7 +1,9 @@
 import { library } from "@fortawesome/fontawesome-svg-core"
 import * as fas from "@fortawesome/free-solid-svg-icons"
+import * as fab from "@fortawesome/free-brands-svg-icons"
 
 library.add(
+  fab.faGithub,
   fas.faCaretDown,
   fas.faCaretLeft,
   fas.faCaretRight,
@@ -17,6 +19,7 @@ library.add(
   fas.faNetworkWired,
   fas.faPalette,
   fas.faQuestion,
+  fas.faShareAlt,
   fas.faSignInAlt,
   fas.faSignOutAlt,
   fas.faSpinner,

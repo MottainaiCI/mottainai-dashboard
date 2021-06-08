@@ -30,11 +30,16 @@ const ProfileItem = () => {
 
   return (
     <SidebarPopoutMenu icon="user" anchor="bottom-0" label={user.name}>
+      <SidebarPopoutItem onClick={signOut} icon="sign-out-alt" text="Log out" />
       {isPrivileged && (
         <SidebarPopoutLink href="/users" icon="users" text="Users" />
       )}
       <SidebarPopoutLink href="/tokens" icon="key" text="API Tokens" />
-      <SidebarPopoutItem onClick={signOut} icon="sign-out-alt" text="Log out" />
+      <SidebarPopoutLink
+        href="/integrations"
+        icon="share-alt"
+        text="Integrations"
+      />
     </SidebarPopoutMenu>
   )
 }
