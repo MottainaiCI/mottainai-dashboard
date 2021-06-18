@@ -1,0 +1,17 @@
+[Unit]
+Description=Mottainai Dashboard
+After=network-online.target
+
+[Service]
+WorkingDirectory=/var/lib/mottainai-dashboard/
+ExecStart=/usr/bin/mottainai-dashboard
+Environment=STATIC_DIR=/var/lib/mottainai-dashboard/
+Environment=PORT=3000
+Environment=API_URL=http://localhost:9090/
+#Environment=INSECURE=false
+User=mottainai-server
+Group=mottainai
+Restart=always
+RestartSec=3
+[Install]
+WantedBy=network-online.target
