@@ -1,3 +1,4 @@
+import { route } from "preact-router"
 import { useEffect, useContext } from "preact/hooks"
 
 import TitleContext from "@/contexts/title"
@@ -21,16 +22,16 @@ const INT_LOGOUT = {
 }
 
 const Integrations = () => {
-  let { user } = useContext(UserContext)
+  let { user: currentUser } = useContext(UserContext)
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("Integrations")
   }, [setTitle])
 
   function body() {
-    const integrations = Object.keys(user.identities)
+    const integrations = Object.keys(currentUser.identities)
     const integrationOptions = AVAILABLE_INTEGRATIONS.filter(
-      (k) => !user.identities[k]
+      (k) => !currentUser.identities[k]
     )
 
     return (

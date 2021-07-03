@@ -7,7 +7,7 @@ import ThemeContext, { THEME_OPTIONS } from "@/contexts/theme"
 import UserContext from "@/contexts/user"
 import SidebarContext from "@/contexts/sidebar"
 import themes from "@/themes"
-import UserService from "@/service/user"
+import AuthService from "@/service/auth"
 import logo from "@/assets/images/logo.png"
 
 import { SidebarLink } from "./common"
@@ -22,7 +22,7 @@ const ProfileItem = () => {
   let { user, setUser } = useContext(UserContext)
   const isPrivileged = user.is_manager || user.is_admin
   const signOut = () => {
-    UserService.logout().then(() => {
+    AuthService.logout().then(() => {
       setUser(null)
       route("/")
     })
@@ -46,7 +46,7 @@ const ProfileItem = () => {
 
 const Sidebar = () => {
   let { theme, setTheme } = useContext(ThemeContext)
-  let { user } = useContext(UserContext)
+  let { user: currentUser } = useContext(UserContext)
   const [collapsed, setCollapsed] = useLocalStorage(
     "mottainai-sidebar-collapsed",
     false
@@ -81,20 +81,24 @@ const Sidebar = () => {
           <div className="flex-1 flex flex-col justify-between">
             <div className="flex flex-col">
               <SidebarLink href="/" icon="tachometer-alt" text="Dashboard" />
-              {user && (
+              {currentUser && (
                 <>
-                  <SidebarLink href="/tasks" icon="tasks" text="Tasks" />
-                  <SidebarLink href="/plans" icon="clock" text="Plans" />
-                  <SidebarLink
-                    href="/pipelines"
-                    icon="code-branch"
-                    text="Pipelines"
-                  />
-                  <SidebarLink
-                    href="/nodes"
-                    icon="network-wired"
-                    text="Nodes"
-                  />
+                  {currentUser.is_admin && (
+                    <>
+                      <SidebarLink href="/tasks" icon="tasks" text="Tasks" />
+                      <SidebarLink href="/plans" icon="clock" text="Plans" />
+                      <SidebarLink
+                        href="/pipelines"
+                        icon="code-branch"
+                        text="Pipelines"
+                      />
+                      <SidebarLink
+                        href="/nodes"
+                        icon="network-wired"
+                        text="Nodes"
+                      />
+                    </>
+                  )}
                   <SidebarLink
                     href="/artefacts"
                     icon="cloud"
@@ -105,7 +109,7 @@ const Sidebar = () => {
             </div>
 
             <div className="flex flex-col">
-              {user ? (
+              {currentUser ? (
                 <ProfileItem />
               ) : (
                 <>

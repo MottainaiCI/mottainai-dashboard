@@ -5,7 +5,7 @@ import { toast } from "react-toastify"
 
 import ThemeContext from "@/contexts/theme"
 import TitleContext from "@/contexts/title"
-import UserService from "@/service/user"
+import AuthService from "@/service/auth"
 import CaptchaService from "@/service/captcha"
 import themes from "@/themes"
 import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
@@ -39,7 +39,7 @@ const Signup = () => {
       captcha &&
       captcha_id
     ) {
-      UserService.signup(
+      AuthService.signup(
         email,
         username,
         password,
