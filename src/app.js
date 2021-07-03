@@ -24,7 +24,6 @@ import NewUser from "@/components/routes/users/new"
 import EditUser from "@/components/routes/users/edit"
 import ShowUser from "./components/routes/users/show"
 import Integrations from "./components/routes/integrations"
-import IntegrationCallbackHandler from "./components/integrations/callback_handler"
 
 import Sidebar from "@/components/sidebar"
 import Loader from "@/components/common/loader"
@@ -168,7 +167,6 @@ const App = () => {
                 <NewUser path="/users/new" />
                 <ShowUser path="/users/:userId" />
                 <EditUser path="/users/:userId/edit" />
-                <IntegrationCallbackHandler path="/integrations/:provider/callback" />
                 <Integrations path="/integrations" />
               </Router>
             </div>
