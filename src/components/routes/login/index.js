@@ -5,7 +5,7 @@ import { route } from "preact-router"
 import UserContext from "@/contexts/user"
 import ThemeContext from "@/contexts/theme"
 import TitleContext from "@/contexts/title"
-import UserService from "@/service/user"
+import AuthService from "@/service/auth"
 import themes from "@/themes"
 
 const Login = () => {
@@ -21,7 +21,7 @@ const Login = () => {
 
   const onSubmit = ({ remember, username, password }) => {
     if (username && password) {
-      UserService.login(username, password, remember).then(
+      AuthService.login(username, password, remember).then(
         (data) => {
           setUser(data)
           route("/")

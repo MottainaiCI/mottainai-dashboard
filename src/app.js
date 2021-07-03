@@ -20,6 +20,8 @@ import Login from "@/components/routes/login"
 import Signup from "@/components/routes/signup"
 import Tokens from "@/components/routes/tokens"
 import Users from "@/components/routes/users"
+import NewUser from "@/components/routes/users/new"
+import EditUser from "@/components/routes/users/edit"
 import ShowUser from "./components/routes/users/show"
 import Integrations from "./components/routes/integrations"
 import IntegrationCallbackHandler from "./components/integrations/callback_handler"
@@ -30,10 +32,10 @@ import Loader from "@/components/common/loader"
 import ThemeContext, { THEME_OPTIONS } from "@/contexts/theme"
 import UserContext from "@/contexts/user"
 import TitleContext from "@/contexts/title"
+import AuthService from "@/service/auth"
 
 import themes from "@/themes"
 import axios from "@/axios"
-import UserService from "./service/user"
 import ShowPlan from "./components/routes/plans/show"
 
 const AUTHED = [
@@ -48,7 +50,7 @@ const AUTHED = [
 ]
 const UNAUTHED = ["/login", "/signup"]
 const MANAGER_ROUTES = ["/users"]
-const ADMIN_ROUTES = []
+const ADMIN_ROUTES = ["/tasks", "/nodes"]
 
 const App = () => {
   const [theme, setTheme] = useLocalStorage(
@@ -56,7 +58,18 @@ const App = () => {
     THEME_OPTIONS[0].value
   )
   const themeValue = { theme, setTheme }
-  const [user, setUser] = useState(null)
+  const [user, setUserState] = useState(null)
+  const setUser = (user) =>
+    setUserState(
+      user
+        ? {
+            ...user,
+            is_admin: user.is_admin === "yes",
+            is_manager: user.is_manager === "yes",
+            identities: user.identities || {},
+          }
+        : user
+    )
   const [loadingUser, setLoadingUser] = useState(true)
   const userVal = { user, setUser }
   const [title, setTitle] = useState("")
@@ -70,8 +83,6 @@ const App = () => {
     (res) => res,
     (err) => {
       if (err.response.status == 403) {
-        UserService.clearUser()
-        setUser(null)
         handleRoute(getCurrentUrl())
       }
       throw err
@@ -107,8 +118,8 @@ const App = () => {
   }
 
   useState(() => {
-    if (UserService.isLoggedIn()) {
-      UserService.getUser().then(setUser).finally(clearLoadingUser)
+    if (AuthService.isLoggedIn()) {
+      AuthService.getUser().then(setUser).finally(clearLoadingUser)
     } else {
       clearLoadingUser()
     }
@@ -140,7 +151,7 @@ const App = () => {
               <Router onChange={(e) => handleRoute(e.url)}>
                 <Dashboard path="/" />
                 <Tasks path="/tasks" />
-                <NewTask path={`/tasks/new`} />
+                <NewTask path="/tasks/new" />
                 <ShowTask path={`/tasks/:taskId`} />
                 <Plans path="/plans" />
                 <ShowPlan path="/plans/:planId" />
@@ -154,7 +165,9 @@ const App = () => {
                 <Signup path="/signup" />
                 <Tokens path="/tokens" />
                 <Users path="/users" />
+                <NewUser path="/users/new" />
                 <ShowUser path="/users/:userId" />
+                <EditUser path="/users/:userId/edit" />
                 <IntegrationCallbackHandler path="/integrations/:provider/callback" />
                 <Integrations path="/integrations" />
               </Router>
