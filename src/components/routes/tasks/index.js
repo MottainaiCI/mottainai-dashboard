@@ -72,7 +72,7 @@ const Tasks = () => {
     TaskService.fetchPage({ pageIndex, pageSize, sort, sortOrder })
       .then((data) => {
         if (fetchId === fetchIdRef.current) {
-          setTasks(data.tasks)
+          setTasks(data.tasks || [])
           setTotal(data.total)
           setPageCount(Math.ceil(data.total / pageSize))
         }

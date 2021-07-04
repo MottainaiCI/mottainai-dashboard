@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "preact/hooks"
+import { useState, useEffect, useContext } from "preact/hooks"
 
 import TitleContext from "@/contexts/title"
 import UserContext from "@/contexts/user"
@@ -20,17 +20,42 @@ const INT_LOGOUT = {
   },
 }
 
+function popupWindow(url, windowName, win, w, h) {
+  const y = win.top.outerHeight / 2 + win.top.screenY - h / 2
+  const x = win.top.outerWidth / 2 + win.top.screenX - w / 2
+  return win.open(
+    url,
+    windowName,
+    `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${w}, height=${h}, top=${y}, left=${x}`
+  )
+}
+
 const Integrations = () => {
-  let { user } = useContext(UserContext)
+  let [popup, setPopup] = useState(null)
+  let { user: currentUser } = useContext(UserContext)
   let { setTitle } = useContext(TitleContext)
   useEffect(() => {
     setTitle("Integrations")
   }, [setTitle])
 
+  useEffect(() => {
+    if (popup) {
+      const intId = setInterval(() => {
+        if (popup.closed) {
+          setPopup(null)
+          clearInterval(intId)
+          location.reload()
+        }
+      }, 250)
+
+      return () => clearInterval(intId)
+    }
+  }, [popup, setPopup])
+
   function body() {
-    const integrations = Object.keys(user.identities)
+    const integrations = Object.keys(currentUser.identities)
     const integrationOptions = AVAILABLE_INTEGRATIONS.filter(
-      (k) => !user.identities[k]
+      (k) => !currentUser.identities[k]
     )
 
     return (
@@ -68,7 +93,7 @@ const Integrations = () => {
                   className="inline-flex flex-row items-center cursor-pointer"
                   onClick={() => {
                     UserService.ghInit().then(({ data: { url } }) => {
-                      window.location.href = url
+                      setPopup(popupWindow(url, "gh-init", window, 500, 750))
                     })
                   }}
                 >

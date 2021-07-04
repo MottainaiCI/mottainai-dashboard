@@ -84,7 +84,7 @@ const Tokens = () => {
               TokenService.create().then(refreshData)
             }}
           >
-            Create New Token
+            New Token
           </Button>
         </div>
       </div>
