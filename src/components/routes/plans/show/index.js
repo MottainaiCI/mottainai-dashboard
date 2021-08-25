@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 
 import TitleContext from "@/contexts/title"
 import ThemeContext from "@/contexts/theme"
+import UrlManager from "@/contexts/prefix"
 import Loader from "@/components/common/loader"
 import Pill from "@/components/common/pill"
 import Dropdown from "@/components/common/dropdown"
@@ -44,7 +45,7 @@ const ShowPlan = ({ planId }) => {
           body: `Are you sure you want to delete Plan ${id}?`,
         }).then((confirmed) => {
           if (confirmed) {
-            PlanService.delete(id).then(() => route("/plans"))
+            PlanService.delete(id).then(() => route(UrlManager.buildUrl("/plans")))
           }
         })
       },
@@ -60,7 +61,7 @@ const ShowPlan = ({ planId }) => {
       <div className="flex justify-between items-center">
         <div className="text-2xl font-bold">Plan {planId}</div>
         <div className="flex justify-between items-center">
-          <Link href="/plans" className="text-sm mr-1">
+          <Link href={UrlManager.buildUrl('/plans')} className="text-sm mr-1">
             <FontAwesomeIcon icon="caret-left" className="mr-1" />
             back to all plans
           </Link>

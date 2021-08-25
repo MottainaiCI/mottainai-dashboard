@@ -7,13 +7,14 @@ import { toast } from "react-toastify"
 
 import TitleContext from "@/contexts/title"
 import UserContext from "@/contexts/user"
+import UrlManager from "@/contexts/prefix"
 import Button from "@/components/common/button"
 import UserService from "@/service/user"
 
 const NewUser = () => {
   let { user: currentUser } = useContext(UserContext)
   if (!currentUser.is_admin) {
-    route("/users")
+    route(UrlManager.buildUrl("/users"))
   }
 
   let [error, setError] = useState(null)
@@ -30,7 +31,7 @@ const NewUser = () => {
     UserService.createUser(values).then(
       (data) => {
         toast.success("User created")
-        route("/users")
+        route(UrlManager.buildUrl("/users"))
       },
       (err) => {
         setError(err.response.data.error)
@@ -42,7 +43,7 @@ const NewUser = () => {
     <>
       <div className="flex justify-between items-center mb-2">
         <div className="text-2xl font-bold">New User</div>
-        <Link href="/users" className="text-sm">
+        <Link href={UrlManager.buildUrl('/users')} className="text-sm">
           <FontAwesomeIcon icon="caret-left" className="mr-1" />
           back to all users
         </Link>
@@ -123,7 +124,7 @@ const NewUser = () => {
           <Button
             className="mt-2"
             type="button"
-            onClick={() => route("/users")}
+            onClick={() => route(UrlManager.buildUrl("/users"))}
           >
             Cancel
           </Button>

@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 import { toast } from "react-toastify"
 
 import TitleContext from "@/contexts/title"
+import UrlManager from "@/contexts/prefix"
 import Button from "@/components/common/button"
 import { planYmlSnippet } from "@/snippets/plan"
 import TaskService from "@/service/task"
@@ -40,7 +41,7 @@ const NewTask = () => {
     }
 
     TaskService.create(taskContent).then(
-      (task) => route(`/tasks/${task.id}`),
+      (task) => route(UrlManager.buildUrl(`/tasks/${task.id}`)),
       (e) => {
         toast.error(`Could not create task: ${e.response.data}`)
       }
@@ -48,14 +49,14 @@ const NewTask = () => {
   }
 
   function goBack() {
-    route("/tasks")
+    route(UrlManager.buildUrl("/tasks"))
   }
 
   return (
     <>
       <div className="flex justify-between items-center mb-2">
         <div className="text-2xl font-bold">New Task</div>
-        <Link href="/tasks" className="text-sm">
+        <Link href={UrlManager.buildUrl('/tasks')} className="text-sm">
           <FontAwesomeIcon icon="caret-left" className="mr-1" />
           back to all tasks
         </Link>

@@ -1,7 +1,8 @@
 import axios from "axios"
+import UrlManager from "@/contexts/prefix"
 
 const instance = axios.create({
-  baseURL: `${location.origin}/api/`,
+  baseURL: `${UrlManager.buildUrl('/api/')}`,
 })
 
 instance.interceptors.request.use((config) => {

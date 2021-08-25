@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 import { useLocalStorage } from "@rehooks/local-storage"
 
 import TitleContext from "@/contexts/title"
+import UrlManager from "@/contexts/prefix"
 import Table from "@/components/common/table/async"
 import TaskService from "@/service/task"
 import { taskTableColumns } from "@/components/common/tasks"
@@ -104,7 +105,7 @@ const Tasks = () => {
             }))}
           />
 
-          <Button onClick={() => route("/tasks/new")}>New Task</Button>
+          <Button onClick={() => route(UrlManager.buildUrl("/tasks/new"))}>New Task</Button>
         </div>
       </div>
       {error ? (

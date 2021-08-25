@@ -5,6 +5,7 @@ import { toast } from "react-toastify"
 
 import ThemeContext from "@/contexts/theme"
 import TitleContext from "@/contexts/title"
+import UrlManager from "@/contexts/prefix"
 import AuthService from "@/service/auth"
 import CaptchaService from "@/service/captcha"
 import themes from "@/themes"
@@ -49,7 +50,7 @@ const Signup = () => {
       ).then(
         () => {
           toast.success("Registration successful! You can log in now.")
-          route("/login")
+          route(UrlManager.buildUrl("/login"))
         },
         (err) => {
           setError(err.response.data.error)
@@ -153,7 +154,7 @@ const Signup = () => {
               <Loader />
             </div>
           ) : (
-            <img src={`/api/v1/client/captcha/image/${captchaCode}`} />
+            <img src={UrlManager.buildUrl(`/api/v1/client/captcha/image/${captchaCode}`)} />
           )}
         </div>
         <div className="mb-4 flex items-center">

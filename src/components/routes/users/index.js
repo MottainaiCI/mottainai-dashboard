@@ -3,6 +3,7 @@ import { route } from "preact-router"
 
 import { showConfirmModal } from "@/components/common/modal"
 import TitleContext from "@/contexts/title"
+import UrlManager from "@/contexts/prefix"
 import UserContext from "@/contexts/user"
 import Table from "@/components/common/table"
 import Loader from "@/components/common/loader"
@@ -39,7 +40,7 @@ const Users = () => {
           Cell: ({ row }) => {
             return (
               <Link
-                href={`/users/${row.original.id}`}
+                href={UrlManager.buildUrl(`/users/${row.original.id}`)}
                 className="text-blue-400"
               >
                 {row.original.id}
@@ -78,7 +79,7 @@ const Users = () => {
                       {
                         label: "Edit",
                         onClick(user) {
-                          route(`/users/${user.id}/edit`)
+                          route(UrlManager.buildUrl(`/users/${user.id}/edit`))
                         },
                       },
                       currentUser.id !== row.original.id && {
@@ -120,7 +121,7 @@ const Users = () => {
         <p className="text-2xl font-bold mb-2">Users</p>
         {currentUser.is_admin && (
           <div className="mb-2">
-            <Button onClick={() => route("/users/new")}>New User</Button>
+            <Button onClick={() => route(UrlManager.buildUrl("/users/new"))}>New User</Button>
           </div>
         )}
       </div>

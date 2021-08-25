@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useContext } from "preact/hooks"
 import { toast } from "react-toastify"
 
 import TitleContext from "@/contexts/title"
+import UrlManager from "@/contexts/prefix"
 import Table from "@/components/common/table"
 import Dropdown from "@/components/common/dropdown"
 import Loader from "@/components/common/loader"
@@ -46,7 +47,7 @@ const Nodes = () => {
         accessor: "ID",
         Cell: ({ row }) => {
           return (
-            <Link href={`/nodes/${row.original.ID}`} className="text-blue-400">
+            <Link href={UrlManager.buildUrl(`/nodes/${row.original.ID}`)} className="text-blue-400">
               {row.original.ID}
             </Link>
           )

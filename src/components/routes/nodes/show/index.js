@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "preact/hooks"
 import { Link, route } from "preact-router"
 
 import TitleContext from "@/contexts/title"
+import UrlManager from "@/contexts/prefix"
 import Loader from "@/components/common/loader"
 import NodeService from "@/service/node"
 import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
@@ -50,7 +51,7 @@ const ShowNode = ({ nodeId }) => {
           body: `Are you sure you want to delete Node ${id}?`,
         }).then((confirmed) => {
           if (confirmed) {
-            NodeService.delete(id).then(() => route("/nodes"))
+            NodeService.delete(id).then(() => route(UrlManager.buildUrl("/nodes")))
           }
         })
       },
@@ -109,7 +110,7 @@ const ShowNode = ({ nodeId }) => {
       <div className="flex justify-between items-center mb-2">
         <div className="text-2xl font-bold">Node {nodeId}</div>
         <div className="flex justify-between items-center">
-          <Link href="/nodes" className="text-sm mr-1">
+          <Link href={UrlManager.buildUrl('/nodes')} className="text-sm mr-1">
             <FontAwesomeIcon icon="caret-left" className="mr-1" />
             back to all nodes
           </Link>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useContext } from "preact/hooks"
 
 import TitleContext from "@/contexts/title"
+import UrlManager from "@/contexts/prefix"
 import Table from "@/components/common/table"
 import Dropdown from "@/components/common/dropdown"
 import Loader from "@/components/common/loader"
@@ -35,7 +36,7 @@ const Plans = () => {
         accessor: "ID",
         Cell: ({ row }) => {
           return (
-            <Link href={`/plans/${row.original.ID}`} className="text-blue-400">
+            <Link href={UrlManager.buildUrl(`/plans/${row.original.ID}`)} className="text-blue-400">
               {row.original.ID}
             </Link>
           )

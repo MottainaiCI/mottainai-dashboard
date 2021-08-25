@@ -7,6 +7,7 @@ import { toast } from "react-toastify"
 
 import TitleContext from "@/contexts/title"
 import UserContext from "@/contexts/user"
+import UrlManager from "@/contexts/prefix"
 import Button from "@/components/common/button"
 import UserService from "@/service/user"
 import Loader from "@/components/common/loader"
@@ -46,14 +47,14 @@ const NewUser = ({ userId }) => {
   if (loading) {
     return <Loader />
   } else if (user && !user.id) {
-    route("/users")
+    route(UrlManager.buildUrl("/users"))
   }
 
   const onSubmit = (values) => {
     UserService.updateUser(user.id, values).then(
       (data) => {
         toast.success("User updated")
-        route("/users")
+        route(UrlManager.buildUrl("/users"))
       },
       (err) => {
         setError(err.response.data.error)
@@ -67,7 +68,7 @@ const NewUser = ({ userId }) => {
         <div className="text-2xl font-bold">
           Edit User {user.name} ({user.id})
         </div>
-        <Link href="/users" className="text-sm">
+        <Link href={UrlManager.buildUrl('/users')} className="text-sm">
           <FontAwesomeIcon icon="caret-left" className="mr-1" />
           back to all users
         </Link>
@@ -147,7 +148,7 @@ const NewUser = ({ userId }) => {
           <Button
             className="mt-2"
             type="button"
-            onClick={() => route("/users")}
+            onClick={() => route(UrlManager.buildUrl("/users"))}
           >
             Cancel
           </Button>

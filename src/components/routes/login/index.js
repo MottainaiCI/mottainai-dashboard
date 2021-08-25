@@ -5,6 +5,7 @@ import { route } from "preact-router"
 import UserContext from "@/contexts/user"
 import ThemeContext from "@/contexts/theme"
 import TitleContext from "@/contexts/title"
+import UrlManager from "@/contexts/prefix"
 import AuthService from "@/service/auth"
 import themes from "@/themes"
 
@@ -24,7 +25,7 @@ const Login = () => {
       AuthService.login(username, password, remember).then(
         (data) => {
           setUser(data)
-          route("/")
+          route(UrlManager.buildUrl("/"))
         },
         (err) => {
           setError(err.response.data.error)
