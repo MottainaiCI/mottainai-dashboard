@@ -1,5 +1,9 @@
 import path from "path"
 
+const appPrefix = process.env.APP_PREFIX || "/"
+const insecure = !!process.env.INSECURE || false
+const apiUrl = process.env.API_URL || "http://localhost:9090"
+
 export default {
   plugins: ["preact-cli-tailwind"],
   /**
@@ -15,17 +19,25 @@ export default {
     config.devtool = false
     config.resolve = config.resolve || { alias: {} }
     config.resolve.alias["@"] = path.join(__dirname, "./src")
+    config.output.publicPath = appPrefix
 
     if (config.devServer) {
+      config.devServer["publicPath"] = appPrefix
       config.devServer["proxy"] = [
         {
-          path: ["/api", "/public/"],
-          target: "http://localhost:9090",
-          pathRewrite: { "^/public": "" },
+          path: [appPrefix+"api", appPrefix+"public/"],
+          target: apiUrl,
+          secure: !insecure,
+          pathRewrite: {
+            ["^"+appPrefix+"api"]: "/api" ,
+            ["^"+appPrefix+"public"]: "",
+            "/": "",
+          },
         },
       ]
     }
 
+    console.log(config)
     return config
   },
 }
