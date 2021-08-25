@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "preact/hooks"
 
 import TitleContext from "@/contexts/title"
 import UserContext from "@/contexts/user"
+import UrlManager from "@/contexts/prefix"
 import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 import UserService from "@/service/user"
 
@@ -15,7 +16,7 @@ const INT_LABEL = {
 const INT_LOGOUT = {
   github: () => {
     UserService.ghLogout().then(() => {
-      window.location.href = "/integrations"
+      window.location.href = UrlManager.buildUrl('/integrations')
     })
   },
 }

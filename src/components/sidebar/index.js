@@ -37,7 +37,7 @@ const ProfileItem = () => {
       )}
       <SidebarPopoutLink href={ UrlManager.buildUrl('/tokens') } icon="key" text="API Tokens" />
       <SidebarPopoutLink
-        href="/integrations"
+        href={UrlManager.buildUrl('/integrations')}
         icon="share-alt"
         text="Integrations"
       />
@@ -86,8 +86,8 @@ const Sidebar = () => {
                 <>
                   {currentUser.is_admin && (
                     <>
-                      <SidebarLink href="/tasks" icon="tasks" text="Tasks" />
-                      <SidebarLink href="/plans" icon="clock" text="Plans" />
+                      <SidebarLink href={UrlManager.buildUrl('/tasks')} icon="tasks" text="Tasks" />
+                      <SidebarLink href={UrlManager.buildUrl('/plans')} icon="clock" text="Plans" />
                       <SidebarLink
                         href={UrlManager.buildUrl('/pipelines')}
                         icon="code-branch"
