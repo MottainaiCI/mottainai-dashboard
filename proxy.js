@@ -2,7 +2,7 @@ const path = require("path")
 const Koa = require("koa")
 const proxy = require("koa2-nginx")
 const sendfile = require("koa-sendfile")
-const route = require("koa-route")
+const Router = require("koa-router")
 const koastatic = require("koa-static")
 const helmet = require("koa-helmet")
 
@@ -11,6 +11,7 @@ const apiUrl = process.env.API_URL || "http://localhost:9090"
 const port = process.env.PORT || 3000
 const insecure = !!process.env.INSECURE || false
 const staticDir = process.env.STATIC_DIR || path.join(__dirname, "build")
+const appPrefix = process.env.APP_PREFIX || "/"
 
 process.on("SIGINT", () => {
   console.info("Exiting server")
@@ -36,27 +37,36 @@ app.use(koastatic(staticDir))
 
 app.use(
   proxy({
-    "/api": {
-      target: apiUrl,
-      secure: !insecure,
-      changeOrigin: true,
-    },
-    "/public": {
+    [appPrefix+"api"]: {
       target: apiUrl,
       secure: !insecure,
       changeOrigin: true,
       pathRewrite: {
-        "^/public": "",
+        ["^"+appPrefix+"api"]: "/api",
+      },
+    },
+    [appPrefix+"public"]: {
+      target: apiUrl,
+      secure: !insecure,
+      changeOrigin: true,
+      pathRewrite: {
+        ["^"+appPrefix+"public"]: "",
       },
     }
   })
 )
 
-app.use(route.get("/*", async function (ctx) {
-  await sendfile(ctx, path.join(staticDir, "index.html"))
+const mRouter = new Router({
+  prefix: appPrefix,
+});
+
+mRouter.get(appPrefix, async function (ctx) {
+  await sendfile(ctx, path.join(staticDir, "index.html"));
   if (!ctx.status) ctx.throw(404)
-}))
+});
+app.use(mRouter.routes());
+app.use(mRouter.allowedMethods());
 
 app.listen(port, function () {
   console.log("Listening on port " + port)
-})
+});
