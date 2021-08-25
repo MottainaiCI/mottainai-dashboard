@@ -5,7 +5,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "build": "NODE_ENV=production preact build ---no-prerender --no-sw",
-    "dev": "preact watch",
+    "dev": "preact watch -p 30000 ",
     "lint": "eslint src",
     "test": "jest"
   },
@@ -38,6 +38,13 @@
     "axios": "^0.21.0",
     "dayjs": "^1.9.6",
     "js-yaml": "^3.14.0",
+    "koa": "^2.13.1",
+    "koa-helmet": "^6.1.0",
+    "koa-route": "^3.2.0",
+    "koa-router": "^10.1.1",
+    "koa-sendfile": "^3.0.0",
+    "koa-static": "^5.0.0",
+    "koa2-nginx": "^2.0.2",
     "lodash": "^4.17.20",
     "preact": "^10.3.2",
     "preact-render-to-string": "^5.1.4",
