@@ -31,7 +31,7 @@ export default {
           pathRewrite: {
             ["^"+appPrefix+"api"]: "/api" ,
             ["^"+appPrefix+"public"]: "",
-            "/": "",
+            [appPrefix]: "",
           },
         },
       ]

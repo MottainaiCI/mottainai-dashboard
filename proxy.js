@@ -5,12 +5,14 @@ const sendfile = require("koa-sendfile")
 const Router = require("koa-router")
 const koastatic = require("koa-static")
 const helmet = require("koa-helmet")
+const logger = require("koa-logger")
+const mount  = require('koa-mount')
 
 // config
 const apiUrl = process.env.API_URL || "http://localhost:9090"
 const port = process.env.PORT || 3000
 const insecure = !!process.env.INSECURE || false
-const staticDir = process.env.STATIC_DIR || path.join(__dirname, "build")
+const staticDir = process.env.STATIC_DIR || path.join(__dirname, "build/")
 const appPrefix = process.env.APP_PREFIX || "/"
 
 process.on("SIGINT", () => {
@@ -33,7 +35,6 @@ app.use(
   })
 )
 
-app.use(koastatic(staticDir))
 
 app.use(
   proxy({
@@ -56,17 +57,21 @@ app.use(
   })
 )
 
+console.log("Using prefix " + appPrefix)
 const mRouter = new Router({
   prefix: appPrefix,
 });
 
-mRouter.get(appPrefix, async function (ctx) {
+app.use( mount(appPrefix, koastatic(staticDir)) )
+
+mRouter.get("/", async function (ctx) {
   await sendfile(ctx, path.join(staticDir, "index.html"));
   if (!ctx.status) ctx.throw(404)
 });
 app.use(mRouter.routes());
 app.use(mRouter.allowedMethods());
 
+app.use(logger())
 app.listen(port, function () {
   console.log("Listening on port " + port)
 });
