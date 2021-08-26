@@ -14,7 +14,6 @@ RUN npm run build
 FROM node:14-alpine
 WORKDIR /usr/src/app
 COPY --from=build /app/build ./build
-COPY package-proxy.json package.json
 RUN npm i --silent
 COPY proxy.js .
 CMD ["node", "proxy.js"]
