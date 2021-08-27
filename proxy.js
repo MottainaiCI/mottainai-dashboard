@@ -18,7 +18,7 @@ const host = process.env.HOST || "0.0.0.0"
 const insecure = process.env.INSECURE || false
 const staticDir = process.env.STATIC_DIR || path.join(__dirname, "build/")
 const appPrefix = process.env.APP_PREFIX || "/"
-const useSSL = !!process.env.USE_SSL || false
+const useSSL = process.env.USE_SSL || "false"
 const privateKeyFile = process.env.PRIVATE_KEYFILE || ""
 const certFile = process.env.CERT_FILE || ""
 
@@ -64,7 +64,7 @@ app.use(
   })
 )
 
-console.log("Using prefix " + appPrefix + "\n" + useSSL);
+console.log("Using prefix " + appPrefix + "\nUsing SSL " + useSSL);
 const mRouter = new Router({
   prefix: appPrefix,
 });
