@@ -3,6 +3,7 @@ import { Link, route } from "preact-router"
 import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 
 import TitleContext from "@/contexts/title"
+import UrlManager from "@/contexts/prefix"
 import Loader from "@/components/common/loader"
 import PipelineService from "@/service/pipeline"
 import Dropdown from "@/components/common/dropdown"
@@ -42,7 +43,7 @@ const ShowPipeline = ({ pipelineId }) => {
           body: `Are you sure you want to delete Pipeline ${id}?`,
         }).then((confirmed) => {
           if (confirmed) {
-            PipelineService.delete(id).then(() => route("/pipelines"))
+            PipelineService.delete(id).then(() => route(UrlManager.buildUrl("/pipelines")))
           }
         })
       },
@@ -72,7 +73,7 @@ const ShowPipeline = ({ pipelineId }) => {
           <Link
             className="text-blue-400 mr-1"
             key={i}
-            href={`/tasks/${pipeline.tasks[k].ID}`}
+            href={UrlManager.buildUrl(`/tasks/${pipeline.tasks[k].ID}`)}
           >
             {k}
           </Link>
@@ -105,7 +106,7 @@ const ShowPipeline = ({ pipelineId }) => {
             chord: taskFn,
             pipeline_owner_id(id) {
               return (
-                <Link href={`/users/${id}`} className="text-blue-400">
+                <Link href={UrlManager.buildUrl(`/users/${id}`)} className="text-blue-400">
                   {id}
                 </Link>
               )
@@ -134,7 +135,7 @@ const ShowPipeline = ({ pipelineId }) => {
               Cell: ({ row }) => {
                 return (
                   <Link
-                    href={`/tasks/${row.original.ID}`}
+                    href={UrlManager.buildUrl(`/tasks/${row.original.ID}`)}
                     className="text-blue-400"
                   >
                     {row.original.ID}
@@ -176,7 +177,7 @@ const ShowPipeline = ({ pipelineId }) => {
       <div className="flex justify-between items-center mb-2">
         <div className="text-2xl font-bold">Pipeline {pipelineId}</div>
         <div className="flex justify-between items-center">
-          <Link href="/pipelines" className="text-sm mr-1">
+          <Link href={UrlManager.buildUrl('/pipelines')} className="text-sm mr-1">
             <FontAwesomeIcon icon="caret-left" className="mr-1" />
             back to all pipelines
           </Link>

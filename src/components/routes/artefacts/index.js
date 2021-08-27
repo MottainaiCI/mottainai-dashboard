@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useContext } from "preact/hooks"
 
 import TitleContext from "@/contexts/title"
+import UrlManager from "@/contexts/prefix"
 import Table from "@/components/common/table"
 import Loader from "@/components/common/loader"
 import ArtefactService from "@/service/artefact"
@@ -33,7 +34,7 @@ const Artefacts = () => {
         Cell: ({ row }) => {
           return (
             <Link
-              href={`/artefacts/${row.original.namespace}`}
+              href={UrlManager.buildUrl(`/artefacts/${row.original.namespace}`)}
               className="text-blue-400"
             >
               {row.original.namespace}

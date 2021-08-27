@@ -3,6 +3,7 @@ import { Link } from "preact-router"
 import dayjs from "@/day"
 
 import TitleContext from "@/contexts/title"
+import UrlManager from "@/contexts/prefix"
 import Table from "@/components/common/table"
 import Dropdown from "@/components/common/dropdown"
 import Loader from "@/components/common/loader"
@@ -37,7 +38,7 @@ const Pipelines = () => {
         Cell: ({ row }) => {
           return (
             <Link
-              href={`/pipelines/${row.original.ID}`}
+              href={UrlManager.buildUrl(`/pipelines/${row.original.ID}`)}
               className="text-blue-400"
             >
               {row.original.ID}

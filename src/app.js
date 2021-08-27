@@ -20,7 +20,10 @@ import Login from "@/components/routes/login"
 import Signup from "@/components/routes/signup"
 import Tokens from "@/components/routes/tokens"
 import Users from "@/components/routes/users"
+import NewUser from "@/components/routes/users/new"
+import EditUser from "@/components/routes/users/edit"
 import ShowUser from "./components/routes/users/show"
+import Integrations from "./components/routes/integrations"
 
 import Sidebar from "@/components/sidebar"
 import Loader from "@/components/common/loader"
@@ -28,10 +31,11 @@ import Loader from "@/components/common/loader"
 import ThemeContext, { THEME_OPTIONS } from "@/contexts/theme"
 import UserContext from "@/contexts/user"
 import TitleContext from "@/contexts/title"
+import AuthService from "@/service/auth"
+import UrlManager from "@/contexts/prefix"
 
 import themes from "@/themes"
 import axios from "@/axios"
-import UserService from "./service/user"
 import ShowPlan from "./components/routes/plans/show"
 
 const AUTHED = [
@@ -42,10 +46,11 @@ const AUTHED = [
   "/nodes",
   "/users",
   "/tokens",
+  "/integrations",
 ]
 const UNAUTHED = ["/login", "/signup"]
 const MANAGER_ROUTES = ["/users"]
-const ADMIN_ROUTES = []
+const ADMIN_ROUTES = ["/tasks", "/nodes"]
 
 const App = () => {
   const [theme, setTheme] = useLocalStorage(
@@ -53,7 +58,18 @@ const App = () => {
     THEME_OPTIONS[0].value
   )
   const themeValue = { theme, setTheme }
-  const [user, setUser] = useState(null)
+  const [user, setUserState] = useState(null)
+  const setUser = (user) =>
+    setUserState(
+      user
+        ? {
+            ...user,
+            is_admin: user.is_admin === "yes",
+            is_manager: user.is_manager === "yes",
+            identities: user.identities || {},
+          }
+        : user
+    )
   const [loadingUser, setLoadingUser] = useState(true)
   const userVal = { user, setUser }
   const [title, setTitle] = useState("")
@@ -67,9 +83,7 @@ const App = () => {
     (res) => res,
     (err) => {
       if (err.response.status == 403) {
-        UserService.clearUser()
-        setUser(null)
-        handleRoute(getCurrentUrl())
+        handleRoute(UrlManager.buildUrl('/'))
       }
       throw err
     }
@@ -80,20 +94,20 @@ const App = () => {
       return
     }
     if (
-      (AUTHED.some((val) => url.startsWith(val)) && !user) ||
-      (UNAUTHED.some((val) => url.startsWith(val)) && user)
+      (AUTHED.some((val) => url.startsWith(UrlManager.buildUrl(val))) && !user) ||
+      (UNAUTHED.some((val) => url.startsWith(UrlManager.buildUrl(val))) && user)
     ) {
-      route("/")
+      route(UrlManager.buildUrl("/"))
     } else if (user) {
       if (
-        MANAGER_ROUTES.some((val) => url.startsWith(val)) &&
+        MANAGER_ROUTES.some((val) => url.startsWith(UrlManager.buildUrl(val))) &&
         !user.is_manager &&
         !user.is_admin
       ) {
-        route("/")
+        route(UrlManager.buildUrl("/"))
       }
-      if (ADMIN_ROUTES.some((val) => url.startsWith(val)) && !user.is_admin) {
-        route("/")
+      if (ADMIN_ROUTES.some((val) => url.startsWith(UrlManager.buildUrl(val))) && !user.is_admin) {
+        route(UrlManager.buildUrl("/"))
       }
     }
   }
@@ -104,8 +118,8 @@ const App = () => {
   }
 
   useState(() => {
-    if (UserService.isLoggedIn()) {
-      UserService.getUser().then(setUser).finally(clearLoadingUser)
+    if (AuthService.isLoggedIn()) {
+      AuthService.getUser().then(setUser).finally(clearLoadingUser)
     } else {
       clearLoadingUser()
     }
@@ -135,23 +149,26 @@ const App = () => {
             <Sidebar />
             <div className="px-8 py-10 flex-1 overflow-auto">
               <Router onChange={(e) => handleRoute(e.url)}>
-                <Dashboard path="/" />
-                <Tasks path="/tasks" />
-                <NewTask path={`/tasks/new`} />
-                <ShowTask path={`/tasks/:taskId`} />
-                <Plans path="/plans" />
-                <ShowPlan path="/plans/:planId" />
-                <Pipelines path="/pipelines" />
-                <ShowPipeline path="/pipelines/:pipelineId" />
-                <Nodes path="/nodes" />
-                <ShowNode path="/nodes/:nodeId" />
-                <Artefacts path="/artefacts" />
-                <ShowArtefacts path="/artefacts/:namespace" />
-                <Login path="/login" />
-                <Signup path="/signup" />
-                <Tokens path="/tokens" />
-                <Users path="/users" />
-                <ShowUser path="/users/:userId" />
+                <Dashboard path={UrlManager.buildUrl('/')} />
+                <Tasks path={UrlManager.buildUrl('/tasks')} />
+                <NewTask path={UrlManager.buildUrl('/tasks/new')} />
+                <ShowTask path={UrlManager.buildUrl(`/tasks/:taskId`)} />
+                <Plans path={UrlManager.buildUrl('/plans')} />
+                <ShowPlan path={UrlManager.buildUrl('/plans/:planId')} />
+                <Pipelines path={UrlManager.buildUrl('/pipelines')} />
+                <ShowPipeline path={UrlManager.buildUrl('/pipelines/:pipelineId')} />
+                <Nodes path={UrlManager.buildUrl('/nodes')} />
+                <ShowNode path={UrlManager.buildUrl('/nodes/:nodeId')} />
+                <Artefacts path={UrlManager.buildUrl('/artefacts')} />
+                <ShowArtefacts path={UrlManager.buildUrl('/artefacts/:namespace')} />
+                <Login path={UrlManager.buildUrl('/login')} />
+                <Signup path={UrlManager.buildUrl('/signup')} />
+                <Tokens path={UrlManager.buildUrl('/tokens')} />
+                <Users path={UrlManager.buildUrl('/users')} />
+                <NewUser path={UrlManager.buildUrl('/users/new')} />
+                <ShowUser path={UrlManager.buildUrl('/users/:userId')} />
+                <EditUser path={UrlManager.buildUrl('/users/:userId/edit')} />
+                <Integrations path={UrlManager.buildUrl('/integrations')} />
               </Router>
             </div>
           </div>

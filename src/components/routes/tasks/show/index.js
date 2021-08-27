@@ -6,6 +6,7 @@ import { Scrollbars } from "react-custom-scrollbars"
 
 import TitleContext from "@/contexts/title"
 import ThemeContext from "@/contexts/theme"
+import UrlManager from "@/contexts/prefix"
 import Button from "@/components/common/button"
 import { PillLink } from "@/components/common/pill"
 import Table from "@/components/common/table"
@@ -96,7 +97,7 @@ const ShowTask = ({ taskId }) => {
         Cell: ({ row }) => {
           return (
             <a
-              href={`/public/artefact/${task.ID}/${row.original.ID}`}
+              href={UrlManager.buildUrl(`/public/artefact/${task.ID}/${row.original.ID}`)}
               className="text-blue-400"
               target="_blank"
               rel="noreferrer"
@@ -125,14 +126,14 @@ const ShowTask = ({ taskId }) => {
           <div className="flex mb-2">
             <PillLink
               LinkTag="a"
-              href={`/api/tasks/${task.ID}`}
+              href={UrlManager.buildUrl(`/api/tasks/${task.ID}`)}
               target="_blank"
             >
               JSON
             </PillLink>
             <PillLink
               LinkTag="a"
-              href={`/api/tasks/${task.ID}.yaml`}
+              href={UrlManager.buildUrl(`/api/tasks/${task.ID}.yaml`)}
               target="_blank"
             >
               YAML
@@ -163,14 +164,14 @@ const ShowTask = ({ taskId }) => {
                 : "",
             owner_id(id) {
               return (
-                <Link href={`/users/${id}`} className="text-blue-400">
+                <Link href={UrlManager.buildUrl(`/users/${id}`)} className="text-blue-400">
                   {id}
                 </Link>
               )
             },
             node_id(id) {
               return (
-                <Link href={`/nodes/${id}`} className="text-blue-400">
+                <Link href={UrlManager.buildUrl(`/nodes/${id}`)} className="text-blue-400">
                   {id}
                 </Link>
               )
@@ -259,7 +260,7 @@ const ShowTask = ({ taskId }) => {
           Task {taskId} {task && getTaskIcon(task.status, task.result)}
         </div>
         <div className="flex justify-between items-center">
-          <Link href="/tasks" className="text-sm mr-1">
+          <Link href={UrlManager.buildUrl('/tasks')} className="text-sm mr-1">
             <FontAwesomeIcon icon="caret-left" className="mr-1" />
             back to all tasks
           </Link>
@@ -270,10 +271,10 @@ const ShowTask = ({ taskId }) => {
               actionArgs={[task && task.ID]}
               options={taskOptions({
                 onClone(id) {
-                  route(`/tasks/${id}`)
+                  route(UrlManager.buildUrl(`/tasks/${id}`))
                 },
                 onDelete() {
-                  route("/tasks")
+                  route(UrlManager.buildUrl("/tasks"))
                 },
               })}
             />

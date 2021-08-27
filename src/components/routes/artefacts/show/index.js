@@ -1,5 +1,6 @@
 import ArtefactService from "@/service/artefact"
 import TitleContext from "@/contexts/title"
+import UrlManager from "@/contexts/prefix"
 import Table from "@/components/common/table"
 import { useContext, useEffect, useMemo, useState } from "preact/hooks"
 import Loader from "@/components/common/loader"
@@ -33,7 +34,7 @@ const ShowArtefacts = ({ namespace }) => {
         Cell: ({ row }) => {
           return (
             <a
-              href={`/public/namespace/${namespace}/${row.original.ID}`}
+              href={UrlManager.buildUrl(`/public/namespace/${namespace}/${row.original.ID}`)}
               className="text-blue-400"
               target="_blank"
               rel="noreferrer"
@@ -55,7 +56,7 @@ const ShowArtefacts = ({ namespace }) => {
     <>
       <div className="flex justify-between items-center mb-2">
         <div className="text-2xl font-bold">{namespace} Artefacts</div>
-        <Link href="/artefacts" className="text-sm">
+        <Link href={UrlManager.buildUrl('/artefacts')} className="text-sm">
           <FontAwesomeIcon icon="caret-left" className="mr-1" />
           back to all artefacts
         </Link>

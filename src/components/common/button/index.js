@@ -9,9 +9,9 @@ const Button = ({ children, className, ...props }) => {
   return (
     <button
       className={`
-        px-2 py-1 w-max focus:outline-none
+        px-2 py-1 w-max focus:outline-none 
         disabled:opacity-50 disabled:cursor-not-allowed
-        ${themes[theme].button} ${className}`}
+        ${themes[theme].button} ${className || ""}`}
       {...props}
     >
       {children}

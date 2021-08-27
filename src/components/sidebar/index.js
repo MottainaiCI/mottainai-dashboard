@@ -6,8 +6,9 @@ import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 import ThemeContext, { THEME_OPTIONS } from "@/contexts/theme"
 import UserContext from "@/contexts/user"
 import SidebarContext from "@/contexts/sidebar"
+import UrlManager from "@/contexts/prefix"
 import themes from "@/themes"
-import UserService from "@/service/user"
+import AuthService from "@/service/auth"
 import logo from "@/assets/images/logo.png"
 
 import { SidebarLink } from "./common"
@@ -22,26 +23,31 @@ const ProfileItem = () => {
   let { user, setUser } = useContext(UserContext)
   const isPrivileged = user.is_manager || user.is_admin
   const signOut = () => {
-    UserService.logout().then(() => {
+    AuthService.logout().then(() => {
       setUser(null)
-      route("/")
+      route(UrlManager.buildUrl("/"))
     })
   }
 
   return (
     <SidebarPopoutMenu icon="user" anchor="bottom-0" label={user.name}>
-      {isPrivileged && (
-        <SidebarPopoutLink href="/users" icon="users" text="Users" />
-      )}
-      <SidebarPopoutLink href="/tokens" icon="key" text="API Tokens" />
       <SidebarPopoutItem onClick={signOut} icon="sign-out-alt" text="Log out" />
+      {isPrivileged && (
+        <SidebarPopoutLink href={ UrlManager.buildUrl('/users') } icon="users" text="Users" />
+      )}
+      <SidebarPopoutLink href={ UrlManager.buildUrl('/tokens') } icon="key" text="API Tokens" />
+      <SidebarPopoutLink
+        href={UrlManager.buildUrl('/integrations')}
+        icon="share-alt"
+        text="Integrations"
+      />
     </SidebarPopoutMenu>
   )
 }
 
 const Sidebar = () => {
   let { theme, setTheme } = useContext(ThemeContext)
-  let { user } = useContext(UserContext)
+  let { user: currentUser } = useContext(UserContext)
   const [collapsed, setCollapsed] = useLocalStorage(
     "mottainai-sidebar-collapsed",
     false
@@ -75,23 +81,27 @@ const Sidebar = () => {
           <div className="border h-px w-4/5 mx-auto mb-4" />
           <div className="flex-1 flex flex-col justify-between">
             <div className="flex flex-col">
-              <SidebarLink href="/" icon="tachometer-alt" text="Dashboard" />
-              {user && (
+              <SidebarLink href={UrlManager.buildUrl('/')} icon="tachometer-alt" text="Dashboard" />
+              {currentUser && (
                 <>
-                  <SidebarLink href="/tasks" icon="tasks" text="Tasks" />
-                  <SidebarLink href="/plans" icon="clock" text="Plans" />
+                  {currentUser.is_admin && (
+                    <>
+                      <SidebarLink href={UrlManager.buildUrl('/tasks')} icon="tasks" text="Tasks" />
+                      <SidebarLink href={UrlManager.buildUrl('/plans')} icon="clock" text="Plans" />
+                      <SidebarLink
+                        href={UrlManager.buildUrl('/pipelines')}
+                        icon="code-branch"
+                        text="Pipelines"
+                      />
+                      <SidebarLink
+                        href={UrlManager.buildUrl('/nodes')}
+                        icon="network-wired"
+                        text="Nodes"
+                      />
+                    </>
+                  )}
                   <SidebarLink
-                    href="/pipelines"
-                    icon="code-branch"
-                    text="Pipelines"
-                  />
-                  <SidebarLink
-                    href="/nodes"
-                    icon="network-wired"
-                    text="Nodes"
-                  />
-                  <SidebarLink
-                    href="/artefacts"
+                    href={UrlManager.buildUrl('/artefacts')}
                     icon="cloud"
                     text="Artefacts"
                   />
@@ -100,12 +110,12 @@ const Sidebar = () => {
             </div>
 
             <div className="flex flex-col">
-              {user ? (
+              {currentUser ? (
                 <ProfileItem />
               ) : (
                 <>
-                  <SidebarLink href="/login" icon="sign-in-alt" text="Log In" />
-                  <SidebarLink href="/signup" icon="user-plus" text="Sign Up" />
+                  <SidebarLink href={ UrlManager.buildUrl('/login') } icon="sign-in-alt" text="Log In" />
+                  <SidebarLink href={ UrlManager.buildUrl('/signup') } icon="user-plus" text="Sign Up" />
                 </>
               )}
               <SidebarPopoutSelector

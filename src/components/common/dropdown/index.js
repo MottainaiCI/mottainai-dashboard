@@ -17,10 +17,10 @@ const Dropdown = ({ label, anchor = "left-0", options, actionArgs = [] }) => {
   ))
   return (
     <div className="group relative cursor-pointer w-max">
-      <div className="flex items-center p-1">
+      <div className="flex items-center">
         {label}
         {typeof label === "string" && (
-          <FontAwesomeIcon icon="caret-down" className="ml-3" />
+          <FontAwesomeIcon icon="caret-down" className="p-1 ml-3" />
         )}
       </div>
       <div className={`absolute w-max hidden group-hover:block z-20 ${anchor}`}>

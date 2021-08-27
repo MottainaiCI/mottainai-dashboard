@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@aduh95/preact-fontawesome"
 
 import { showConfirmModal } from "@/components/common/modal"
 import TaskService from "@/service/task"
+import UrlManager from "@/contexts/prefix"
 import { datetimeFormatStr, durationFormatFn } from "@/util"
 import dayjs from "@/day"
 import Dropdown from "../dropdown"
@@ -96,7 +97,7 @@ export const taskTableColumns = ({
     accessor: "ID",
     Cell: ({ row }) => {
       return (
-        <Link href={`/tasks/${row.original.ID}`} className="text-blue-400">
+        <Link href={UrlManager.buildUrl(`/tasks/${row.original.ID}`)} className="text-blue-400">
           {row.original.ID}
         </Link>
       )
