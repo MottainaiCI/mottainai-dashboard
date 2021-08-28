@@ -34,14 +34,19 @@ app.use(
     contentSecurityPolicy: {
       useDefaults: true,
       directives: {
-        scriptSrcAttr: ["'self'", "'unsafe-inline'"],
-        scriptSrcElem: ["'self'", "cdn.jsdelivr.net"],
+        // TODO: Move this options through a configuration file.
+        scriptSrcAttr: ["'self'", "'unsafe-inline'", "fonts.gstatic.com", "fonts.googleapis.com*"],
+        scriptSrcElem: ["'self'", "cdn.jsdelivr.net", "'unsafe-inline'"],
+        defaultSrc: ["'self'", "cdn.jdsdelivr.net", "fonts.gstatic.com", "fonts.googleapis.com*", "'unsafe-inline'", "data:"],
+        imageSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "fonts.gstatic.com", "fonts.googleapis.com", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        fontSrc: ["'self'", "fonts.gstatic.com", "fonts.googleapis.com", "'unsafe-inline'"],
         workerSrc: ["blob:"],
       },
     }
   })
 )
-
 
 app.use(
   proxy({
