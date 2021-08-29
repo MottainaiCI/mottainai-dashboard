@@ -18,7 +18,7 @@ const host = process.env.HOST || "0.0.0.0"
 const insecure = process.env.INSECURE || false
 const staticDir = process.env.STATIC_DIR || path.join(__dirname, "build/")
 const appPrefix = process.env.APP_PREFIX || "/"
-const useSSL = !!process.env.USE_SSL || false
+const useSSL = process.env.USE_SSL || "false"
 const privateKeyFile = process.env.PRIVATE_KEYFILE || ""
 const certFile = process.env.CERT_FILE || ""
 
@@ -34,14 +34,19 @@ app.use(
     contentSecurityPolicy: {
       useDefaults: true,
       directives: {
-        scriptSrcAttr: ["'self'", "'unsafe-inline'"],
-        scriptSrcElem: ["'self'", "cdn.jsdelivr.net"],
+        // TODO: Move this options through a configuration file.
+        scriptSrcAttr: ["'self'", "'unsafe-inline'", "fonts.gstatic.com", "fonts.googleapis.com*"],
+        scriptSrcElem: ["'self'", "cdn.jsdelivr.net", "'unsafe-inline'"],
+        defaultSrc: ["'self'", "cdn.jdsdelivr.net", "fonts.gstatic.com", "fonts.googleapis.com*", "'unsafe-inline'", "data:"],
+        imageSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "fonts.gstatic.com", "fonts.googleapis.com", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        fontSrc: ["'self'", "fonts.gstatic.com", "fonts.googleapis.com", "'unsafe-inline'"],
         workerSrc: ["blob:"],
       },
     }
   })
 )
-
 
 app.use(
   proxy({
@@ -64,7 +69,7 @@ app.use(
   })
 )
 
-console.log("Using prefix " + appPrefix + "\n" + useSSL);
+console.log("Using prefix " + appPrefix + "\nUsing SSL " + useSSL);
 const mRouter = new Router({
   prefix: appPrefix,
 });
