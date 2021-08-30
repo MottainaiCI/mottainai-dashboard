@@ -74,6 +74,7 @@ const App = () => {
   const userVal = { user, setUser }
   const [title, setTitle] = useState("")
   const titleVal = { title, setTitle }
+  const withSignup = process.env.SIGNUP_ENABLE == "true" ? true : false
 
   if (!THEME_OPTIONS.some((t) => t.value === theme)) {
     setTheme(THEME_OPTIONS[0].value)
@@ -162,7 +163,9 @@ const App = () => {
                 <Artefacts path={UrlManager.buildUrl('/artefacts')} />
                 <ShowArtefacts path={UrlManager.buildUrl('/artefacts/:namespace')} />
                 <Login path={UrlManager.buildUrl('/login')} />
-                <Signup path={UrlManager.buildUrl('/signup')} />
+                {withSignup && (
+                  <Signup path={UrlManager.buildUrl('/signup')} />
+                )}
                 <Tokens path={UrlManager.buildUrl('/tokens')} />
                 <Users path={UrlManager.buildUrl('/users')} />
                 <NewUser path={UrlManager.buildUrl('/users/new')} />

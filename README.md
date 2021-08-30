@@ -69,4 +69,5 @@ $> node proxy.js
 | USE_SSL | false | Enable HTTPS (requires PRIVATE_KEYFILE and CERT_FILE) |
 | PRIVATE_KEYFILE | "" | Define the path of private key. |
 | CERT_FILE | "" | Define the path of the .crt file. |
+| SIGNUP_ENABLE | "" | Enable Signup feature available if enabled also on Mottainai Server settings. |
 
