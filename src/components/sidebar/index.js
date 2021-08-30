@@ -19,6 +19,19 @@ import {
   SidebarPopoutLink,
 } from "./popout"
 
+const LoginItem = () => {
+  const withSignup = process.env.SIGNUP_ENABLE == "true" ? true : false
+
+  return (
+    <div>
+      <SidebarLink href={ UrlManager.buildUrl('/login') } icon="sign-in-alt" text="Log In" />
+      {withSignup && (
+        <SidebarLink href={ UrlManager.buildUrl('/signup') } icon="user-plus" text="Sign Up" />
+      )}
+    </div>
+  )
+}
+
 const ProfileItem = () => {
   let { user, setUser } = useContext(UserContext)
   const isPrivileged = user.is_manager || user.is_admin
@@ -114,8 +127,7 @@ const Sidebar = () => {
                 <ProfileItem />
               ) : (
                 <>
-                  <SidebarLink href={ UrlManager.buildUrl('/login') } icon="sign-in-alt" text="Log In" />
-                  <SidebarLink href={ UrlManager.buildUrl('/signup') } icon="user-plus" text="Sign Up" />
+                  <LoginItem />
                 </>
               )}
               <SidebarPopoutSelector

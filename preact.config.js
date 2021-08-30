@@ -3,6 +3,10 @@ import path from "path"
 const appPrefix = process.env.APP_PREFIX || "/"
 const insecure = !!process.env.INSECURE || false
 const apiUrl = process.env.API_URL || "http://localhost:9090"
+// Related with the Mottainai server config option
+// it is possible enable/disable signup feature.
+// This option is handled only at built time.
+const signUpEnable = process.env.SIGNUP_ENABLE || "true"
 
 export default {
   plugins: ["preact-cli-tailwind"],
@@ -36,6 +40,18 @@ export default {
         },
       ]
     }
+
+    // use the public path in your app as 'process.env.PUBLIC_PATH'
+    config.plugins.push(
+      new helpers.webpack.EnvironmentPlugin({
+        SIGNUP_ENABLE: signUpEnable,
+      })
+      /*
+      new helpers.webpack.DefinePlugin({
+        'process.env.SIGNUP_ENABLE': signUpEnable,
+      })
+      */
+    );
 
     console.log(config)
     return config
