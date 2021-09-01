@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "mottainai-ci-web-ui",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "license": "GPL-3.0",
   "scripts": {
     "build": "NODE_ENV=production preact build ---no-prerender --no-sw",
