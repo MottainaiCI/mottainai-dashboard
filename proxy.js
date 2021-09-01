@@ -35,9 +35,9 @@ app.use(
       useDefaults: true,
       directives: {
         // TODO: Move this options through a configuration file.
-        scriptSrcAttr: ["'self'", "'unsafe-inline'", "fonts.gstatic.com", "fonts.googleapis.com*"],
+        scriptSrcAttr: ["'self'", "'unsafe-inline'", "fonts.gstatic.com", "fonts.googleapis.com"],
         scriptSrcElem: ["'self'", "cdn.jsdelivr.net", "'unsafe-inline'"],
-        defaultSrc: ["'self'", "cdn.jdsdelivr.net", "fonts.gstatic.com", "fonts.googleapis.com*", "'unsafe-inline'", "data:"],
+        defaultSrc: ["'self'", "cdn.jdsdelivr.net", "fonts.gstatic.com", "fonts.googleapis.com", "'unsafe-inline'", "data:"],
         imageSrc: ["'self'", "'unsafe-inline'"],
         styleSrc: ["'self'", "fonts.gstatic.com", "fonts.googleapis.com", "'unsafe-inline'"],
         scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
