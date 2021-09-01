@@ -43,8 +43,9 @@ export const getTaskIcon = (status, result) => {
 export const taskOptions = ({
   onClone = () => {},
   onDelete = () => {},
-  onStop = () => {},
+  //onStop = () => {},
 }) => [
+  /*
   {
     label: "Stop",
     onClick(id) {
@@ -57,6 +58,7 @@ export const taskOptions = ({
       })
     },
   },
+  */
   {
     label: "Clone",
     onClick(id) {
@@ -155,6 +157,7 @@ export const taskTableColumns = ({
             onDelete() {
               fetchTasks()
             },
+            /*
             onStop(id) {
               TaskService.fetch(id).then((task) => {
                 setTasks(
@@ -164,6 +167,7 @@ export const taskTableColumns = ({
                 )
               })
             },
+            */
           })}
         />
       )
