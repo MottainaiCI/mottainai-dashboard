@@ -7,6 +7,11 @@ const apiUrl = process.env.API_URL || "http://localhost:9090"
 // it is possible enable/disable signup feature.
 // This option is handled only at built time.
 const signUpEnable = process.env.SIGNUP_ENABLE || "true"
+// This option is needed only when the autentication
+// of Mottainai Server is done by third party component
+// (for example LDAP) and the user/passsword is handled
+// automatically when is called the stats API.
+const skipAuth = process.env.SKIP_AUTH || "false"
 
 export default {
   plugins: ["preact-cli-tailwind"],
@@ -45,6 +50,7 @@ export default {
     config.plugins.push(
       new helpers.webpack.EnvironmentPlugin({
         SIGNUP_ENABLE: signUpEnable,
+        SKIP_AUTH: skipAuth,
       })
       /*
       new helpers.webpack.DefinePlugin({

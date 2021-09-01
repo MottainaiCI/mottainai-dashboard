@@ -36,7 +36,13 @@ const AuthService = {
     localStorage.removeItem("mottainai:auth")
   },
   isLoggedIn() {
-    return !!localStorage.getItem("mottainai:auth")
+    const authEnable = process.env.SKIP_AUTH == "true" ? false : true
+
+    if (authEnable) {
+      return !!localStorage.getItem("mottainai:auth")
+    } else {
+      return true
+    }
   },
 }
 
