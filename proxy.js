@@ -35,9 +35,9 @@ app.use(
       useDefaults: true,
       directives: {
         // TODO: Move this options through a configuration file.
-        scriptSrcAttr: ["'self'", "'unsafe-inline'", "fonts.gstatic.com", "fonts.googleapis.com*"],
+        scriptSrcAttr: ["'self'", "'unsafe-inline'", "fonts.gstatic.com", "fonts.googleapis.com"],
         scriptSrcElem: ["'self'", "cdn.jsdelivr.net", "'unsafe-inline'"],
-        defaultSrc: ["'self'", "cdn.jdsdelivr.net", "fonts.gstatic.com", "fonts.googleapis.com*", "'unsafe-inline'", "data:"],
+        defaultSrc: ["'self'", "cdn.jdsdelivr.net", "fonts.gstatic.com", "fonts.googleapis.com", "'unsafe-inline'", "data:"],
         imageSrc: ["'self'", "'unsafe-inline'"],
         styleSrc: ["'self'", "fonts.gstatic.com", "fonts.googleapis.com", "'unsafe-inline'"],
         scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
@@ -47,6 +47,8 @@ app.use(
     }
   })
 )
+
+app.use(logger())
 
 app.use(
   proxy({
@@ -68,22 +70,34 @@ app.use(
     }
   })
 )
-
 console.log("Using prefix " + appPrefix + "\nUsing SSL " + useSSL);
 const mRouter = new Router({
   prefix: appPrefix,
 });
 
-app.use( mount(appPrefix, koastatic(staticDir)) )
 
-mRouter.get("/", async function (ctx) {
-  await sendfile(ctx, path.join(staticDir, "index.html"));
-  if (!ctx.status) ctx.throw(404)
-});
+const handler = async function(ctx) {
+  ctx.redirect(appPrefix);
+  ctx.status = 301;
+}
+
+mRouter.get([
+  "artefacts",
+  "integrations",
+  "plans",
+  "pipelines",
+  "nodes",
+  "tasks",
+  "tokens",
+  "users",
+], handler);
+
+
 app.use(mRouter.routes());
 app.use(mRouter.allowedMethods());
 
-app.use(logger())
+app.use( mount(appPrefix, koastatic(staticDir)) )
+
 
 // Check if the certificates are availables
 if (useSSL == "true") {
