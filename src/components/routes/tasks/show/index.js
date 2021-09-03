@@ -138,6 +138,14 @@ const ShowTask = ({ taskId }) => {
             >
               YAML
             </PillLink>
+            <PillLink
+              LinkTag="a"
+              href={UrlManager.buildUrl(`/public/artefact/${task.ID}/build_${task.ID}.log`)}
+              target="_blank"
+              icon="file-alt"
+            >
+              Log
+            </PillLink>
           </div>
         )}
         <KVTable
@@ -256,8 +264,13 @@ const ShowTask = ({ taskId }) => {
   return (
     <>
       <div className="flex justify-between items-center">
-        <div className="text-2xl font-bold">
-          Task {taskId} {task && getTaskIcon(task.status, task.result)}
+        <div className="m-px">
+          <div className="text-2xl font-bold">
+            Task {taskId} {task && getTaskIcon(task.status, task.result)}
+          </div>
+          <div className="m-px text-xl font-bold">
+            {task.name}
+          </div>
         </div>
         <div className="flex justify-between items-center">
           <Link href={UrlManager.buildUrl('/tasks')} className="text-sm mr-1">

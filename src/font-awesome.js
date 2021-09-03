@@ -15,6 +15,7 @@ library.add(
   fas.faCog,
   fas.faExclamation,
   fas.faExternalLinkAlt,
+  fas.faFileAlt,
   fas.faKey,
   fas.faNetworkWired,
   fas.faPalette,
