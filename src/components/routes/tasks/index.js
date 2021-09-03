@@ -81,6 +81,8 @@ const Tasks = () => {
       .finally(() => setLoading(false))
   }, [])
 
+  const defaultSortBy = [{ id: "start_time", desc: true }]
+
   return (
     <>
       <div className="flex justify-between items-center mb-2">
@@ -115,6 +117,7 @@ const Tasks = () => {
           loading={loading}
           fetchData={fetchTasks}
           pageCount={pageCount}
+          defaultSortBy={defaultSortBy}
           data={tasks}
           total={total}
           columns={taskTableColumns({

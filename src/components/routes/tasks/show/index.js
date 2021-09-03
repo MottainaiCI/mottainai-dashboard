@@ -120,6 +120,31 @@ const ShowTask = ({ taskId }) => {
       return <div>{error}</div>
     }
 
+    const copyToClipboard = (cmd) => {
+      if (!navigator.clipboard) {
+        const textArea = document.createElement("textarea");
+        textArea.value = cmd;
+
+        // Avoid scrolling to bottom
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+          const successful = document.execCommand('copy');
+        } catch (err) {
+          console.error('Fallback: Oops, unable to copy', err);
+        }
+        document.body.removeChild(textArea);
+        return;
+      }
+      navigator.clipboard.writeText(cmd);
+    }
+
     return (
       <>
         {task && (
@@ -137,6 +162,14 @@ const ShowTask = ({ taskId }) => {
               target="_blank"
             >
               YAML
+            </PillLink>
+            <PillLink
+              LinkTag="a"
+              href={UrlManager.buildUrl(`/public/artefact/${task.ID}/build_${task.ID}.log`)}
+              target="_blank"
+              icon="file-alt"
+            >
+              Log
             </PillLink>
           </div>
         )}
@@ -190,9 +223,8 @@ const ShowTask = ({ taskId }) => {
           {isRefreshing && (
             <Button
               className={`absolute cursor-pointer top-0 right-0 rounded mr-3 mt-1 z-10
-              ${
-                themes[theme].logs[enableScroll ? "scrollOnBg" : "scrollOffBg"]
-              }`}
+              ${themes[theme].logs[enableScroll ? "scrollOnBg" : "scrollOffBg"]
+                }`}
               onClick={() => {
                 setEnableScroll(!enableScroll)
               }}
@@ -226,20 +258,21 @@ const ShowTask = ({ taskId }) => {
           >
             <div
               className={`pl-2 py-1 select-text font-mono
-            ${themes[theme].logs.bg}`}
+            ${themes[theme].logs.bg} ${themes[theme].consoleWrapper.container}`}
             >
               {nl2br(logs.trim())}
             </div>
           </Scrollbars>
         </div>
         <div className="text-xl font-bold my-2">Commands</div>
-        <div className={`font-mono p-2 ${themes[theme].cardContainer}`}>
+        <div className={`font-mono ${themes[theme].cardContainer} ${themes[theme].commandWrapper.container}`}>
           {task &&
             task.script &&
             task.script.map((cmd) => (
-              <div className="flex items-center">
+              <div className={`flex p-2 items-center cursor-pointer group ${themes[theme].commandWrapper.line}`} onClick={() => copyToClipboard(cmd)}>
                 <div className="mr-2">{">"}</div>
                 <div className="select-text">{cmd}</div>
+                <FontAwesomeIcon icon="clipboard" className={`hidden ml-auto group-hover:inline`} />
               </div>
             ))}
         </div>
@@ -256,8 +289,13 @@ const ShowTask = ({ taskId }) => {
   return (
     <>
       <div className="flex justify-between items-center">
-        <div className="text-2xl font-bold">
-          Task {taskId} {task && getTaskIcon(task.status, task.result)}
+        <div className="m-px">
+          <div className="text-2xl font-bold">
+            Task {taskId} {task && getTaskIcon(task.status, task.result)}
+          </div>
+          <div className="m-px text-xl font-bold">
+            {task.name}
+          </div>
         </div>
         <div className="flex justify-between items-center">
           <Link href={UrlManager.buildUrl('/tasks')} className="text-sm mr-1">

@@ -108,6 +108,13 @@ export const taskTableColumns = ({
   {
     Header: "Name",
     accessor: "name",
+    Cell: ({ row }) => {
+      return (
+        <div className="max-w-sm">
+          {row.original.name}
+        </div>
+      )
+    },
   },
   {
     Header: "Image",
@@ -125,6 +132,15 @@ export const taskTableColumns = ({
     Cell: ({ row }) => {
       if (row.original.start_time) {
         return dayjs(row.original.start_time).format(datetimeFormatStr)
+      }
+    },
+  },
+  {
+    Header: "Creation Time",
+    accessor: "created_time",
+    Cell: ({ row }) => {
+      if (row.original.created_time) {
+        return dayjs(row.original.created_time).format(datetimeFormatStr)
       }
     },
   },

@@ -24,13 +24,15 @@ export const PillLink = ({
   children,
   href,
   target,
+  icon,
   ...props
 }) => {
+  const pillIcon = icon || "external-link-alt"
   return (
     <LinkTag href={href} target={target} rel={target && "noreferrer"}>
       <Pill {...props}>
         {children}
-        <FontAwesomeIcon icon="external-link-alt" className="ml-1" />
+        <FontAwesomeIcon icon={pillIcon} className="ml-1" />
       </Pill>
     </LinkTag>
   )
