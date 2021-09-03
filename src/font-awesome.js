@@ -30,5 +30,6 @@ library.add(
   fas.faTasks,
   fas.faUser,
   fas.faUserPlus,
-  fas.faUsers
+  fas.faUsers,
+  fas.faClipboard
 )

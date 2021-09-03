@@ -24,7 +24,12 @@ module.exports = {
         },
         green: {
           mottainai: "#73ba25",
+          terminal: "#22da26"
         },
+        solarized: {
+          background: "#fdf6e3",
+          content: "#586e75"
+        }
       },
       fontFamily: {
         sans: ["Lato", "sans-serif"],
@@ -35,8 +40,8 @@ module.exports = {
     display: ["group-hover", "group-focus"],
     extend: {
       opacity: ["disabled"],
-      backgroundColor: ["disabled"],
-      cursor: ["disabled"],
+      backgroundColor: ["disabled", "even"],
+      cursor: ["disabled"]
     },
   },
 }

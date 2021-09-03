@@ -7,6 +7,13 @@ export default {
     dashboard: {
       cardTitleBorder: "border-b border-gray-200",
     },
+    consoleWrapper: {
+      container: "m-0 bg-solarized-background text-solarized-content font-mono text-sm"
+    },
+    commandWrapper: {
+      container: "bg-beige-300",
+      line: "pt-3 pb-3 pl-2 pr-2 even:bg-white"
+    },
     sidebar: {
       bg: "bg-beige-100",
       activeBg: "bg-beige-300",
@@ -38,7 +45,14 @@ export default {
     bg: "bg-beige-700",
     textColor: "text-cultured-white",
     spinnerFrontColor: "#fff",
-    cardContainer: "bg-beige-750",
+    cardContainer: "bg-beige-750 border-beige-750 border",
+    consoleWrapper: {
+      container: "m-0 bg-black text-green-terminal font-mono text-sm"
+    },
+    commandWrapper: {
+      container: "bg-beige-300 border-beige-750 border",
+      line: "pt-3 pb-3 pl-2 pr-2 even:bg-beige-700"
+    },
     dashboard: {
       cardTitleBorder: "border-b border-beige-751",
     },
