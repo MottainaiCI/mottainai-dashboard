@@ -40,7 +40,6 @@ export default {
           pathRewrite: {
             ["^"+appPrefix+"api"]: "/api" ,
             ["^"+appPrefix+"public"]: "",
-            ["/"+appPrefix]: "",
           },
         },
       ]
@@ -52,11 +51,6 @@ export default {
         SIGNUP_ENABLE: signUpEnable,
         SKIP_AUTH: skipAuth,
       })
-      /*
-      new helpers.webpack.DefinePlugin({
-        'process.env.SIGNUP_ENABLE': signUpEnable,
-      })
-      */
     );
 
     console.log(config)
