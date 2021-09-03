@@ -1,9 +1,18 @@
+// Must be the first import
+if (process.env.NODE_ENV==='development') {
+  // Must use require here as import statements are only allowed
+  // to exist at top-level.
+  require("preact/debug");
+}
+
 import { Router, route, getCurrentUrl } from "preact-router"
 import { useLocalStorage } from "@rehooks/local-storage"
 import { useState } from "preact/hooks"
 import { Helmet } from "react-helmet"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+
+
 
 import Dashboard from "@/components/routes/dashboard"
 import Plans from "@/components/routes/plans"
