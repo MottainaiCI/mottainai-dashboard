@@ -5,6 +5,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "build": "NODE_ENV=production preact build ---no-prerender --no-sw",
+    "build-dev": "NODE_ENV=development preact build ---no-prerender --no-sw",
     "dev": "preact watch -p 30000 ",
     "lint": "eslint src",
     "test": "jest"
