@@ -40,7 +40,7 @@ const AsyncTable = ({
   columns,
   data,
   total,
-  fetchData = () => {},
+  fetchData = () => { },
   pageCount: controlledPageCount = null,
   loading = false,
   defaultSortBy = [{ id: "ID", desc: true }],
