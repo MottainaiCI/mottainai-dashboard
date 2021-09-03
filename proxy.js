@@ -75,23 +75,38 @@ const mRouter = new Router({
   prefix: appPrefix,
 });
 
-
+/*
 const handler = async function(ctx) {
   ctx.redirect(appPrefix);
   ctx.status = 301;
 }
+*/
+
+const indexHandler = async function(ctx) {
+  await sendfile(ctx, path.join(staticDir, "index.html"));
+  if (!ctx.status) {
+    ctx.redirect(appPrefix);
+    ctx.status = 301;
+  }
+}
 
 mRouter.get([
+  "tasks",
+  "tasks/:id",
   "artefacts",
+  "artefacts/:id",
   "integrations",
   "plans",
+  "plans/:id",
   "pipelines",
+  "pipelines/:id",
   "nodes",
-  "tasks",
+  "nodes/:id",
   "tokens",
   "users",
-], handler);
-
+  "users/:id",
+], indexHandler
+);
 
 app.use(mRouter.routes());
 app.use(mRouter.allowedMethods());
