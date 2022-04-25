@@ -97,15 +97,19 @@ const Sidebar = () => {
               <SidebarLink href={UrlManager.buildUrl('/')} icon="tachometer-alt" text="Dashboard" />
               {currentUser && (
                 <>
+                  <SidebarLink href={UrlManager.buildUrl('/tasks')} icon="tasks" text="Tasks" />
+                  <SidebarLink
+                    href={UrlManager.buildUrl('/pipelines')}
+                    icon="code-branch"
+                    text="Pipelines"
+                  />
+                </>
+              )}
+              {currentUser && (
+                <>
                   {currentUser.is_admin && (
                     <>
-                      <SidebarLink href={UrlManager.buildUrl('/tasks')} icon="tasks" text="Tasks" />
                       <SidebarLink href={UrlManager.buildUrl('/plans')} icon="clock" text="Plans" />
-                      <SidebarLink
-                        href={UrlManager.buildUrl('/pipelines')}
-                        icon="code-branch"
-                        text="Pipelines"
-                      />
                       <SidebarLink
                         href={UrlManager.buildUrl('/nodes')}
                         icon="network-wired"

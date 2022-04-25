@@ -8,7 +8,7 @@ export default {
       cardTitleBorder: "border-b border-gray-200",
     },
     consoleWrapper: {
-      container: "m-0 bg-solarized-background text-solarized-content font-mono text-sm"
+      container: "m-0 bg-black text-green-terminal font-mono text-sm"
     },
     commandWrapper: {
       container: "bg-beige-300",
@@ -31,7 +31,7 @@ export default {
     },
     logs: {
       container: "border",
-      bg: "bg-white",
+      bg: "bg-black",
       scrollTrack: "bg-white",
       scrollThumb: "bg-beige-200",
       scrollOnBg: "bg-beige-200",

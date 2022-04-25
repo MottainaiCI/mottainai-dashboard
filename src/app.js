@@ -59,7 +59,7 @@ const AUTHED = [
 ]
 const UNAUTHED = ["/login", "/signup"]
 const MANAGER_ROUTES = ["/users"]
-const ADMIN_ROUTES = ["/tasks", "/nodes"]
+const ADMIN_ROUTES = [ "/nodes"]
 
 const App = () => {
   const [theme, setTheme] = useLocalStorage(

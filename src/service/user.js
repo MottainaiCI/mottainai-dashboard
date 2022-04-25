@@ -12,7 +12,7 @@ const UserService = {
     return axios.post(`/v1/client/users/delete/${id}`)
   },
   createUser(body) {
-    return axios.post(`/v1/client/users/create/`, body)
+    return axios.post(`/v1/client/users/create`, body)
   },
   updateUser(id, body) {
     return axios.post(`/v1/client/users/edit/${id}`, body)

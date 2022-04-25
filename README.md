@@ -21,6 +21,9 @@ $> docker run --rm -e API_URL=https://mottainai.example.com mott-web:latest
 # install dependencies
 $> npm install
 
+# install preact cli if not available on system
+$> npm i -D preact-cli
+
 # serve with hot reload at localhost:30000
 # API requests will be proxied to http://localhost:9090
 # You can configure this and more in preact.config.js

@@ -271,7 +271,7 @@ const ShowTask = ({ taskId }) => {
             task.script.map((cmd) => (
               <div className={`flex p-2 items-center cursor-pointer group ${themes[theme].commandWrapper.line}`} onClick={() => copyToClipboard(cmd)}>
                 <div className="mr-2">{">"}</div>
-                <div className="select-text">{cmd}</div>
+                <div className="select-text text-sm">{cmd}</div>
                 <FontAwesomeIcon icon="clipboard" className={`hidden ml-auto group-hover:inline`} />
               </div>
             ))}
