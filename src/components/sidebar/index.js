@@ -97,9 +97,13 @@ const Sidebar = () => {
               <SidebarLink href={UrlManager.buildUrl('/')} icon="tachometer-alt" text="Dashboard" />
               {currentUser && (
                 <>
+                  <SidebarLink href={UrlManager.buildUrl('/tasks')} icon="tasks" text="Tasks" />
+                </>
+              )}
+              {currentUser && (
+                <>
                   {currentUser.is_admin && (
                     <>
-                      <SidebarLink href={UrlManager.buildUrl('/tasks')} icon="tasks" text="Tasks" />
                       <SidebarLink href={UrlManager.buildUrl('/plans')} icon="clock" text="Plans" />
                       <SidebarLink
                         href={UrlManager.buildUrl('/pipelines')}
