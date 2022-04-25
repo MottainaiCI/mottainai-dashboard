@@ -13,6 +13,7 @@ const signUpEnable = process.env.SIGNUP_ENABLE || "true"
 // automatically when is called the stats API.
 const skipAuth = process.env.SKIP_AUTH || "false"
 
+console.log("Using API ", apiUrl)
 export default {
   plugins: ["preact-cli-tailwind"],
   /**
