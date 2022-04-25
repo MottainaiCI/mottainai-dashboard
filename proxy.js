@@ -22,6 +22,8 @@ const useSSL = process.env.USE_SSL || "false"
 const privateKeyFile = process.env.PRIVATE_KEYFILE || ""
 const certFile = process.env.CERT_FILE || ""
 
+const cors = require('@koa/cors');
+
 process.on("SIGINT", () => {
   console.info("Exiting server")
   process.exit(0)
@@ -49,7 +51,7 @@ app.use(
 )
 
 app.use(logger())
-
+app.use(cors())
 app.use(
   proxy({
     [appPrefix+"api"]: {
